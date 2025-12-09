@@ -102,10 +102,10 @@ export async function POST(req: Request) {
 
     // Step B: Use Gemini 1.5 Flash (STABLE)
     try {
-      // ✅ CHANGE 1: Use 'gemini-1.5-flash'
+      
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        // ✅ CHANGE 2: Disable Safety Filters (Prevents 400/Block errors)
+        model: "gemini-2.5-flash",
+
         safetySettings: [
           {
             category: HarmCategory.HARM_CATEGORY_HARASSMENT,
