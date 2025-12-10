@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { prisma } from './../../../lib/prisma';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -85,6 +86,8 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    
 
     // --------------------------------
     // Fetch both videos + playlists

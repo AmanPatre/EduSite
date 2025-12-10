@@ -15,6 +15,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  searchHistory SearchHistory[]
+  savedResources SavedResource[]
+
   createdAt     DateTime  @default(now())
 }
 
@@ -60,8 +63,9 @@ model SearchHistory {
   userId    String?  @db.ObjectId
   query     String
   createdAt DateTime @default(now())
+  user User ? @relation(fields: [userId] , references: [id] , onDelete:Cascade)
 }
-
+  
 model SavedResource {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
@@ -69,4 +73,12 @@ model SavedResource {
   url       String
   source    String
   createdAt DateTime @default(now())
+  user User @relation(fields: [userId],references: [id] , onDelete:Cascade)
+}
+model SearchCache {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  query     String   @unique 
+  data      Json     
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
