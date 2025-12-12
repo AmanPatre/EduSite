@@ -15,6 +15,7 @@
     "axios": "^1.13.2",
     "cheerio": "^1.1.2",
     "clsx": "^2.1.1",
+    "ioredis": "^5.8.2",
     "mongodb": "^7.0.0",
     "next": "16.0.6",
     "next-auth": "^4.24.13",
@@ -22,7 +23,6 @@
     "prisma": "^5.13.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "redis": "^5.10.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

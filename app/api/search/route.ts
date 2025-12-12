@@ -1,18 +1,35 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { prisma } from './../../../lib/prisma';
+import { prisma } from "./../../../lib/prisma";
+import redis from "@/lib/redis";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 // ----------------------------------------------------
-// FETCH ONE-SHOT YOUTUBE VIDEOS
+// HELPER: Parse ISO 8601 Duration (e.g., PT1H2M10S -> 1h 2m 10s)
+// ----------------------------------------------------
+function parseISODuration(isoDuration: string): string {
+  if (!isoDuration) return "Unknown";
+  const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  if (!match) return "Unknown";
+
+  const hours = (match[1] || "").replace("H", "h");
+  const minutes = (match[2] || "").replace("M", "m");
+  const seconds = (match[3] || "").replace("S", "s");
+
+  return [hours, minutes, seconds].filter(Boolean).join(" ") || "0s";
+}
+
+// ----------------------------------------------------
+// FETCH ONE-SHOT YOUTUBE VIDEOS (WITH ACTUAL DURATION)
 // ----------------------------------------------------
 async function fetchYouTubeVideos(query: string) {
   try {
     const API_KEY = process.env.YOUTUBE_API_KEY;
 
-    const response = await axios.get(
+    // STEP 1: Search for videos to get IDs
+    const searchResponse = await axios.get(
       "https://www.googleapis.com/youtube/v3/search",
       {
         params: {
@@ -25,13 +42,42 @@ async function fetchYouTubeVideos(query: string) {
       }
     );
 
-    return response.data.items.map((item: any) => ({
+    if (!searchResponse.data.items || searchResponse.data.items.length === 0) {
+      return [];
+    }
+
+    // Extract Video IDs for the second call
+    const videoIds = searchResponse.data.items
+      .map((item: any) => item.id.videoId)
+      .join(",");
+
+    // STEP 2: Fetch Video Details to get 'contentDetails' (Duration)
+    const detailsResponse = await axios.get(
+      "https://www.googleapis.com/youtube/v3/videos",
+      {
+        params: {
+          part: "contentDetails",
+          id: videoIds,
+          key: API_KEY,
+        },
+      }
+    );
+
+    // Create a map of ID -> Formatted Duration
+    const durationMap: Record<string, string> = {};
+    detailsResponse.data.items.forEach((item: any) => {
+      durationMap[item.id] = parseISODuration(item.contentDetails.duration);
+    });
+
+    // STEP 3: Merge Snippet Data with Duration
+    return searchResponse.data.items.map((item: any) => ({
       type: "video",
       title: item.snippet.title,
       url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
       channel: item.snippet.channelTitle,
       description: item.snippet.description,
       thumbnail: item.snippet.thumbnails?.high?.url,
+      duration: durationMap[item.id.videoId] || "Unknown", // <--- Real Duration
     }));
   } catch (err) {
     console.error("YouTube Video Fetch Error:", err);
@@ -40,13 +86,14 @@ async function fetchYouTubeVideos(query: string) {
 }
 
 // ----------------------------------------------------
-// FETCH YOUTUBE PLAYLISTS
+// FETCH YOUTUBE PLAYLISTS (WITH ACTUAL VIDEO COUNT)
 // ----------------------------------------------------
 async function fetchYouTubePlaylists(query: string) {
   try {
     const API_KEY = process.env.YOUTUBE_API_KEY;
 
-    const response = await axios.get(
+    // STEP 1: Search for playlists (Get IDs)
+    const searchResponse = await axios.get(
       "https://www.googleapis.com/youtube/v3/search",
       {
         params: {
@@ -59,13 +106,42 @@ async function fetchYouTubePlaylists(query: string) {
       }
     );
 
-    return response.data.items.map((item: any) => ({
+    if (!searchResponse.data.items || searchResponse.data.items.length === 0) {
+      return [];
+    }
+
+    // Extract Playlist IDs
+    const playlistIds = searchResponse.data.items
+      .map((item: any) => item.id.playlistId)
+      .join(",");
+
+    // STEP 2: Fetch Playlist Details (Get Item Count)
+    const detailsResponse = await axios.get(
+      "https://www.googleapis.com/youtube/v3/playlists",
+      {
+        params: {
+          part: "contentDetails", // <--- This contains itemCount
+          id: playlistIds,
+          key: API_KEY,
+        },
+      }
+    );
+
+    // Create a map of ID -> Item Count
+    const countMap: Record<string, number> = {};
+    detailsResponse.data.items.forEach((item: any) => {
+      countMap[item.id] = item.contentDetails.itemCount;
+    });
+
+    // STEP 3: Merge Data
+    return searchResponse.data.items.map((item: any) => ({
       type: "playlist",
       title: item.snippet.title,
       url: `https://www.youtube.com/playlist?list=${item.id.playlistId}`,
       channel: item.snippet.channelTitle,
       description: item.snippet.description,
       thumbnail: item.snippet.thumbnails?.high?.url,
+      totalVideos: countMap[item.id.playlistId] || 0, // <--- Real Count
     }));
   } catch (err) {
     console.error("YouTube Playlist Fetch Error:", err);
@@ -87,10 +163,24 @@ export async function POST(req: Request) {
       );
     }
 
-    
+    const sanitizedQuery = query.trim().toLowerCase();
+    const cacheKey = `search:youtube:${sanitizedQuery}`;
+
+    // --- Cache Check (Redis) ---
+    try {
+      const cacheData = await redis?.get(cacheKey);
+      if (cacheData) {
+        console.log(`Cache HIT for "${sanitizedQuery}" from REDIS`);
+        return NextResponse.json(JSON.parse(cacheData));
+      }
+    } catch (error) {
+      console.warn("Redis read error:", error);
+    }
+
+    console.log("Cache MISS - calling YouTube API...");
 
     // --------------------------------
-    // Fetch both videos + playlists
+    // Fetch both videos and playlists (with real stats)
     // --------------------------------
     const videoResults = await fetchYouTubeVideos(query);
     const playlistResults = await fetchYouTubePlaylists(query);
@@ -99,7 +189,7 @@ export async function POST(req: Request) {
     // Initialize Gemini Model
     // --------------------------------
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash-lite",
+      model: "gemini-2.5-flash",
     });
 
     // AI Ranking Prompt
@@ -109,45 +199,50 @@ You are an AI that ranks YouTube learning content.
 Topic: ${query}
 
 Rank videos and playlists separately.
-Analyze quality, clarity, channel authority, depth, and learning structure.The ranking should not be only view based, how best the yt video provides the info , how best it teaches , how good comments it has got and how good are the reponses that it has got.
+Analyze quality, clarity, channel authority, depth, and learning structure.
+The ranking should not be only view-based. Consider how effectively the video teaches, the quality of explanations, and channel reputation.
 
-Videos to rank:
+Videos to rank (Includes ACTUAL duration):
 ${JSON.stringify(videoResults)}
 
-Playlists to rank:
+Playlists to rank (Includes ACTUAL video counts):
 ${JSON.stringify(playlistResults)}
+
+Instructions:
+1. Select the best content from the lists provided.
+2. **VIDEOS**: Use the provided "duration" field for "estimatedDuration". Do NOT guess.
+3. **PLAYLISTS**: Use the provided "totalVideos" field. Do NOT guess.
 
 Return JSON ONLY in this format:
 
 {
-  "topic": "",
+  "topic": "${query}",
   "rankedVideos": [
     {
-      "title": "",
-      "url": "",
-      "channel": "",
-      "why": "",
-      "difficulty": "",
-      "estimatedDuration": "",
-      "thumbnail": ""
+      "title": "Exact video title",
+      "url": "YouTube URL",
+      "channel": "Channel Name",
+      "why": "Specific reason why this is good for learning this topic.",
+      "difficulty": "Beginner/Intermediate/Advanced",
+      "estimatedDuration": "Use the 'duration' field provided (e.g., '1h 2m')",
+      "thumbnail": "Thumbnail URL"
     }
   ],
   "rankedPlaylists": [
     {
-      "title": "",
-      "url": "",
-      "channel": "",
-      "why": "",
-      "difficulty": "",
-      "totalVideos": "",
-      "thumbnail": ""
+      "title": "Playlist Title",
+      "url": "Playlist URL",
+      "channel": "Channel Name",
+      "why": "Why this playlist is comprehensive.",
+      "difficulty": "Beginner/Intermediate/Advanced",
+      "totalVideos": "Use the 'totalVideos' field provided (e.g., 15)",
+      "thumbnail": "Thumbnail URL"
     }
   ]
 }
 `;
 
     const result = await model.generateContent(prompt);
-
     let text = result.response.text();
 
     // Remove markdown formatting
@@ -156,12 +251,20 @@ Return JSON ONLY in this format:
     const ranked = JSON.parse(text);
 
     // Return final structured output
-    return NextResponse.json({
+    const finalResponse = {
       success: true,
       videos: ranked.rankedVideos,
       playlists: ranked.rankedPlaylists,
-    });
+    };
 
+    // --- Save to Redis ---
+    try {
+      await redis?.set(cacheKey, JSON.stringify(finalResponse), "EX", 3600);
+    } catch (error) {
+      console.warn("Redis write error", error);
+    }
+
+    return NextResponse.json(finalResponse);
   } catch (error: any) {
     console.error("Search API Error:", error);
     return NextResponse.json(

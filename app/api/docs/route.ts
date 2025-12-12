@@ -5,6 +5,7 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
+import redis from "@/lib/redis"; // <--- IMPORT ADDED
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -88,6 +89,20 @@ export async function POST(req: Request) {
     if (!query?.trim())
       return NextResponse.json({ error: "Query required" }, { status: 400 });
 
+    const sanitQuery = query.trim().toLowerCase();
+    const cachKey = `docs:${sanitQuery}`;
+
+    // --- Cache Check ---
+    try {
+      const cachedData = await redis?.get(cachKey);
+      if (cachedData) {
+        console.log(`🚀 HIT: Serving Docs for "${sanitQuery}" from Redis`);
+        return NextResponse.json(JSON.parse(cachedData));
+      }
+    } catch (e) {
+      console.warn("Redis Check Error (proceeding to fetch):", e);
+    }
+
     // Step A: Fetch Results
     const [docResults, forumResults] = await Promise.all([
       fetchGoogleResults(query, [...OFFICIAL_DOCS, ...TUTORIAL_SITES], 6),
@@ -100,12 +115,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "No results found" });
     }
 
+    // DECLARE VARIABLE OUTSIDE TRY/CATCH TO AVOID SHADOWING
+    let finalData;
+
     // Step B: Use Gemini 1.5 Flash (STABLE)
     try {
-      
       const model = genAI.getGenerativeModel({
         model: "gemini-2.5-flash",
-
         safetySettings: [
           {
             category: HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -126,13 +142,32 @@ export async function POST(req: Request) {
         ],
       });
 
-      const prompt = `
-      Context: A student wants to learn "${query}".
-      Resources: ${JSON.stringify(rawResults)}
-      
-      Task: Pick best 5. Label as "Official Docs", "Tutorial", or "Forum".
-      Return JSON: { "bestDocs": [{ "title": "...", "url": "...", "snippet": "...", "source": "...", "category": "..." }] }
-      `;
+const prompt = `
+Context: A student wants to learn "${query}".
+Raw Search Results: ${JSON.stringify(rawResults)}
+
+Task:
+1. Select the best 5 resources.
+2. Analyze the Title and Snippet.
+3. WRITE A NEW SNIPPET: Clear, 1-2 sentence summary.
+4. EXTRACT TAGS: Identify 2-3 key concepts.
+5. ESTIMATE DIFFICULTY: "Beginner", "Intermediate", or "Advanced".
+
+Return STRICT JSON: 
+{ 
+  "bestDocs": [
+    { 
+      "title": "...", 
+      "url": "...", 
+      "snippet": "...", 
+      "source": "...",  // <--- ADDED BACK
+      "category": "Official Docs", 
+      "tags": ["Tag1", "Tag2"], 
+      "difficulty": "Beginner" 
+    }
+  ] 
+}
+`;
 
       const result = await model.generateContent(prompt);
       const text = result.response
@@ -141,13 +176,27 @@ export async function POST(req: Request) {
         .replace(/```/g, "");
       const processed = JSON.parse(text);
 
-      return NextResponse.json({ success: true, data: processed.bestDocs });
+      // ASSIGNMENT WITHOUT 'const'
+      finalData = { success: true, data: processed.bestDocs };
     } catch (aiError: any) {
-      console.error("🔥 GEMINI ERROR:", aiError.message);
+      console.log("🔥 GEMINI ERROR:", aiError.message);
       // Fallback
       const manualData = manualFallback(rawResults);
-      return NextResponse.json({ success: true, data: manualData });
+      // ASSIGNMENT WITHOUT 'const'
+      finalData = { success: true, data: manualData };
     }
+
+    // --- Save to Redis ---
+    if (finalData && finalData.success) {
+      try {
+        // CORRECTED SYNTAX: "EX" is a separate argument to redis.set
+        await redis?.set(cachKey, JSON.stringify(finalData), "EX", 3600);
+      } catch (writeError) {
+        console.warn("Redis Write Failed:", writeError);
+      }
+    }
+
+    return NextResponse.json(finalData);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
