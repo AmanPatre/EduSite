@@ -16,8 +16,8 @@ export const OFFICIAL_DOCS = [
 ];
 
 export const TUTORIAL_SITES = [
-  "site:w3schools.com",
   "site:geeksforgeeks.org",
+  "site:w3schools.com",
   "site:javatpoint.com",
   "site:tutorialspoint.com",
   "site:freecodecamp.org",
@@ -62,10 +62,6 @@ async function fetchGoogleResults(
     return [];
   }
 }
-
-// ----------------------------------------------------
-// MAIN EXPORT: Fetch Trusted Docs
-// ----------------------------------------------------
 export async function fetchTrustedDocs(query: string) {
   try {
     // Parallel fetch: Official/Tutorials (Priority) + Forums (Secondary)

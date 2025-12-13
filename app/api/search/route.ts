@@ -3,7 +3,7 @@ import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prisma } from "./../../../lib/prisma";
 import redis from "@/lib/redis";
-import { fetchYouTubePlaylists  , fetchYouTubeVideos} from "@/lib/youtube";
+import { fetchYouTubePlaylists, fetchYouTubeVideos } from "@/lib/youtube";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { use } from "react";
@@ -20,32 +20,26 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
     const sanitizedQuery = query.trim().toLowerCase();
-    (async () =>{
-      try{
+    (async () => {
+      try {
         const session = await getServerSession(authOptions);
-        if(session?.user?.email){
+        if (session?.user?.email) {
           const user = await prisma.user.findUnique({
-            where:{email:session.user.email}
+            where: { email: session.user.email },
           });
-          if(user){
+          if (user) {
             await prisma.searchHistory.create({
-              data:{
-                userId:user.id,
-                query:query.trim()
-              }
-            })
+              data: {
+                userId: user.id,
+                query: query.trim(),
+              },
+            });
           }
         }
-      
-
+      } catch (error) {
+        console.log("failed to save search histoty ", error);
       }
-      catch(error){
-        console.log("failed to save search histoty " , error)
-
-      }
-
     })();
 
     const cacheKey = `search:youtube:${sanitizedQuery}`;
@@ -63,7 +57,6 @@ export async function POST(req: Request) {
 
     console.log("Cache MISS - calling YouTube API...");
 
-  
     const videoResults = await fetchYouTubeVideos(query);
     const playlistResults = await fetchYouTubePlaylists(query);
 
@@ -83,6 +76,7 @@ Topic: ${query}
 Rank videos and playlists separately.
 Analyze quality, clarity, channel authority, depth, and learning structure.
 The ranking should not be only view-based. Consider how effectively the video teaches, the quality of explanations, and channel reputation.
+Select the 10 best videos ans 10 best playlist.
 
 Videos to rank (Includes ACTUAL duration):
 ${JSON.stringify(videoResults)}

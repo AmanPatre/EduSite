@@ -30,7 +30,7 @@ export async function fetchYouTubeVideos(query: string) {
           part: "snippet",
           q: query,
           type: "video",
-          minResults: 10,
+          maxResults: 15,
           key: API_KEY,
         },
       }
@@ -94,7 +94,7 @@ export async function fetchYouTubePlaylists(query: string) {
           part: "snippet",
           q: query,
           type: "playlist",
-          minResults: 10,
+          maxResults: 15,
           key: API_KEY,
         },
       }

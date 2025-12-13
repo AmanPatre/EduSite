@@ -12,7 +12,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 
 function manualFallback(results: any[]) {
-  return results.slice(0, 6).map((item) => {
+  return results.slice(0, 5).map((item) => {
     let category = "Tutorial";
     const url = item.url.toLowerCase();
     if (
