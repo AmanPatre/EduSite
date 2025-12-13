@@ -10,11 +10,6 @@ import { use } from "react";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-
-
-// ----------------------------------------------------
-// MAIN API HANDLER
-// ----------------------------------------------------
 export async function POST(req: Request) {
   try {
     const { query } = await req.json();
