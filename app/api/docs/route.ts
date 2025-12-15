@@ -9,8 +9,6 @@ import redis from "@/lib/redis"; // <--- IMPORT ADDED
 import {fetchTrustedDocs} from "@/lib/docs";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-
-
 function manualFallback(results: any[]) {
   return results.slice(0, 5).map((item) => {
     let category = "Tutorial";

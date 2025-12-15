@@ -12,7 +12,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
-    const { query } = await req.json();
+    let  { query } = await req.json();
+    query+=" full course";
 
     if (!query?.trim()) {
       return NextResponse.json(
