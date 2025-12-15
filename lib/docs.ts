@@ -66,8 +66,8 @@ export async function fetchTrustedDocs(query: string) {
   try {
     // Parallel fetch: Official/Tutorials (Priority) + Forums (Secondary)
     const [docResults, forumResults] = await Promise.all([
-      fetchGoogleResults(query, [...OFFICIAL_DOCS, ...TUTORIAL_SITES], 6),
-      fetchGoogleResults(query, FORUM_SITES, 2),
+      fetchGoogleResults(query, [...OFFICIAL_DOCS, ...TUTORIAL_SITES], 15),
+      fetchGoogleResults(query, FORUM_SITES, 5),
     ]);
 
     return [...docResults, ...forumResults];

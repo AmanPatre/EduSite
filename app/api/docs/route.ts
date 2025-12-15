@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
 import {
   GoogleGenerativeAI,
   HarmCategory,
@@ -85,7 +84,7 @@ Context: A student wants to learn "${query}".
 Raw Search Results: ${JSON.stringify(rawResults)}
 
 Task:
-1. Select the best 5 resources.
+1. Select the best 10 resources.
 2. Analyze the Title and Snippet.
 3. WRITE A NEW SNIPPET: Clear, 1-2 sentence summary.
 4. EXTRACT TAGS: Identify 2-3 key concepts.
