@@ -21,6 +21,7 @@ export default function Navbar(){
             <div className="hidden md:flex items-center gap-6">
                 {session?(<>
                 <Link href="/history" className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-blue-600 transition"><History className="h-4"/>History</Link>
+                 <Link href="/trending" className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-blue-600 transition"><History className="h-4"/>Trending</Link>
 
                 <div className="flex items-center gap-3" >
                     <span className="text-sm font-medium text-gray-700">
