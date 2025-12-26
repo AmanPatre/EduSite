@@ -8,6 +8,7 @@ interface TrendCardProps {
   growthPercent: number;
   direction: string;
   reason: string;
+  category : string
 }
 
 export default function TrendCard({
@@ -17,6 +18,7 @@ export default function TrendCard({
   growthPercent,
   direction,
   reason,
+  category
 }: TrendCardProps) {
   const isUp = direction === "UP";
 
@@ -24,6 +26,9 @@ export default function TrendCard({
     <Link href={`/trending/${slug}`} className="block">
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm 
                       hover:-translate-y-1 hover:shadow-lg transition-all cursor-pointer">
+                        <span className="inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 mb-2">
+  {category}
+</span>
         {/* Title + Arrow */}
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-gray-900">{skill}</h3>

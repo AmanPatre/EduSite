@@ -1,4 +1,6 @@
-import TrendSnapshot from "@/app/components/trending/TrendSnapshot";
+import TrendSnapshot from "../components/trending/TrendSnapshot";
+import SkillTrendsSection from "../components/trending/SkillTrendsSection";
+import RelatedSkills from "../components/trending/RelatedSkills";
 
 export default function TrendingPage() {
   return (
@@ -8,6 +10,12 @@ export default function TrendingPage() {
       </h1>
 
       <TrendSnapshot />
+
+      <SkillTrendsSection/>
+      
+
+
+
     </main>
   );
 }

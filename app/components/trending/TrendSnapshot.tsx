@@ -28,8 +28,9 @@ export default function TrendSnapshot() {
             growthPercent={trend.growthPercent}
             direction={trend.direction}
             reason={trend.reason}
+            category={trend.category}
           />
-        ))}
+        )).slice(0,3)}
       </div>
     </section>
   );

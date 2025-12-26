@@ -1,13 +1,49 @@
 import { fakeTrends } from "@/data/fakeTrends";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import RelatedSkills from "@/app/components/trending/RelatedSkills";
 
 interface Props {
-  params: { skill: string };
+  
+  params: Promise<{ skill: string }>;
 }
 
-export default function SkillDetailPage({ params }: Props) {
+/* ============================
+   SEO METADATA
+============================ */
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  
+  const { skill } = await params;
+
   const skillData = fakeTrends.find(
-    (item) => item.slug === params.skill
+    (item) => item.slug === skill
+  );
+
+  if (!skillData) {
+    return {
+      title: "Skill Not Found | EDUzard",
+      description: "The requested skill does not exist.",
+    };
+  }
+
+  return {
+    title: `${skillData.skill} Trends in 2025 | EDUzard`,
+    description: skillData.reason,
+  };
+}
+
+/* ============================
+   PAGE COMPONENT
+============================ */
+// 🔴 FIX 3: Make the component 'async'
+export default async function SkillDetailPage({ params }: Props) {
+  // 🔴 FIX 4: Await the params here too
+  const { skill } = await params;
+
+  const skillData = fakeTrends.find(
+    (item) => item.slug === skill
   );
 
   if (!skillData) {
@@ -61,11 +97,24 @@ export default function SkillDetailPage({ params }: Props) {
           ))}
         </div>
       </section>
+
+      {/*Related Skills */}
+
+      <RelatedSkills currentSlug={skillData.slug} category={skillData.category}  />
     </main>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string | number }) {
+/* ============================
+   HELPER COMPONENT
+============================ */
+function Stat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
   return (
     <div className="rounded-lg border bg-white p-4">
       <p className="text-sm text-gray-500">{label}</p>
