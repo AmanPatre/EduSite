@@ -1,5 +1,5 @@
 import { Info } from "lucide-react";
-import { fakeTrends } from "@/data/fakeTrends";
+import { fakeTrends } from "@/data/globalTrends";
 import TrendCard from "./TrendCard";
 
 export default function TrendSnapshot() {
