@@ -1,94 +1,89 @@
-// --- 1. The Detailed List (Used by [skill]/page.tsx AND TrendCards) ---
+// --- 1. The Detailed List (Used by [skill]/page.tsx) ---
 export const fakeTrends = [
   {
-    id: "1",
-    skill: "AI Engineering",
-    category: "AI",
-    slug: "ai-engineering",
-    direction: "up", // ✅ Added this back
-    reason: "The rise of LLMs (GPT-4, Claude) has created a massive demand for engineers who can integrate AI models into applications.",
-    score: 98,
-    growthPercent: 38,
-    learnTime: "6 Months",
-    roles: ["AI Solutions Architect", "ML Engineer", "AI Product Manager"],
-    usedIn: ["Chatbots", "Automation", "Data Analysis", "Healthcare"],
-    salary: "$140k - $220k",
-    demand: "Explosive"
-  },
-  {
-    id: "2",
-    skill: "Next.js (App Router)",
-    category: "Frontend",
+    skill: "Next.js",
     slug: "nextjs",
-    direction: "up", // ✅ Added this back
-    reason: "Next.js has become the default React framework. The new App Router and Server Components are shifting how we build web apps.",
-    score: 95,
-    growthPercent: 24,
-    learnTime: "3 Months",
-    roles: ["Frontend Engineer", "Full Stack Developer", "UX Engineer"],
-    usedIn: ["E-commerce", "SaaS Dashboards", "Marketing Sites"],
-    salary: "$110k - $160k",
-    demand: "High"
-  },
-  {
-    id: "3",
-    skill: "Rust Systems Dev",
-    category: "Backend",
-    slug: "rust",
-    direction: "up", // ✅ Added this back
-    reason: "Rust is replacing C++ in performance-critical infrastructure. It is loved for memory safety and is now entering web development via Wasm.",
-    score: 88,
-    growthPercent: 15,
-    learnTime: "5-6 Months",
-    roles: ["Systems Engineer", "Blockchain Developer", "Backend Performance Engineer"],
-    usedIn: ["Cloud Infrastructure", "Game Engines", "Browser Engines"],
-    salary: "$130k - $190k",
-    demand: "Stable"
-  },
-  {
-    id: "4",
-    skill: "DevOps & Kubernetes",
-    category: "DevOps",
-    slug: "devops",
-    direction: "up", // ✅ Added this back
-    reason: "Companies need scalable infrastructure. Kubernetes is the OS of the cloud.",
-    score: 92,
-    growthPercent: 19,
-    learnTime: "6 Months",
-    roles: ["DevOps Engineer", "Platform Engineer", "SRE"],
-    usedIn: ["Cloud Computing", "Enterprise Apps", "FinTech"],
-    salary: "$120k - $180k",
-    demand: "High"
-  },
-  {
-    id: "5",
-    skill: "React Server Components",
     category: "Frontend",
-    slug: "rsc",
-    direction: "up", // ✅ Added this back
-    reason: "A paradigm shift in React allowing components to render exclusively on the server.",
-    score: 90,
+    score: 82,
     growthPercent: 28,
-    learnTime: "1 Month",
-    roles: ["Frontend Lead", "React Specialist"],
-    usedIn: ["High Performance Web Apps"],
-    salary: "$125k+",
-    demand: "High"
+    direction: "UP",
+    reason: "Rising job demand and strong learning content growth",
+    roles: ["Frontend Engineer", "Full Stack Developer"],
+    learnTime: "2–3 months",
+    usedIn: ["SaaS", "Web Apps"],
   },
   {
-    id: "6",
-    skill: "Legacy PHP / jQuery",
+    skill: "React",
+    slug: "react",
+    category: "Frontend",
+    score: 88,
+    growthPercent: 24,
+    direction: "UP",
+    reason: "Still the most widely used frontend library",
+    roles: ["Frontend Engineer"],
+    learnTime: "2–3 months",
+    usedIn: ["Web Apps", "Dashboards"],
+  },
+  {
+    skill: "AI Engineering",
+    slug: "ai-engineering",
+    category: "AI",
+    score: 98,
+    growthPercent: 41,
+    direction: "UP",
+    reason: "Exploding adoption across startups and enterprises",
+    roles: ["AI Engineer", "ML Engineer"],
+    learnTime: "3–4 months",
+    usedIn: ["Chatbots", "Automation"],
+  },
+  {
+    skill: "Rust",
+    slug: "rust",
     category: "Backend",
-    slug: "legacy-php",
-    direction: "down", // ✅ Added a "down" example
-    reason: "Modern frameworks are replacing legacy stacks in new projects.",
-    score: 45,
-    growthPercent: -12,
-    learnTime: "3 Months",
-    roles: ["Legacy Maintainer", "Wordpress Dev"],
-    usedIn: ["Old Enterprise Apps"],
-    salary: "$60k - $90k",
-    demand: "Falling"
+    score: 85,
+    growthPercent: 15,
+    direction: "UP",
+    reason: "High performance systems programming",
+    roles: ["Systems Engineer"],
+    learnTime: "5-6 months",
+    usedIn: ["Infrastructure", "Tooling"],
+  },
+  {
+    skill: "Kubernetes",
+    slug: "kubernetes",
+    category: "DevOps",
+    score: 81,
+    growthPercent: 21,
+    direction: "UP",
+    reason: "Standard for container orchestration",
+    roles: ["DevOps Engineer", "SRE"],
+    learnTime: "3-4 months",
+    usedIn: ["Cloud Infrastructure"],
+  },
+  // Added to prevent errors if you click these specific items
+  {
+    skill: "DevOps",
+    slug: "devops",
+    category: "DevOps",
+    score: 90,
+    growthPercent: 19,
+    direction: "UP",
+    reason: "General term for the booming infrastructure industry",
+    roles: ["DevOps Engineer"],
+    learnTime: "6 months",
+    usedIn: ["Cloud"],
+  },
+  {
+    skill: "Go (Golang)",
+    slug: "golang",
+    category: "Backend",
+    score: 88,
+    growthPercent: 18,
+    direction: "UP",
+    reason: "The language of the cloud.",
+    roles: ["Backend Engineer"],
+    learnTime: "3 months",
+    usedIn: ["Microservices"],
   }
 ];
 
@@ -123,7 +118,7 @@ export const GLOBAL_TRENDS = {
     {
       id: "3",
       name: "DevOps & Kubernetes",
-      slug: "devops",
+      slug: "kubernetes", // Fixed slug to match fakeTrends
       growth: "+19%",
       trend: "up",
       velocity: "Stable",
@@ -137,7 +132,7 @@ export const GLOBAL_TRENDS = {
   categories: {
     frontend: [
       { name: "Next.js", slug: "nextjs", demand: "Critical", learners: "Very High", salary: "$120k" },
-      { name: "React Server Components", slug: "rsc", demand: "High", learners: "High", salary: "$130k" },
+      { name: "React", slug: "react", demand: "High", learners: "High", salary: "$130k" },
       { name: "TypeScript", slug: "typescript", demand: "Standard", learners: "High", salary: "$115k" }
     ],
     backend: [

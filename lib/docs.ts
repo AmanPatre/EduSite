@@ -38,7 +38,7 @@ async function fetchGoogleResults(
 ) {
   const key = process.env.GOOGLE_CSE_KEY;
   const cx = process.env.GOOGLE_CSE_CX;
-  
+
   if (!key || !cx) {
     console.error("Missing Google API Key or CX");
     return [];
@@ -66,7 +66,7 @@ export async function fetchTrustedDocs(query: string) {
   try {
     // Parallel fetch: Official/Tutorials (Priority) + Forums (Secondary)
     const [docResults, forumResults] = await Promise.all([
-      fetchGoogleResults(query, [...OFFICIAL_DOCS, ...TUTORIAL_SITES], 15),
+      fetchGoogleResults(query, [...OFFICIAL_DOCS, ...TUTORIAL_SITES], 10),
       fetchGoogleResults(query, FORUM_SITES, 5),
     ]);
 
