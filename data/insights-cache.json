@@ -1,0 +1,112 @@
+{
+  "timestamp": 1768245425601,
+  "data": [
+    {
+      "id": "insight-1",
+      "type": "trend",
+      "title": "AI-Powered Code Generation",
+      "description": "AI tools like GitHub Copilot and Tabnine are becoming integral to the development workflow, boosting developer productivity by an estimated 40%. This trend is reshaping the demand for specific coding skills.",
+      "relatedSkills": [
+        "skill-3",
+        "skill-4",
+        "skill-7"
+      ],
+      "impact": "High",
+      "timeframe": "Next 6 months"
+    },
+    {
+      "id": "insight-2",
+      "type": "trend",
+      "title": "Serverless Architecture Ascendant",
+      "description": "Serverless computing is gaining traction due to its scalability and cost-effectiveness, especially for event-driven applications. Expect a 25% increase in serverless deployments in the next year.",
+      "relatedSkills": [
+        "skill-4",
+        "skill-6",
+        "skill-8",
+        "skill-10"
+      ],
+      "impact": "Medium",
+      "timeframe": "Next 12 months"
+    },
+    {
+      "id": "insight-3",
+      "type": "trend",
+      "title": "Composable Frontend Dominance",
+      "description": "The rise of component-based architectures accelerates development speed. Frameworks like React and Next.js remain highly sought-after.",
+      "relatedSkills": [
+        "skill-1",
+        "skill-2",
+        "skill-7"
+      ],
+      "impact": "High",
+      "timeframe": "Ongoing"
+    },
+    {
+      "id": "insight-4",
+      "type": "warning",
+      "title": "Generic Python Saturation",
+      "description": "Entry-level Python roles are becoming increasingly saturated. Specialization in areas like data science or AI is now essential for career advancement.",
+      "relatedSkills": [
+        "skill-4"
+      ],
+      "impact": "Medium",
+      "timeframe": "Ongoing"
+    },
+    {
+      "id": "insight-5",
+      "type": "warning",
+      "title": "Legacy JavaScript Frameworks",
+      "description": "Demand for developers skilled solely in older JavaScript frameworks (e.g., AngularJS) is rapidly declining. Migration to modern frameworks is crucial.",
+      "relatedSkills": [],
+      "impact": "High",
+      "timeframe": "Next 6 months"
+    },
+    {
+      "id": "insight-6",
+      "type": "warning",
+      "title": "Basic Docker Knowledge Sufficient?",
+      "description": "Simple Docker usage is becoming commoditized. Deep understanding of container orchestration and security is now needed to stand out.",
+      "relatedSkills": [
+        "skill-8"
+      ],
+      "impact": "Low",
+      "timeframe": "Q4 2024"
+    },
+    {
+      "id": "insight-7",
+      "type": "opportunity",
+      "title": "LangChain Specialization Soars",
+      "description": "Expertise in LangChain and similar AI orchestration frameworks is in high demand, with a shortage of qualified professionals. Salaries for these roles are growing rapidly.",
+      "relatedSkills": [
+        "skill-3",
+        "skill-9"
+      ],
+      "impact": "High",
+      "timeframe": "Next 12 months"
+    },
+    {
+      "id": "insight-8",
+      "type": "opportunity",
+      "title": "Rust Secures Systems",
+      "description": "Rust is gaining prominence in security-critical applications and systems programming. Companies are actively seeking Rust developers to build robust and secure infrastructure.",
+      "relatedSkills": [
+        "skill-5"
+      ],
+      "impact": "High",
+      "timeframe": "Ongoing"
+    },
+    {
+      "id": "insight-9",
+      "type": "opportunity",
+      "title": "Go for Cloud Infrastructure",
+      "description": "Go continues its strong growth in cloud infrastructure development and DevOps. Proficiency in Go enhances career prospects in the cloud-native space.",
+      "relatedSkills": [
+        "skill-6",
+        "skill-8",
+        "skill-10"
+      ],
+      "impact": "Medium",
+      "timeframe": "Next 18 months"
+    }
+  ]
+}

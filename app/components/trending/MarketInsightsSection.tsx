@@ -7,7 +7,7 @@
 // Converts data into actionable understanding
 
 import React, { useState } from 'react';
-import { Brain, TrendingUp, AlertTriangle, Sprout, Filter } from 'lucide-react';
+import { Brain, TrendingUp, AlertTriangle, Sprout, Filter, RotateCcw } from 'lucide-react';
 import { MarketInsight, getSkillById } from '@/data/trendingData';
 import SectionHeader from './SectionHeader';
 import SkillTag from './SkillTag';
@@ -133,6 +133,26 @@ export default function MarketInsightsSection({ insights }: MarketInsightsSectio
                         ))}
                     </div>
                 </div>
+            </div>
+
+            {/* Result Count & Reset */}
+            <div className="flex items-center justify-between bg-slate-900/50 px-4 py-2 rounded-lg border border-slate-800">
+                <span className="text-sm text-slate-400 flex items-center gap-2">
+                    Showing <span className="text-white font-bold">{filteredInsights.length}</span> of <span className="text-white font-bold">{insights.length}</span> insights
+                </span>
+
+                {(filterType !== 'all' || filterImpact !== 'all') && (
+                    <button
+                        onClick={() => {
+                            setFilterType('all');
+                            setFilterImpact('all');
+                        }}
+                        className="text-xs text-cyan-400 hover:text-cyan-300 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors bg-cyan-500/10 px-3 py-1.5 rounded-md border border-cyan-500/20"
+                    >
+                        <RotateCcw className="w-3 h-3" />
+                        Reset Filters
+                    </button>
+                )}
             </div>
 
             {/* Insights Grid */}

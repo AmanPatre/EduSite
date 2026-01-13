@@ -34,16 +34,27 @@ import {
 export default function TrendingPage() {
   // 1. State for Real Data
   const [realSkills, setRealSkills] = useState([]);
+  const [realJobs, setRealJobs] = useState([]);
+  const [realInsights, setRealInsights] = useState([]); // New State
   const [loading, setLoading] = useState(true);
 
   // 2. Fetch data with Axios
   useEffect(() => {
     async function loadData() {
       try {
-        const response = await axios.get('/api/trending-proxy');
-        setRealSkills(response.data);
+        // Parallel Fetch for Speed
+        const [skillsRes, jobsRes, insightsRes] = await Promise.all([
+          axios.get('/api/trending-proxy'),
+          axios.get('/api/jobs-proxy'),
+          axios.post('/api/market-analytics') // Independent Gemini Call
+        ]);
+
+        setRealSkills(skillsRes.data);
+        setRealJobs(jobsRes.data);
+        setRealInsights(insightsRes.data);
+
       } catch (error) {
-        console.error("Failed to fetch trending skills:", error);
+        console.error("Failed to fetch data:", error);
       } finally {
         setLoading(false);
       }
@@ -51,9 +62,10 @@ export default function TrendingPage() {
     loadData();
   }, []);
 
-  // Use real data if available, otherwise fallback to empty array (skeleton handles it)
-  // or you could fallback to mockSkills if API fails
+  // Use real data if available, otherwise fallback to mock
   const displaySkills = realSkills.length > 0 ? realSkills : loading ? [] : mockSkills;
+  const displayJobs = realJobs.length > 0 ? realJobs : industryRoles;
+  const displayInsights = realInsights.length > 0 ? realInsights : marketInsights; // Fallback
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 font-sans pb-20 selection:bg-blue-500/30">
@@ -77,7 +89,7 @@ export default function TrendingPage() {
             </div>
             <div className="text-right">
               <p className="text-xs text-slate-500 uppercase tracking-wider font-bold">Last Updated</p>
-              <p className="text-sm text-slate-300 font-medium">Live from GitHub</p>
+              <p className="text-sm text-slate-300 font-medium">Live from GitHub, Remotive & Gemini AI</p>
             </div>
           </div>
         </div>
@@ -92,8 +104,8 @@ export default function TrendingPage() {
         {/* DIVIDER */}
         <div className="border-t border-slate-800" />
 
-        {/* SECTION 2: INDUSTRY DEMAND */}
-        <IndustryDemandSection roles={industryRoles} />
+        {/* SECTION 2: INDUSTRY DEMAND (REAL JOBS) */}
+        <IndustryDemandSection roles={displayJobs} />
 
         {/* DIVIDER */}
         <div className="border-t border-slate-800" />
@@ -114,7 +126,7 @@ export default function TrendingPage() {
         <div className="border-t border-slate-800" />
 
         {/* SECTION 5: MARKET INSIGHTS */}
-        <MarketInsightsSection insights={marketInsights} />
+        <MarketInsightsSection insights={displayInsights} />
 
       </main>
 

@@ -7,7 +7,7 @@
 // Includes interactive chart showing learning trends over time
 
 import React, { useState } from 'react';
-import { TrendingUp, Flame, Users } from 'lucide-react';
+import { TrendingUp, Flame, Users, Search } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { TrendingSkill } from '@/data/trendingData';
 import SectionHeader from './SectionHeader';
@@ -18,35 +18,49 @@ interface TrendingSkillsSectionProps {
 }
 
 export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionProps) {
-    // Safety check: specific skills might not exist yet if loading
+    // Safety check
     const initialSelection = skills.length > 0 ? [skills[0]?.id, skills[2]?.id].filter(Boolean) : [];
 
     const [selectedSkills, setSelectedSkills] = useState<string[]>(initialSelection);
     const [filter, setFilter] = useState<'all' | 'Frontend' | 'Backend' | 'AI/ML' | 'DevOps' | 'Mobile' | 'Design'>('all');
+    const [searchTerm, setSearchTerm] = useState('');
 
-    // If no data, show loading skeleton (or just return null)
+    // If no data
     if (!skills || skills.length === 0) {
+        // ... (loading state)
         return (
             <section className="space-y-6 animate-pulse">
-                <SectionHeader icon={Flame} iconColor="text-gray-500" title="Trending Skills" description="Loading real-time data..." />
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    {[1, 2, 3, 4].map(i => (
-                        <div key={i} className="h-40 bg-slate-900/50 rounded-xl border border-slate-800"></div>
-                    ))}
-                </div>
+                {/* ... skeleton ... */}
             </section>
         );
     }
 
-    // Filter skills based on category
-    const filteredSkills = filter === 'all'
-        ? skills
-        : skills.filter(skill => skill.category === filter);
+    // --- FILTER LOGIC ---
+    let displaySkills = skills;
 
-    // Sort by growth rate
-    const sortedSkills = [...filteredSkills].sort((a, b) => b.growthRate - a.growthRate);
+    if (searchTerm.trim() !== '') {
+        // 1. Search Mode (Global Search)
+        displaySkills = skills.filter(skill =>
+            skill.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    } else {
+        // 2. Tab Mode
+        if (filter === 'all') {
+            // "Default": Show Top 8 Trending (Sorted by Growth)
+            displaySkills = [...skills]
+                .sort((a, b) => b.growthRate - a.growthRate)
+                .slice(0, 8);
+        } else {
+            // Category Filter
+            displaySkills = skills.filter(skill => skill.category === filter);
+        }
+    }
 
-    // Generate dynamic month labels based on data length (or hardcode 3 if data missing)
+    // Ensure we sort whatever result we have by growth for nicer display
+    const sortedDisplaySkills = [...displaySkills].sort((a, b) => b.growthRate - a.growthRate);
+
+
+    // ... (Chart Data Preparation Logic remains same)
     const historyLength = skills[0]?.learningTrend?.length || 3;
     const monthLabels = Array.from({ length: historyLength }, (_, i) => {
         const d = new Date();
@@ -54,7 +68,6 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
         return d.toLocaleString('default', { month: 'short' });
     });
 
-    // Prepare chart data
     const chartData = selectedSkills.length > 0
         ? skills
             .filter(skill => selectedSkills.includes(skill.id))
@@ -67,7 +80,6 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
             }))
         : [];
 
-    // Merge data for multi-line chart
     const mergedChartData = chartData.length > 0
         ? chartData[0].data.map((item, index) => {
             const merged: any = { month: item.month };
@@ -79,47 +91,85 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
         })
         : [];
 
+    // ... helpers
     const toggleSkillSelection = (skillId: string) => {
+        // ...
         setSelectedSkills(prev =>
             prev.includes(skillId)
                 ? prev.filter(id => id !== skillId)
                 : [...prev, skillId]
         );
     };
-
     const colors = ['#3b82f6', '#a855f7', '#22c55e', '#f59e0b', '#ec4899'];
 
     return (
         <section className="space-y-6">
-            <SectionHeader
-                icon={Flame}
-                iconColor="text-orange-500"
-                title="Trending Skills"
-                description="What students are learning most this month"
-            />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <SectionHeader
+                    icon={Flame}
+                    iconColor="text-orange-500"
+                    title="Trending Skills"
+                    description="What students are learning most this month"
+                />
 
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-2">
-                {(['all', 'Frontend', 'Backend', 'AI/ML', 'DevOps', 'Mobile', 'Design'] as const).map(category => (
+                {/* SEARCH BAR */}
+                <div className="relative w-full md:w-64">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Search className="h-4 w-4 text-slate-500" />
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search for a skill..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full bg-slate-900/50 border border-slate-700 text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 placeholder-slate-500 transition-all"
+                    />
+                </div>
+            </div>
+
+            {/* Filter Tabs (Only show if NOT searching) */}
+            {searchTerm === '' && (
+                <div className="flex flex-wrap gap-2">
                     <button
-                        key={category}
-                        onClick={() => setFilter(category)}
+                        onClick={() => setFilter('all')}
                         className={`
-              px-4 py-2 rounded-lg text-sm font-medium transition-all
-              ${filter === category
-                                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
+                           px-4 py-2 rounded-lg text-sm font-medium transition-all
+                           ${filter === 'all'
+                                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30' // Highlight "Top Trending"
                                 : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                             }
-            `}
+                         `}
                     >
-                        {category === 'all' ? 'All Skills' : category}
+                        🔥 Top Trending
                     </button>
-                ))}
-            </div>
+                    {(['Frontend', 'Backend', 'AI/ML', 'DevOps', 'Mobile', 'Design'] as const).map(category => (
+                        <button
+                            key={category}
+                            onClick={() => setFilter(category)}
+                            className={`
+                  px-4 py-2 rounded-lg text-sm font-medium transition-all
+                  ${filter === category
+                                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
+                                    : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                                }
+                `}
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            {/* Search Results Header */}
+            {searchTerm !== '' && (
+                <p className="text-sm text-slate-400">
+                    Found {sortedDisplaySkills.length} result{sortedDisplaySkills.length !== 1 ? 's' : ''} for <span className="text-blue-400 font-bold">"{searchTerm}"</span>
+                </p>
+            )}
 
             {/* Skills Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {sortedSkills.map((skill, index) => {
+                {sortedDisplaySkills.map((skill, index) => {
                     const isSelected = selectedSkills.includes(skill.id);
                     const isTopTrending = index < 3;
 

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false, // Prevents double-fetch in Dev mode
   reactCompiler: true,
 
   images: {

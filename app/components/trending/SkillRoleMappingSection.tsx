@@ -22,9 +22,14 @@ export default function SkillRoleMappingSection({
     roleMappings
 }: SkillRoleMappingSectionProps) {
     const [viewMode, setViewMode] = useState<'skill-to-role' | 'role-to-skill'>('skill-to-role');
+    const [searchTerm, setSearchTerm] = useState(''); // Search State
     const [selectedId, setSelectedId] = useState<string>(
         viewMode === 'skill-to-role' ? skillMappings[0]?.skillId : roleMappings[0]?.roleId
     );
+
+    // Filter Logic
+    const filteredSkills = skillMappings.filter(m => m.skillName.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredRoles = roleMappings.filter(m => m.roleName.toLowerCase().includes(searchTerm.toLowerCase()));
 
     // Get current selection data
     const selectedSkillMapping = skillMappings.find(m => m.skillId === selectedId);
@@ -76,6 +81,7 @@ export default function SkillRoleMappingSection({
                     onClick={() => {
                         setViewMode('skill-to-role');
                         setSelectedId(skillMappings[0]?.skillId);
+                        setSearchTerm(''); // Reset search on toggle
                     }}
                     className={`
             flex-1 px-6 py-3 rounded-lg text-sm font-bold transition-all
@@ -91,6 +97,7 @@ export default function SkillRoleMappingSection({
                     onClick={() => {
                         setViewMode('role-to-skill');
                         setSelectedId(roleMappings[0]?.roleId);
+                        setSearchTerm('');
                     }}
                     className={`
             flex-1 px-6 py-3 rounded-lg text-sm font-bold transition-all
@@ -110,45 +117,63 @@ export default function SkillRoleMappingSection({
                     <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">
                         {viewMode === 'skill-to-role' ? 'Select a Skill' : 'Select a Role'}
                     </h3>
-                    <div className="space-y-2">
+
+                    {/* Search Input */}
+                    <input
+                        type="text"
+                        placeholder={viewMode === 'skill-to-role' ? "Search skills..." : "Search roles..."}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 mb-2"
+                    />
+
+                    <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                         {viewMode === 'skill-to-role' ? (
-                            skillMappings.map((mapping) => (
-                                <button
-                                    key={mapping.skillId}
-                                    onClick={() => setSelectedId(mapping.skillId)}
-                                    className={`
+                            filteredSkills.length > 0 ? (
+                                filteredSkills.map((mapping) => (
+                                    <button
+                                        key={mapping.skillId}
+                                        onClick={() => setSelectedId(mapping.skillId)}
+                                        className={`
                     w-full text-left px-4 py-3 rounded-lg border transition-all
                     ${selectedId === mapping.skillId
-                                            ? 'bg-purple-500/10 border-purple-500/50 text-purple-300'
-                                            : 'bg-slate-900/50 border-slate-800 text-slate-300 hover:border-slate-700'
-                                        }
+                                                ? 'bg-purple-500/10 border-purple-500/50 text-purple-300'
+                                                : 'bg-slate-900/50 border-slate-800 text-slate-300 hover:border-slate-700'
+                                            }
                   `}
-                                >
-                                    <p className="font-bold">{mapping.skillName}</p>
-                                    <p className="text-xs text-slate-500 mt-1">
-                                        {mapping.roles.length} role{mapping.roles.length !== 1 ? 's' : ''}
-                                    </p>
-                                </button>
-                            ))
+                                    >
+                                        <p className="font-bold">{mapping.skillName}</p>
+                                        <p className="text-xs text-slate-500 mt-1">
+                                            {mapping.roles.length} role{mapping.roles.length !== 1 ? 's' : ''}
+                                        </p>
+                                    </button>
+                                ))
+                            ) : (
+                                <p className="text-sm text-slate-500 text-center py-4">No skills found</p>
+                            )
                         ) : (
-                            roleMappings.map((mapping) => (
-                                <button
-                                    key={mapping.roleId}
-                                    onClick={() => setSelectedId(mapping.roleId)}
-                                    className={`
+                            filteredRoles.length > 0 ? (
+                                filteredRoles.map((mapping) => (
+                                    <button
+                                        key={mapping.roleId}
+                                        onClick={() => setSelectedId(mapping.roleId)}
+                                        className={`
                     w-full text-left px-4 py-3 rounded-lg border transition-all
                     ${selectedId === mapping.roleId
-                                            ? 'bg-purple-500/10 border-purple-500/50 text-purple-300'
-                                            : 'bg-slate-900/50 border-slate-800 text-slate-300 hover:border-slate-700'
-                                        }
+                                                ? 'bg-purple-500/10 border-purple-500/50 text-purple-300'
+                                                : 'bg-slate-900/50 border-slate-800 text-slate-300 hover:border-slate-700'
+                                            }
                   `}
-                                >
-                                    <p className="font-bold">{mapping.roleName}</p>
-                                    <p className="text-xs text-slate-500 mt-1">
-                                        {mapping.requiredSkills.length} skill{mapping.requiredSkills.length !== 1 ? 's' : ''}
-                                    </p>
-                                </button>
-                            ))
+                                    >
+                                        <p className="font-bold">{mapping.roleName}</p>
+                                        <p className="text-xs text-slate-500 mt-1">
+                                            {mapping.requiredSkills.length} skill{mapping.requiredSkills.length !== 1 ? 's' : ''}
+                                        </p>
+                                    </button>
+                                ))
+                            ) : (
+                                <p className="text-sm text-slate-500 text-center py-4">No roles found</p>
+                            )
                         )}
                     </div>
                 </div>
@@ -204,8 +229,8 @@ export default function SkillRoleMappingSection({
                                                     <div className="w-full bg-slate-800 rounded-full h-2 mb-3">
                                                         <div
                                                             className={`h-2 rounded-full transition-all ${role.alignment === 'Strong' ? 'bg-green-500' :
-                                                                    role.alignment === 'Medium' ? 'bg-yellow-500' :
-                                                                        'bg-slate-500'
+                                                                role.alignment === 'Medium' ? 'bg-yellow-500' :
+                                                                    'bg-slate-500'
                                                                 }`}
                                                             style={{ width: `${role.matchPercentage}%` }}
                                                         />

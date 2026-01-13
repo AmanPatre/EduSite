@@ -32,7 +32,7 @@ export interface SkillRoleMapping {
   roles: {
     roleId: string;
     roleName: string;
-    alignment: 'Strong' | 'Medium' | 'Weak';
+    alignment: 'Strong' | 'Medium' | 'Weak' | 'Critical';
     matchPercentage: number; // 0-100
     demandScore: number; // 1-10
   }[];
@@ -383,12 +383,31 @@ export const skillRoleMappings: SkillRoleMapping[] = [
     ]
   },
   {
+    skillId: 'skill-2', // React
+    skillName: 'React',
+    roles: [
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Critical', matchPercentage: 100, demandScore: 10 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 90, demandScore: 9 },
+      { roleId: 'design-1', roleName: 'UI/UX Designer', alignment: 'Medium', matchPercentage: 40, demandScore: 5 }
+    ]
+  },
+  {
     skillId: 'skill-3', // AI Engineering
     skillName: 'AI Engineering',
     roles: [
       { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Strong', matchPercentage: 98, demandScore: 10 },
       { roleId: 'ai-2', roleName: 'Data Scientist', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
       { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 55, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-4', // Python
+    skillName: 'Python',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Critical', matchPercentage: 100, demandScore: 10 },
+      { roleId: 'ai-2', roleName: 'Data Scientist', alignment: 'Critical', matchPercentage: 100, demandScore: 9 },
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 7 }
     ]
   },
   {
@@ -410,12 +429,283 @@ export const skillRoleMappings: SkillRoleMapping[] = [
     ]
   },
   {
+    skillId: 'skill-7', // TypeScript
+    skillName: 'TypeScript',
+    roles: [
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Critical', matchPercentage: 98, demandScore: 10 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Critical', matchPercentage: 95, demandScore: 10 },
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-8', // Docker
+    skillName: 'Docker',
+    roles: [
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Critical', matchPercentage: 100, demandScore: 10 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 80, demandScore: 8 },
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-9', // LangChain
+    skillName: 'LangChain',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Strong', matchPercentage: 95, demandScore: 10 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 65, demandScore: 8 } // The "AI Engineer" shift
+    ]
+  },
+  {
+    skillId: 'skill-10', // Go
+    skillName: 'Go',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 90, demandScore: 9 },
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Critical', matchPercentage: 95, demandScore: 9 }
+    ]
+  },
+  {
+    skillId: 'skill-11', // Flutter
+    skillName: 'Flutter',
+    roles: [
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Medium', matchPercentage: 50, demandScore: 5 }, // Mobile != Web
+      { roleId: 'design-2', roleName: 'Product Designer', alignment: 'Weak', matchPercentage: 30, demandScore: 3 }
+    ]
+  },
+  {
     skillId: 'skill-12', // Figma
     skillName: 'Figma',
     roles: [
       { roleId: 'design-1', roleName: 'UI/UX Designer', alignment: 'Strong', matchPercentage: 98, demandScore: 9 },
       { roleId: 'design-2', roleName: 'Product Designer', alignment: 'Strong', matchPercentage: 95, demandScore: 9 },
       { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Medium', matchPercentage: 45, demandScore: 5 }
+    ]
+  },
+  {
+    skillId: 'skill-13', // Node.js
+    skillName: 'Node.js',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Critical', matchPercentage: 98, demandScore: 10 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Critical', matchPercentage: 95, demandScore: 9 },
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Medium', matchPercentage: 55, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-14', // Express.js
+    skillName: 'Express.js',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 92, demandScore: 8 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 88, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-15', // MongoDB
+    skillName: 'MongoDB',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 90, demandScore: 8 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'ai-2', roleName: 'Data Scientist', alignment: 'Medium', matchPercentage: 60, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-16', // PostgreSQL
+    skillName: 'PostgreSQL',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Critical', matchPercentage: 95, demandScore: 9 },
+      { roleId: 'cloud-2', roleName: 'Cloud Architect', alignment: 'Strong', matchPercentage: 85, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-17', // AWS
+    skillName: 'AWS',
+    roles: [
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Critical', matchPercentage: 100, demandScore: 10 },
+      { roleId: 'cloud-2', roleName: 'Cloud Architect', alignment: 'Critical', matchPercentage: 98, demandScore: 10 },
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Medium', matchPercentage: 65, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-18', // CI/CD
+    skillName: 'CI/CD Pipelines',
+    roles: [
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Critical', matchPercentage: 95, demandScore: 9 },
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Strong', matchPercentage: 90, demandScore: 9 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-19', // Redis
+    skillName: 'Redis',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 88, demandScore: 8 },
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Medium', matchPercentage: 65, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-20', // GraphQL
+    skillName: 'GraphQL',
+    roles: [
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Medium', matchPercentage: 70, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-21', // Machine Learning
+    skillName: 'Machine Learning',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Critical', matchPercentage: 100, demandScore: 10 },
+      { roleId: 'ai-2', roleName: 'Data Scientist', alignment: 'Critical', matchPercentage: 95, demandScore: 9 }
+    ]
+  },
+  {
+    skillId: 'skill-22', // TensorFlow
+    skillName: 'TensorFlow',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Strong', matchPercentage: 92, demandScore: 9 },
+      { roleId: 'ai-2', roleName: 'Data Scientist', alignment: 'Strong', matchPercentage: 85, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-23', // React Native
+    skillName: 'React Native',
+    roles: [
+      { roleId: 'mobile-1', roleName: 'Mobile App Developer', alignment: 'Critical', matchPercentage: 95, demandScore: 9 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-24', // Android
+    skillName: 'Android Development',
+    roles: [
+      { roleId: 'mobile-1', roleName: 'Mobile App Developer', alignment: 'Critical', matchPercentage: 98, demandScore: 9 }
+    ]
+  },
+  {
+    skillId: 'skill-25', // UI/UX Design
+    skillName: 'UI/UX Design',
+    roles: [
+      { roleId: 'design-1', roleName: 'UI/UX Designer', alignment: 'Critical', matchPercentage: 100, demandScore: 9 },
+      { roleId: 'design-2', roleName: 'Product Designer', alignment: 'Strong', matchPercentage: 90, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-26', // Web Accessibility
+    skillName: 'Web Accessibility (a11y)',
+    roles: [
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'design-1', roleName: 'UI/UX Designer', alignment: 'Strong', matchPercentage: 80, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-27', // NextAuth
+    skillName: 'NextAuth.js',
+    roles: [
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-28', // Prisma
+    skillName: 'Prisma ORM',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 90, demandScore: 8 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 88, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-29', // Tailwind CSS
+    skillName: 'Tailwind CSS',
+    roles: [
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Strong', matchPercentage: 92, demandScore: 8 },
+      { roleId: 'design-1', roleName: 'UI/UX Designer', alignment: 'Medium', matchPercentage: 55, demandScore: 5 }
+    ]
+  },
+  {
+    skillId: 'skill-30', // Redux
+    skillName: 'Redux',
+    roles: [
+      { roleId: 'sde-1', roleName: 'Frontend Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 7 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 65, demandScore: 6 }
+    ]
+  },
+  {
+    skillId: 'skill-31', // WebSockets
+    skillName: 'WebSockets',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Strong', matchPercentage: 88, demandScore: 8 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Strong', matchPercentage: 82, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-32', // System Design
+    skillName: 'System Design',
+    roles: [
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Critical', matchPercentage: 95, demandScore: 10 },
+      { roleId: 'cloud-2', roleName: 'Cloud Architect', alignment: 'Critical', matchPercentage: 92, demandScore: 9 },
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Strong', matchPercentage: 85, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-33', // Linux
+    skillName: 'Linux',
+    roles: [
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Critical', matchPercentage: 95, demandScore: 9 },
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Strong', matchPercentage: 90, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-34', // Nginx
+    skillName: 'Nginx',
+    roles: [
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Strong', matchPercentage: 88, demandScore: 8 },
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Strong', matchPercentage: 85, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-35', // Observability
+    skillName: 'Observability & Monitoring',
+    roles: [
+      { roleId: 'cloud-3', roleName: 'SRE', alignment: 'Critical', matchPercentage: 92, demandScore: 9 },
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Strong', matchPercentage: 85, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-36', // Prompt Engineering
+    skillName: 'Prompt Engineering',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Strong', matchPercentage: 90, demandScore: 9 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 65, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-37', // Vector Databases
+    skillName: 'Vector Databases',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Strong', matchPercentage: 92, demandScore: 9 },
+      { roleId: 'sde-2', roleName: 'Backend Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-38', // MLOps
+    skillName: 'MLOps',
+    roles: [
+      { roleId: 'ai-1', roleName: 'AI/ML Engineer', alignment: 'Critical', matchPercentage: 95, demandScore: 10 },
+      { roleId: 'cloud-1', roleName: 'DevOps Engineer', alignment: 'Strong', matchPercentage: 80, demandScore: 8 }
+    ]
+  },
+  {
+    skillId: 'skill-39', // Data Engineering
+    skillName: 'Data Engineering',
+    roles: [
+      { roleId: 'ai-2', roleName: 'Data Scientist', alignment: 'Strong', matchPercentage: 85, demandScore: 8 },
+      { roleId: 'cloud-2', roleName: 'Cloud Architect', alignment: 'Medium', matchPercentage: 65, demandScore: 7 }
+    ]
+  },
+  {
+    skillId: 'skill-40', // Product Thinking
+    skillName: 'Product Thinking',
+    roles: [
+      { roleId: 'design-2', roleName: 'Product Designer', alignment: 'Critical', matchPercentage: 95, demandScore: 9 },
+      { roleId: 'sde-3', roleName: 'Full Stack Engineer', alignment: 'Medium', matchPercentage: 60, demandScore: 6 }
     ]
   }
 ];
@@ -452,7 +742,88 @@ export const roleSkillMappings: RoleSkillMapping[] = [
       { skillId: 'skill-10', skillName: 'Go', priority: 'Important', proficiencyLevel: 'Intermediate' },
       { skillId: 'skill-4', skillName: 'Python', priority: 'Important', proficiencyLevel: 'Intermediate' }
     ]
+  },
+  {
+    roleId: 'sde-1', // Frontend Engineer
+    roleName: 'Frontend Engineer',
+    requiredSkills: [
+      { skillId: 'skill-2', skillName: 'React', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-7', skillName: 'TypeScript', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-1', skillName: 'Next.js', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-29', skillName: 'Tailwind CSS', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-26', skillName: 'Web Accessibility (a11y)', priority: 'Nice to Have', proficiencyLevel: 'Beginner' }
+    ]
+  },
+  {
+    roleId: 'sde-2', // Backend Engineer
+    roleName: 'Backend Engineer',
+    requiredSkills: [
+      { skillId: 'skill-13', skillName: 'Node.js', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-16', skillName: 'PostgreSQL', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-28', skillName: 'Prisma ORM', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-19', skillName: 'Redis', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-32', skillName: 'System Design', priority: 'Nice to Have', proficiencyLevel: 'Beginner' }
+    ]
+  },
+  {
+    roleId: 'cloud-3', // Site Reliability Engineer
+    roleName: 'Site Reliability Engineer',
+    requiredSkills: [
+      { skillId: 'skill-6', skillName: 'Kubernetes', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-33', skillName: 'Linux', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-35', skillName: 'Observability & Monitoring', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-18', skillName: 'CI/CD Pipelines', priority: 'Important', proficiencyLevel: 'Intermediate' }
+    ]
+  },
+  {
+    roleId: 'cloud-2', // Cloud Architect
+    roleName: 'Cloud Architect',
+    requiredSkills: [
+      { skillId: 'skill-17', skillName: 'AWS', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-32', skillName: 'System Design', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-6', skillName: 'Kubernetes', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-38', skillName: 'MLOps', priority: 'Nice to Have', proficiencyLevel: 'Beginner' }
+    ]
+  },
+  {
+    roleId: 'ai-2', // Data Scientist
+    roleName: 'Data Scientist',
+    requiredSkills: [
+      { skillId: 'skill-4', skillName: 'Python', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-21', skillName: 'Machine Learning', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-22', skillName: 'TensorFlow', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-39', skillName: 'Data Engineering', priority: 'Important', proficiencyLevel: 'Intermediate' }
+    ]
+  },
+  {
+    roleId: 'mobile-1', // Mobile App Developer
+    roleName: 'Mobile App Developer',
+    requiredSkills: [
+      { skillId: 'skill-23', skillName: 'React Native', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-11', skillName: 'Flutter', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-24', skillName: 'Android Development', priority: 'Important', proficiencyLevel: 'Intermediate' }
+    ]
+  },
+  {
+    roleId: 'design-1', // UI/UX Designer
+    roleName: 'UI/UX Designer',
+    requiredSkills: [
+      { skillId: 'skill-12', skillName: 'Figma', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-25', skillName: 'UI/UX Design', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-40', skillName: 'Product Thinking', priority: 'Important', proficiencyLevel: 'Intermediate' },
+      { skillId: 'skill-26', skillName: 'Web Accessibility (a11y)', priority: 'Nice to Have', proficiencyLevel: 'Beginner' }
+    ]
+  },
+  {
+    roleId: 'design-2', // Product Designer
+    roleName: 'Product Designer',
+    requiredSkills: [
+      { skillId: 'skill-25', skillName: 'UI/UX Design', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-40', skillName: 'Product Thinking', priority: 'Critical', proficiencyLevel: 'Advanced' },
+      { skillId: 'skill-12', skillName: 'Figma', priority: 'Important', proficiencyLevel: 'Intermediate' }
+    ]
   }
+
 ];
 
 // ============================================
@@ -536,74 +907,412 @@ export const effortRewardData: EffortRewardData[] = [
     skillId: 'skill-7',
     skillName: 'TypeScript',
     slug: 'typescript',
-    effortLevel: 3,
-    demandLevel: 8,
+    effortLevel: 4,
+    demandLevel: 9,
     roi: 'High',
     learningMonths: 2,
     jobOpenings: 22000,
-    avgSalary: '$125k',
+    avgSalary: '$135k',
     category: 'Frontend'
   },
   {
     skillId: 'skill-8',
     skillName: 'Docker',
     slug: 'docker',
-    effortLevel: 4,
-    demandLevel: 8,
+    effortLevel: 5,
+    demandLevel: 8.5,
     roi: 'High',
-    learningMonths: 2,
-    jobOpenings: 18000,
-    avgSalary: '$130k',
+    learningMonths: 1.5,
+    jobOpenings: 19000,
+    avgSalary: '$140k',
     category: 'DevOps'
   },
   {
     skillId: 'skill-9',
-    skillName: 'LangChain',
-    slug: 'langchain',
+    skillName: 'Java',
+    slug: 'java',
     effortLevel: 6,
     demandLevel: 9,
-    roi: 'High',
-    learningMonths: 3,
-    jobOpenings: 8000,
-    avgSalary: '$150k',
-    category: 'AI/ML'
+    roi: 'Medium', // High jobs but lower growth than AI
+    learningMonths: 5,
+    jobOpenings: 45000,
+    avgSalary: '$125k',
+    category: 'Backend'
   },
   {
     skillId: 'skill-10',
     skillName: 'Go',
-    slug: 'golang',
-    effortLevel: 5,
-    demandLevel: 8,
+    slug: 'go',
+    effortLevel: 6,
+    demandLevel: 7.5,
     roi: 'High',
     learningMonths: 3,
-    jobOpenings: 12000,
-    avgSalary: '$135k',
+    jobOpenings: 8000,
+    avgSalary: '$150k',
     category: 'Backend'
   },
   {
     skillId: 'skill-11',
+    skillName: 'AWS',
+    slug: 'aws',
+    effortLevel: 7,
+    demandLevel: 10,
+    roi: 'High',
+    learningMonths: 6,
+    jobOpenings: 35000,
+    avgSalary: '$145k',
+    category: 'DevOps'
+  },
+  {
+    skillId: 'skill-12',
     skillName: 'Flutter',
     slug: 'flutter',
     effortLevel: 5,
     demandLevel: 6,
     roi: 'Medium',
-    learningMonths: 4,
-    jobOpenings: 7000,
+    learningMonths: 3,
+    jobOpenings: 6000,
     avgSalary: '$115k',
     category: 'Mobile'
   },
   {
-    skillId: 'skill-12',
+    skillId: 'skill-13',
     skillName: 'Figma',
     slug: 'figma',
-    effortLevel: 2,
+    effortLevel: 3,
+    demandLevel: 8,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 12000,
+    avgSalary: '$105k',
+    category: 'Design'
+  },
+  {
+    skillId: 'skill-14',
+    skillName: 'LangChain',
+    slug: 'langchain',
+    effortLevel: 6,
+    demandLevel: 9.5,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 4000,
+    avgSalary: '$165k',
+    category: 'AI/ML'
+  },
+  {
+    skillId: 'skill-15',
+    skillName: 'Node.js',
+    slug: 'nodejs',
+    effortLevel: 4,
+    demandLevel: 9,
+    roi: 'High',
+    learningMonths: 3,
+    jobOpenings: 28000,
+    avgSalary: '$130k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-16',
+    skillName: 'Express.js',
+    slug: 'expressjs',
+    effortLevel: 3,
+    demandLevel: 8,
+    roi: 'High',
+    learningMonths: 1.5,
+    jobOpenings: 20000,
+    avgSalary: '$120k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-17',
+    skillName: 'MongoDB',
+    slug: 'mongodb',
+    effortLevel: 4,
+    demandLevel: 8,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 21000,
+    avgSalary: '$125k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-18',
+    skillName: 'PostgreSQL',
+    slug: 'postgresql',
+    effortLevel: 5,
+    demandLevel: 8.5,
+    roi: 'High',
+    learningMonths: 3,
+    jobOpenings: 18000,
+    avgSalary: '$132k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-19',
+    skillName: 'Redis',
+    slug: 'redis',
+    effortLevel: 4,
+    demandLevel: 7.5,
+    roi: 'High',
+    learningMonths: 1.5,
+    jobOpenings: 11000,
+    avgSalary: '$138k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-20',
+    skillName: 'GraphQL',
+    slug: 'graphql',
+    effortLevel: 5,
+    demandLevel: 7.5,
+    roi: 'Medium',
+    learningMonths: 2,
+    jobOpenings: 9000,
+    avgSalary: '$130k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-21',
+    skillName: 'System Design',
+    slug: 'system-design',
+    effortLevel: 7,
+    demandLevel: 9,
+    roi: 'High',
+    learningMonths: 6,
+    jobOpenings: 15000,
+    avgSalary: '$155k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-22',
+    skillName: 'CI/CD Pipelines',
+    slug: 'ci-cd',
+    effortLevel: 5,
+    demandLevel: 8.5,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 17000,
+    avgSalary: '$140k',
+    category: 'DevOps'
+  },
+  {
+    skillId: 'skill-23',
+    skillName: 'Linux',
+    slug: 'linux',
+    effortLevel: 4,
+    demandLevel: 8,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 20000,
+    avgSalary: '$135k',
+    category: 'DevOps'
+  },
+  {
+    skillId: 'skill-24',
+    skillName: 'Nginx',
+    slug: 'nginx',
+    effortLevel: 3,
     demandLevel: 7,
+    roi: 'Medium',
+    learningMonths: 1,
+    jobOpenings: 9000,
+    avgSalary: '$125k',
+    category: 'DevOps'
+  },
+  {
+    skillId: 'skill-25',
+    skillName: 'Terraform',
+    slug: 'terraform',
+    effortLevel: 6,
+    demandLevel: 8.5,
+    roi: 'High',
+    learningMonths: 3,
+    jobOpenings: 8000,
+    avgSalary: '$150k',
+    category: 'DevOps'
+  },
+  {
+    skillId: 'skill-26',
+    skillName: 'Machine Learning',
+    slug: 'machine-learning',
+    effortLevel: 7,
+    demandLevel: 9.5,
+    roi: 'High',
+    learningMonths: 5,
+    jobOpenings: 22000,
+    avgSalary: '$155k',
+    category: 'AI/ML'
+  },
+  {
+    skillId: 'skill-27',
+    skillName: 'TensorFlow',
+    slug: 'tensorflow',
+    effortLevel: 6,
+    demandLevel: 8,
+    roi: 'High',
+    learningMonths: 4,
+    jobOpenings: 12000,
+    avgSalary: '$150k',
+    category: 'AI/ML'
+  },
+  {
+    skillId: 'skill-28',
+    skillName: 'PyTorch',
+    slug: 'pytorch',
+    effortLevel: 6,
+    demandLevel: 8.5,
+    roi: 'High',
+    learningMonths: 4,
+    jobOpenings: 14000,
+    avgSalary: '$155k',
+    category: 'AI/ML'
+  },
+  {
+    skillId: 'skill-29',
+    skillName: 'MLOps',
+    slug: 'mlops',
+    effortLevel: 8,
+    demandLevel: 9,
+    roi: 'High',
+    learningMonths: 6,
+    jobOpenings: 7000,
+    avgSalary: '$165k',
+    category: 'AI/ML'
+  },
+  {
+    skillId: 'skill-30',
+    skillName: 'Vector Databases',
+    slug: 'vector-databases',
+    effortLevel: 6,
+    demandLevel: 8.5,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 3500,
+    avgSalary: '$160k',
+    category: 'AI/ML'
+  },
+  {
+    skillId: 'skill-31',
+    skillName: 'React Native',
+    slug: 'react-native',
+    effortLevel: 5,
+    demandLevel: 7,
+    roi: 'Medium',
+    learningMonths: 3,
+    jobOpenings: 10000,
+    avgSalary: '$120k',
+    category: 'Mobile'
+  },
+  {
+    skillId: 'skill-32',
+    skillName: 'Android Development',
+    slug: 'android',
+    effortLevel: 6,
+    demandLevel: 7.5,
+    roi: 'Medium',
+    learningMonths: 4,
+    jobOpenings: 14000,
+    avgSalary: '$125k',
+    category: 'Mobile'
+  },
+  {
+    skillId: 'skill-33',
+    skillName: 'iOS Development',
+    slug: 'ios',
+    effortLevel: 7,
+    demandLevel: 7,
+    roi: 'Medium',
+    learningMonths: 5,
+    jobOpenings: 11000,
+    avgSalary: '$135k',
+    category: 'Mobile'
+  },
+  {
+    skillId: 'skill-34',
+    skillName: 'UI/UX Design',
+    slug: 'ui-ux-design',
+    effortLevel: 4,
+    demandLevel: 8,
+    roi: 'High',
+    learningMonths: 3,
+    jobOpenings: 16000,
+    avgSalary: '$110k',
+    category: 'Design'
+  },
+  {
+    skillId: 'skill-35',
+    skillName: 'Product Thinking',
+    slug: 'product-thinking',
+    effortLevel: 5,
+    demandLevel: 7.5,
+    roi: 'High',
+    learningMonths: 3,
+    jobOpenings: 9000,
+    avgSalary: '$120k',
+    category: 'Design'
+  },
+  {
+    skillId: 'skill-36',
+    skillName: 'Web Accessibility',
+    slug: 'web-accessibility',
+    effortLevel: 3,
+    demandLevel: 6.5,
+    roi: 'Medium',
+    learningMonths: 1.5,
+    jobOpenings: 5000,
+    avgSalary: '$115k',
+    category: 'Design'
+  },
+  {
+    skillId: 'skill-37',
+    skillName: 'Git',
+    slug: 'git',
+    effortLevel: 2,
+    demandLevel: 9,
+    roi: 'High',
+    learningMonths: 1,
+    jobOpenings: 50000,
+    avgSalary: '$120k',
+    category: 'Tools'
+  },
+  {
+    skillId: 'skill-38',
+    skillName: 'REST APIs',
+    slug: 'rest-apis',
+    effortLevel: 3,
+    demandLevel: 9,
+    roi: 'High',
+    learningMonths: 2,
+    jobOpenings: 30000,
+    avgSalary: '$125k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-39',
+    skillName: 'WebSockets',
+    slug: 'websockets',
+    effortLevel: 4,
+    demandLevel: 7,
+    roi: 'Medium',
+    learningMonths: 2,
+    jobOpenings: 6000,
+    avgSalary: '$135k',
+    category: 'Backend'
+  },
+  {
+    skillId: 'skill-40',
+    skillName: 'Prompt Engineering',
+    slug: 'prompt-engineering',
+    effortLevel: 3,
+    demandLevel: 9,
     roi: 'High',
     learningMonths: 1,
     jobOpenings: 8000,
-    avgSalary: '$110k',
-    category: 'Design'
+    avgSalary: '$170k',
+    category: 'AI/ML'
   }
+
+
 ];
 
 // ============================================

@@ -133,7 +133,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                                                 <p className="font-bold text-slate-100 mb-2">{data.name}</p>
                                                 <div className="space-y-1 text-sm">
                                                     <p className="text-slate-300">
-                                                        <span className="text-slate-500">Jobs:</span> {data.jobs.toLocaleString()}
+                                                        <span className="text-slate-500">Jobs:</span> {data.jobs.toLocaleString('en-US')}
                                                     </p>
                                                     <p className="text-green-400">
                                                         <span className="text-slate-500">Growth:</span> +{data.growth}%
@@ -180,7 +180,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                             <>
                                 <div className="text-center">
                                     <p className="text-2xl font-bold text-slate-100">
-                                        {selectedCategory.totalJobs.toLocaleString()}
+                                        {selectedCategory.totalJobs.toLocaleString('en-US')}
                                     </p>
                                     <p className="text-xs text-slate-500 mt-1">Total Jobs</p>
                                 </div>
@@ -207,7 +207,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                             <>
                                 <div className="text-center">
                                     <p className="text-2xl font-bold text-slate-100">
-                                        {roles.reduce((sum, role) => sum + role.totalJobs, 0).toLocaleString()}
+                                        {roles.reduce((sum, role) => sum + role.totalJobs, 0).toLocaleString('en-US')}
                                     </p>
                                     <p className="text-xs text-slate-500 mt-1">Total Jobs</p>
                                 </div>
