@@ -12,8 +12,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
-    let  { query } = await req.json();
-    query+=" full course";
+    let { query } = await req.json();
+    query += " full course";
 
     if (!query?.trim()) {
       return NextResponse.json(
@@ -40,6 +40,26 @@ export async function POST(req: Request) {
         }
       } catch (error) {
         console.log("failed to save search histoty ", error);
+      }
+
+      // Log as Activity for Skill Balance
+      try {
+        const session = await getServerSession(authOptions);
+        if (session?.user?.email) {
+          const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+          if (user) {
+            await prisma.activity.create({
+              data: {
+                userId: user.id,
+                action: "SEARCHED_TOPIC",
+                topic: query.trim(),
+                metadata: { source: "learn_search" }
+              }
+            });
+          }
+        }
+      } catch (error) {
+        console.warn("Failed to log search activity", error);
       }
     })();
 

@@ -73,7 +73,10 @@ const skills = [
 // Helper to get date ranges (0 = Current Month, 5 = 5 months ago)
 function getMonthRanges() {
     const ranges = [];
-    for (let i = 5; i >= 0; i--) {
+    // Use full months only to ensure accurate growth comparison
+    // i=6 (6 months ago) to i=1 (last full month)
+    // We skip i=0 (current month) because it's incomplete and skews growth negative
+    for (let i = 6; i >= 1; i--) {
         const start = new Date();
         start.setMonth(start.getMonth() - i);
         start.setDate(1);

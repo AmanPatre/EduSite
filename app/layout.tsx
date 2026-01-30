@@ -1,16 +1,22 @@
 import "./globals.css";
 import AuthProvider from "./providers/authProvider";
 import Navbar from "./components/Navbar";
-export default function RootLayout({children}:{ children: React.ReactNode }) {
+import PageWrapper from "./components/PageWrapper";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         <AuthProvider>
           <Navbar></Navbar>
 
-          {children}
+          <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none -z-10 bg-[#05050A]"></div>
 
-          </AuthProvider>
+          <PageWrapper>
+            {children}
+          </PageWrapper>
+
+        </AuthProvider>
       </body>
     </html>
   );

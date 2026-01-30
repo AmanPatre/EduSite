@@ -132,7 +132,7 @@ export async function GET() {
                 // 3. APPLY MULTIPLIER (Remote x 6 = Estimated Total)
                 // Remotive only shows strictly remote jobs. 
                 // We estimate the full market is ~6x larger (Hybrid + Onsite).
-                const estimatedTotal = rawCount * 6;
+                const estimatedTotal = rawCount * 10;
 
                 sub.jobs = estimatedTotal;
                 catTotal += estimatedTotal;

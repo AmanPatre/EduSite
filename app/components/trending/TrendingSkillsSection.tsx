@@ -122,7 +122,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                         placeholder="Search for a skill..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-slate-900/50 border border-slate-700 text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 placeholder-slate-500 transition-all"
+                        className="w-full bg-[#0F0F12] border border-slate-700 text-slate-200 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block pl-10 p-2.5 placeholder-slate-500 transition-all"
                     />
                 </div>
             </div>
@@ -149,8 +149,8 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                             className={`
                   px-4 py-2 rounded-lg text-sm font-medium transition-all
                   ${filter === category
-                                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
-                                    : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30'
+                                    : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                                 }
                 `}
                         >
@@ -163,7 +163,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
             {/* Search Results Header */}
             {searchTerm !== '' && (
                 <p className="text-sm text-slate-400">
-                    Found {sortedDisplaySkills.length} result{sortedDisplaySkills.length !== 1 ? 's' : ''} for <span className="text-blue-400 font-bold">"{searchTerm}"</span>
+                    Found {sortedDisplaySkills.length} result{sortedDisplaySkills.length !== 1 ? 's' : ''} for <span className="text-purple-400 font-bold">"{searchTerm}"</span>
                 </p>
             )}
 
@@ -180,8 +180,8 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                             className={`
                 relative group cursor-pointer rounded-xl border p-5 transition-all duration-300
                 ${isSelected
-                                    ? 'bg-blue-500/10 border-blue-500/50 shadow-lg shadow-blue-500/20'
-                                    : 'bg-slate-900/50 border-slate-800 hover:border-slate-700 hover:shadow-xl'
+                                    ? 'bg-purple-500/10 border-purple-500/50 shadow-lg shadow-purple-500/20'
+                                    : 'bg-[#0F0F12] border-slate-800 hover:border-purple-500/30 hover:shadow-xl hover:shadow-purple-500/10'
                                 }
               `}
                         >
@@ -197,7 +197,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                                 <div className="flex items-center gap-2">
                                     <span className="text-3xl">{skill.icon}</span>
                                     <div>
-                                        <h3 className="font-bold text-slate-100 group-hover:text-blue-400 transition-colors">
+                                        <h3 className="font-bold text-slate-100 group-hover:text-purple-400 transition-colors">
                                             {skill.name}
                                         </h3>
                                         <span className="text-xs text-slate-500 uppercase tracking-wide">
@@ -224,7 +224,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                                         Growth
                                     </span>
                                     <span className={`text-sm font-bold ${skill.growthRate > 50 ? 'text-green-400' :
-                                        skill.growthRate > 30 ? 'text-blue-400' :
+                                        skill.growthRate > 30 ? 'text-purple-400' :
                                             'text-slate-400'
                                         }`}>
                                         {skill.growthRate > 0 ? '+' : ''}{skill.growthRate}%
@@ -238,14 +238,14 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                                     <AreaChart data={skill.learningTrend.map((val, i) => ({ i, val }))}>
                                         <defs>
                                             <linearGradient id={`gradient-${skill.id}`} x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor={isSelected ? '#3b82f6' : '#64748b'} stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor={isSelected ? '#3b82f6' : '#64748b'} stopOpacity={0} />
+                                                <stop offset="5%" stopColor={isSelected ? '#a855f7' : '#64748b'} stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor={isSelected ? '#a855f7' : '#64748b'} stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
                                         <Area
                                             type="monotone"
                                             dataKey="val"
-                                            stroke={isSelected ? '#3b82f6' : '#64748b'}
+                                            stroke={isSelected ? '#a855f7' : '#64748b'}
                                             strokeWidth={2}
                                             fill={`url(#gradient-${skill.id})`}
                                         />
@@ -257,14 +257,14 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                             <Link
                                 href={`/trending/${skill.slug}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="mt-3 text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="mt-3 text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 View Details →
                             </Link>
 
                             {/* Selection Indicator */}
                             {isSelected && (
-                                <div className="absolute top-3 right-3 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                                <div className="absolute top-3 right-3 w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
                             )}
                         </div>
                     );
@@ -273,7 +273,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
 
             {/* Large Interactive Chart */}
             {selectedSkills.length > 0 && (
-                <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+                <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-bold text-slate-100">Learning Trend Comparison</h3>
                         <span className="text-xs text-slate-500">

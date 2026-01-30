@@ -74,7 +74,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
               px-4 py-2 rounded-lg text-sm font-medium transition-all
               ${selectedCategory === category
                                 ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
-                                : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                                : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                             }
             `}
                     >
@@ -84,7 +84,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
             </div>
 
             {/* Scatter Plot */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+            <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-6">
                 <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-100 mb-2">
                         Learning Effort vs Job Demand
@@ -151,7 +151,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                                         const quadrant = getQuadrantInfo(data.effortLevel, data.demandLevel);
 
                                         return (
-                                            <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 shadow-2xl min-w-[250px]">
+                                            <div className="bg-[#0F0F12] border border-slate-800 rounded-xl p-4 shadow-2xl min-w-[250px]">
                                                 <div className="flex items-start justify-between mb-3">
                                                     <h4 className="font-bold text-slate-100 text-lg">{data.skillName}</h4>
                                                     <span

@@ -68,29 +68,21 @@ export default function TrendingPage() {
   const displayInsights = realInsights.length > 0 ? realInsights : marketInsights; // Fallback
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 font-sans pb-20 selection:bg-blue-500/30">
+    <div className="min-h-screen bg-[#05050A] text-slate-100 font-sans pb-20 selection:bg-purple-500/30 relative overflow-hidden">
 
       {/* HEADER */}
-      <div className="border-b border-slate-800 bg-[#020617]/80 backdrop-blur-md sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-6 py-5">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-3xl font-black tracking-tight text-white flex items-center gap-3">
-                <Activity className="w-8 h-8 text-blue-500" />
+      <div className="border-b border-slate-800 bg-[#05050A]/80 backdrop-blur-md z-20 relative pt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="flex items-start justify-between relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] bg-purple-500/10 blur-[60px] rounded-full pointer-events-none"></div>
+            <div className="relative">
+              <h1 className="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 pb-2 flex items-center gap-3">
+                <Activity className="w-8 h-8 text-pink-500" />
                 Trending Dashboard
               </h1>
-              <p className="text-sm text-slate-400 mt-2 flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                Real-time market intelligence for CS students and developers
-              </p>
+
             </div>
-            <div className="text-right">
-              <p className="text-xs text-slate-500 uppercase tracking-wider font-bold">Last Updated</p>
-              <p className="text-sm text-slate-300 font-medium">Live from GitHub, Remotive & Gemini AI</p>
-            </div>
+
           </div>
         </div>
       </div>

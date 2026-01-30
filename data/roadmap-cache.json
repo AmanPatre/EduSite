@@ -1,0 +1,2659 @@
+{
+  "timestamp": 1768483275411,
+  "data": [
+    {
+      "step": 1,
+      "title": "C++ Fundamentals: Setting Up and Basic Syntax",
+      "description": "Learn to set up a C++ development environment and understand basic syntax, data types, and operators.",
+      "tools": [
+        "Compiler (g++, clang, MSVC)",
+        "IDE (VS Code, CLion, Visual Studio)",
+        "Data Types (int, float, double, char, bool)",
+        "Variables",
+        "Operators",
+        "Input/Output (iostream)"
+      ],
+      "project": "Simple Calculator: Create a program that performs basic arithmetic operations based on user input."
+    },
+    {
+      "step": 2,
+      "title": "Control Flow and Functions",
+      "description": "Master control flow statements (if/else, loops) and learn to create and use functions.",
+      "tools": [
+        "if/else statements",
+        "switch statements",
+        "for loops",
+        "while loops",
+        "do-while loops",
+        "Functions (definition, declaration, calling)",
+        "Function parameters",
+        "Return values"
+      ],
+      "project": "Number Guessing Game: Develop a game where the user guesses a randomly generated number."
+    },
+    {
+      "step": 3,
+      "title": "Arrays and Strings",
+      "description": "Explore arrays for storing collections of data and learn how to work with strings.",
+      "tools": [
+        "Arrays (declaration, initialization, accessing elements)",
+        "Multidimensional Arrays",
+        "Strings (character arrays, std::string)",
+        "String manipulation functions",
+        "String streams"
+      ],
+      "project": "Text Analyzer: Create a program that analyzes a given text and counts the occurrences of each word."
+    },
+    {
+      "step": 4,
+      "title": "Pointers and Memory Management",
+      "description": "Understand pointers, memory allocation, and deallocation to manage memory effectively.",
+      "tools": [
+        "Pointers (declaration, dereferencing)",
+        "Dynamic memory allocation (new, delete)",
+        "Memory leaks",
+        "Smart pointers (unique_ptr, shared_ptr, weak_ptr)",
+        "References"
+      ],
+      "project": "Dynamic Array: Implement a dynamic array class that automatically resizes as needed."
+    },
+    {
+      "step": 5,
+      "title": "Object-Oriented Programming (OOP) Basics",
+      "description": "Introduction to OOP concepts: classes, objects, encapsulation, inheritance, and polymorphism.",
+      "tools": [
+        "Classes and Objects",
+        "Encapsulation (access modifiers: public, private, protected)",
+        "Constructors and Destructors",
+        "Inheritance (single, multiple, hierarchical)",
+        "Polymorphism (virtual functions, abstract classes)",
+        "Operator Overloading"
+      ],
+      "project": "Shape Hierarchy: Create a class hierarchy for different shapes (e.g., Circle, Rectangle, Triangle) with methods for calculating area and perimeter."
+    },
+    {
+      "step": 6,
+      "title": "Advanced OOP Concepts and Design Patterns",
+      "description": "Deep dive into advanced OOP concepts and common design patterns.",
+      "tools": [
+        "Abstract Classes and Interfaces",
+        "Virtual Functions and Polymorphism",
+        "Design Patterns (Singleton, Factory, Observer)",
+        "SOLID Principles",
+        "UML Diagrams"
+      ],
+      "project": "Text-Based Adventure Game: Design and implement a simple text-based adventure game utilizing OOP principles and design patterns."
+    },
+    {
+      "step": 7,
+      "title": "Templates and Generic Programming",
+      "description": "Learn about templates for writing generic code that works with different data types.",
+      "tools": [
+        "Function Templates",
+        "Class Templates",
+        "Template Specialization",
+        "Standard Template Library (STL) - Containers (vector, list, map, set)",
+        "Iterators",
+        "Algorithms"
+      ],
+      "project": "Generic Sorting Algorithm: Implement a generic sorting algorithm that can sort arrays of different data types."
+    },
+    {
+      "step": 8,
+      "title": "Exception Handling",
+      "description": "Master exception handling for writing robust and error-tolerant code.",
+      "tools": [
+        "try, catch, throw",
+        "Exception classes",
+        "Standard exception hierarchy",
+        "Resource Acquisition Is Initialization (RAII)"
+      ],
+      "project": "File Handling with Exception Handling: Implement a program that reads from a file and handles potential file I/O errors using exceptions."
+    },
+    {
+      "step": 9,
+      "title": "File I/O and Data Persistence",
+      "description": "Learn how to read and write data to files for data persistence.",
+      "tools": [
+        "fstream (ifstream, ofstream)",
+        "File modes (read, write, append)",
+        "Binary file I/O",
+        "Serialization and Deserialization"
+      ],
+      "project": "Address Book: Create an address book program that stores contact information in a file."
+    },
+    {
+      "step": 10,
+      "title": "Multithreading and Concurrency",
+      "description": "Explore multithreading for improving performance and handling concurrent tasks.",
+      "tools": [
+        "Threads (std::thread)",
+        "Mutexes (std::mutex)",
+        "Condition variables (std::condition_variable)",
+        "Thread synchronization",
+        "Atomic operations (std::atomic)",
+        "Futures and Promises (std::future, std::promise)"
+      ],
+      "project": "Parallel Matrix Multiplication: Implement a program that multiplies two matrices using multiple threads."
+    },
+    {
+      "step": 11,
+      "title": "Networking with Sockets",
+      "description": "Learn the basics of network programming using sockets.",
+      "tools": [
+        "Sockets (TCP, UDP)",
+        "Client-Server Architecture",
+        "Winsock (Windows)",
+        "POSIX sockets (Linux/macOS)",
+        "Asynchronous I/O"
+      ],
+      "project": "Simple Chat Application: Develop a simple client-server chat application."
+    },
+    {
+      "step": 12,
+      "title": "Modern C++ Features (C++11/14/17/20)",
+      "description": "Explore modern C++ features that enhance code readability and efficiency.",
+      "tools": [
+        "Lambda expressions",
+        "auto keyword",
+        "Range-based for loops",
+        "Move semantics",
+        "Rvalue references",
+        "constexpr",
+        "Structured bindings",
+        "Concepts (C++20)",
+        "Modules (C++20)"
+      ],
+      "project": "Refactor Existing Projects: Refactor your previous projects to use modern C++ features and improve their code quality."
+    }
+  ],
+  "devops": {
+    "timestamp": 1769707882685,
+    "data": [
+      {
+        "step": 1,
+        "title": "Linux Fundamentals",
+        "description": "Understanding the Linux operating system is crucial as it's the foundation for most DevOps environments. This includes navigating the file system, managing users and permissions, and working with processes.",
+        "tools": [
+          "VirtualBox/VMware",
+          "Linux distributions (Ubuntu, CentOS, Debian)",
+          "Bash shell"
+        ],
+        "project": "Setup a virtual Linux server, create user accounts with restricted permissions, and write a bash script to automate a simple task (e.g., backing up a directory)."
+      },
+      {
+        "step": 2,
+        "title": "Networking Basics",
+        "description": "Learn the fundamentals of networking, including TCP/IP, DNS, HTTP/HTTPS, routing, and firewalls. Understanding how applications communicate across networks is essential for troubleshooting and optimizing performance.",
+        "tools": [
+          "Wireshark",
+          "tcpdump",
+          "netstat/ss",
+          "ping",
+          "traceroute"
+        ],
+        "project": "Configure a basic network with two virtual machines, set up a firewall, and analyze network traffic using Wireshark or tcpdump."
+      },
+      {
+        "step": 3,
+        "title": "Scripting with Bash and Python",
+        "description": "Mastering scripting languages is essential for automating tasks. Bash is useful for system administration tasks, while Python is excellent for more complex automation and application development.",
+        "tools": [
+          "Bash",
+          "Python",
+          "Text editors (VSCode, Sublime Text)",
+          "Git"
+        ],
+        "project": "Write a Python script to automate the deployment of a simple web application (e.g., using Flask or Django)."
+      },
+      {
+        "step": 4,
+        "title": "Version Control with Git",
+        "description": "Learn to use Git for version control. This includes understanding branching, merging, pull requests, and collaborating with others on code.",
+        "tools": [
+          "Git",
+          "GitHub/GitLab/Bitbucket"
+        ],
+        "project": "Create a Git repository, add files, commit changes, create branches, merge branches, and resolve conflicts."
+      },
+      {
+        "step": 5,
+        "title": "Continuous Integration (CI)",
+        "description": "Set up a CI pipeline to automatically build, test, and integrate code changes. This ensures that code is always in a working state and reduces integration problems.",
+        "tools": [
+          "Jenkins",
+          "GitLab CI",
+          "GitHub Actions",
+          "Travis CI"
+        ],
+        "project": "Create a CI pipeline that automatically builds and tests a simple application whenever code is pushed to a Git repository."
+      },
+      {
+        "step": 6,
+        "title": "Containerization with Docker",
+        "description": "Learn to use Docker to package applications into containers. This makes it easy to deploy applications consistently across different environments.",
+        "tools": [
+          "Docker",
+          "Docker Compose",
+          "Docker Hub"
+        ],
+        "project": "Containerize a simple web application with Docker and deploy it to a local Docker environment."
+      },
+      {
+        "step": 7,
+        "title": "Container Orchestration with Kubernetes",
+        "description": "Learn to use Kubernetes to orchestrate and manage containers at scale. This includes deploying, scaling, and managing applications in a cluster.",
+        "tools": [
+          "Kubernetes",
+          "Minikube/kind",
+          "kubectl",
+          "Helm"
+        ],
+        "project": "Deploy a containerized application to a Kubernetes cluster, scale the application, and perform rolling updates."
+      },
+      {
+        "step": 8,
+        "title": "Infrastructure as Code (IaC)",
+        "description": "Learn to use tools like Terraform or CloudFormation to define and manage infrastructure as code. This allows you to automate the creation and management of infrastructure.",
+        "tools": [
+          "Terraform",
+          "AWS CloudFormation",
+          "Azure Resource Manager",
+          "Google Cloud Deployment Manager"
+        ],
+        "project": "Create a Terraform configuration to provision a virtual machine on a cloud provider (AWS, Azure, GCP)."
+      },
+      {
+        "step": 9,
+        "title": "Configuration Management",
+        "description": "Learn to use configuration management tools to automate the configuration and management of servers. This ensures consistency and reduces manual effort.",
+        "tools": [
+          "Ansible",
+          "Chef",
+          "Puppet"
+        ],
+        "project": "Use Ansible to configure a web server (e.g., Apache or Nginx) and deploy a simple web application."
+      },
+      {
+        "step": 10,
+        "title": "Monitoring and Logging",
+        "description": "Learn to monitor applications and infrastructure to identify issues and ensure performance. This includes collecting metrics, logs, and alerts.",
+        "tools": [
+          "Prometheus",
+          "Grafana",
+          "ELK Stack (Elasticsearch, Logstash, Kibana)",
+          "Splunk",
+          "Nagios"
+        ],
+        "project": "Set up Prometheus and Grafana to monitor a web application and create dashboards to visualize key metrics."
+      },
+      {
+        "step": 11,
+        "title": "Cloud Platforms (AWS, Azure, GCP)",
+        "description": "Gain experience with one or more cloud platforms to deploy and manage applications in the cloud. This includes understanding cloud services, pricing models, and best practices.",
+        "tools": [
+          "AWS CLI",
+          "Azure CLI",
+          "Google Cloud SDK",
+          "Cloud provider web consoles"
+        ],
+        "project": "Deploy a complete application stack (web server, database, etc.) to a cloud platform using Infrastructure as Code."
+      },
+      {
+        "step": 12,
+        "title": "Security Practices",
+        "description": "Learn about security best practices in DevOps, including vulnerability scanning, security hardening, and access control. Implement security measures throughout the CI/CD pipeline.",
+        "tools": [
+          "OWASP ZAP",
+          "SonarQube",
+          "Trivy",
+          "Clair"
+        ],
+        "project": "Implement vulnerability scanning in your CI/CD pipeline to identify and address security issues in your code and dependencies."
+      },
+      {
+        "step": 13,
+        "title": "Continuous Delivery (CD) and Continuous Deployment",
+        "description": "Automate the release and deployment of applications to production. This includes setting up automated testing, release pipelines, and rollback strategies.",
+        "tools": [
+          "Spinnaker",
+          "Argo CD",
+          "Tekton"
+        ],
+        "project": "Create a CD pipeline that automatically deploys a new version of an application to production after it has passed all tests."
+      }
+    ]
+  },
+  "c++": {
+    "timestamp": 1768579599760,
+    "data": [
+      {
+        "step": 1,
+        "title": "Setting Up Your Development Environment",
+        "description": "Install a C++ compiler and an IDE/text editor.  Ensure the compiler is correctly configured and accessible from your command line.",
+        "tools": [
+          "GCC (MinGW on Windows)",
+          "Clang",
+          "Visual Studio (Windows)",
+          "CMake",
+          "Make",
+          "VS Code",
+          "CLion",
+          "Visual Studio",
+          "Code::Blocks",
+          "Qt Creator"
+        ],
+        "project": "Write a simple 'Hello, World!' program and compile/run it from the command line and your IDE."
+      },
+      {
+        "step": 2,
+        "title": "C++ Fundamentals: Data Types, Variables, Operators",
+        "description": "Learn the basic data types (int, float, double, char, bool), variable declaration, assignment, and common operators (arithmetic, relational, logical). Understand the concept of type safety.",
+        "tools": [],
+        "project": "Create a program that calculates the area and perimeter of a rectangle based on user input.  Practice with different data types."
+      },
+      {
+        "step": 3,
+        "title": "Control Flow: Conditional Statements and Loops",
+        "description": "Master conditional statements (if, else if, else) and loop structures (for, while, do-while). Learn how to use break and continue statements.",
+        "tools": [],
+        "project": "Write a program that determines if a number is prime.  Implement different looping strategies."
+      },
+      {
+        "step": 4,
+        "title": "Functions: Definition, Declaration, and Calling",
+        "description": "Understand function definitions, declarations (prototypes), and calling conventions. Learn about parameter passing (pass-by-value, pass-by-reference, pass-by-pointer) and return values. Introduce function overloading.",
+        "tools": [],
+        "project": "Create a program with multiple functions to perform different mathematical operations (addition, subtraction, multiplication, division).  Utilize function overloading."
+      },
+      {
+        "step": 5,
+        "title": "Arrays and Strings",
+        "description": "Learn about one-dimensional and multi-dimensional arrays. Understand how to declare, initialize, and access array elements.  Introduce the `std::string` class for string manipulation. Learn about C-style strings vs. C++ strings.",
+        "tools": [],
+        "project": "Create a program that sorts an array of integers using a sorting algorithm (e.g., bubble sort, insertion sort).  Implement a simple string reversal function."
+      },
+      {
+        "step": 6,
+        "title": "Pointers and Memory Management",
+        "description": "Understand the concept of pointers, pointer arithmetic, and dynamic memory allocation using `new` and `delete`.  Learn about memory leaks and dangling pointers. Introduce smart pointers (`std::unique_ptr`, `std::shared_ptr`, `std::weak_ptr`).",
+        "tools": [],
+        "project": "Create a program that dynamically allocates memory for an array and performs operations on it. Implement a function that avoids memory leaks using smart pointers."
+      },
+      {
+        "step": 7,
+        "title": "Structures and Classes",
+        "description": "Introduce structures (structs) as a way to group related data.  Then, delve into classes, the foundation of object-oriented programming.  Learn about encapsulation, data hiding (private, protected, public access modifiers), constructors, and destructors.",
+        "tools": [],
+        "project": "Create a program that defines a `Student` class with attributes like name, ID, and GPA.  Implement methods to set and get these attributes."
+      },
+      {
+        "step": 8,
+        "title": "Object-Oriented Programming: Inheritance",
+        "description": "Understand the concept of inheritance (single, multiple, and hierarchical). Learn about base classes and derived classes. Explore virtual functions and abstract classes to implement polymorphism.",
+        "tools": [],
+        "project": "Create a program with a base class `Shape` and derived classes `Circle`, `Rectangle`, and `Triangle`.  Implement a virtual function to calculate the area of each shape."
+      },
+      {
+        "step": 9,
+        "title": "Object-Oriented Programming: Polymorphism",
+        "description": "Deepen your understanding of polymorphism through virtual functions, abstract classes, and interfaces. Learn about dynamic binding and runtime polymorphism.",
+        "tools": [],
+        "project": "Extend the `Shape` hierarchy to include more complex shapes and implement a function that can process a collection of `Shape` objects polymorphically."
+      },
+      {
+        "step": 10,
+        "title": "Object-Oriented Programming: Encapsulation and Abstraction",
+        "description": "Focus on the principles of encapsulation and abstraction.  Understand how to design classes that hide internal implementation details and provide a clean interface.",
+        "tools": [],
+        "project": "Refactor the `Shape` hierarchy to improve encapsulation and abstraction by hiding internal data representations and providing well-defined methods."
+      },
+      {
+        "step": 11,
+        "title": "Templates",
+        "description": "Learn about function templates and class templates. Understand how to write generic code that works with different data types.  Explore template specialization.",
+        "tools": [],
+        "project": "Create a template function to sort an array of any data type. Implement a template class for a generic stack data structure."
+      },
+      {
+        "step": 12,
+        "title": "Exception Handling",
+        "description": "Understand how to use `try`, `catch`, and `throw` to handle exceptions. Learn about standard exception classes and how to define custom exception classes.",
+        "tools": [],
+        "project": "Create a program that performs division and handles potential division-by-zero exceptions. Implement a custom exception class for invalid input errors."
+      },
+      {
+        "step": 13,
+        "title": "Input/Output Streams",
+        "description": "Learn about `iostream` library and how to use `cin`, `cout`, `ifstream`, and `ofstream` for reading from and writing to files and the console.",
+        "tools": [],
+        "project": "Create a program that reads data from a file, processes it, and writes the results to another file."
+      },
+      {
+        "step": 14,
+        "title": "Standard Template Library (STL): Containers",
+        "description": "Learn about common STL containers like `vector`, `list`, `deque`, `set`, `map`, `unordered_set`, and `unordered_map`.  Understand their characteristics and use cases.",
+        "tools": [],
+        "project": "Create a program that uses a `vector` to store a list of student names and a `map` to store their corresponding grades. Implement operations to add, remove, and search for students."
+      },
+      {
+        "step": 15,
+        "title": "Standard Template Library (STL): Algorithms",
+        "description": "Learn about common STL algorithms like `sort`, `find`, `transform`, `copy`, `remove_if`, and `for_each`. Understand how to use iterators with algorithms.",
+        "tools": [],
+        "project": "Use STL algorithms to sort a vector of integers, find the maximum element, and apply a transformation to each element."
+      },
+      {
+        "step": 16,
+        "title": "Standard Template Library (STL): Iterators",
+        "description": "Deepen understanding of iterators. Learn about different iterator categories (input, output, forward, bidirectional, random access) and how they are used with STL containers and algorithms.",
+        "tools": [],
+        "project": "Implement a custom iterator for a linked list data structure and use it with STL algorithms."
+      },
+      {
+        "step": 17,
+        "title": "Multithreading (Concurrency)",
+        "description": "Learn how to create and manage threads using `std::thread`. Understand concepts like mutexes, locks, condition variables, and thread synchronization. Avoid race conditions and deadlocks.",
+        "tools": [],
+        "project": "Create a multithreaded program that calculates the sum of a large array by dividing it into smaller chunks and processing each chunk in a separate thread."
+      },
+      {
+        "step": 18,
+        "title": "Networking (Sockets)",
+        "description": "Learn the basics of network programming using sockets. Understand how to create a client-server application using TCP or UDP protocols. (Requires external libraries or OS-specific APIs on some platforms)",
+        "tools": [
+          "Boost.Asio",
+          "Sockets API (platform specific)"
+        ],
+        "project": "Create a simple client-server chat application."
+      },
+      {
+        "step": 19,
+        "title": "Modern C++ Features (C++11/14/17/20)",
+        "description": "Explore modern C++ features like lambda expressions, auto keyword, range-based for loops, move semantics, rvalue references, constexpr, and more.  Familiarize yourself with the latest C++ standards.",
+        "tools": [],
+        "project": "Refactor existing projects to utilize modern C++ features for improved performance and readability."
+      },
+      {
+        "step": 20,
+        "title": "Design Patterns",
+        "description": "Study common design patterns such as Singleton, Factory, Observer, Strategy, etc. Learn how to apply them to solve real-world problems in software design.",
+        "tools": [],
+        "project": "Implement several design patterns in a larger project to gain practical experience with their application."
+      }
+    ]
+  },
+  "mern stack development": {
+    "timestamp": 1768483733440,
+    "data": [
+      {
+        "step": 1,
+        "title": "Introduction to Web Development Fundamentals",
+        "description": "Understanding the basics of how the web works, including client-server architecture, HTTP requests, and basic web technologies.",
+        "tools": [],
+        "project": "Create a simple static HTML website showcasing your favorite topic."
+      },
+      {
+        "step": 2,
+        "title": "HTML Fundamentals",
+        "description": "Learn the structure and semantics of HTML. Understanding elements, attributes, and the basic building blocks of web pages.",
+        "tools": [],
+        "project": "Build a personal portfolio website using semantic HTML5 elements (header, nav, main, article, aside, footer)."
+      },
+      {
+        "step": 3,
+        "title": "CSS Fundamentals",
+        "description": "Learn how to style HTML elements using CSS. Cover topics like selectors, properties, the box model, and basic layouts.",
+        "tools": [],
+        "project": "Style your portfolio website with CSS. Focus on layout, typography, and responsiveness using media queries."
+      },
+      {
+        "step": 4,
+        "title": "JavaScript Fundamentals",
+        "description": "Introduction to JavaScript syntax, data types, variables, operators, control flow (if/else, loops), functions, and the DOM.",
+        "tools": [],
+        "project": "Add interactive elements to your portfolio website using JavaScript (e.g., image slider, form validation)."
+      },
+      {
+        "step": 5,
+        "title": "Version Control with Git and GitHub",
+        "description": "Learn how to use Git for version control and GitHub for collaboration and hosting your code.",
+        "tools": [
+          "Git",
+          "GitHub"
+        ],
+        "project": "Initialize a Git repository for your portfolio website and push it to a GitHub repository."
+      },
+      {
+        "step": 6,
+        "title": "Introduction to the Backend and Node.js",
+        "description": "Understand the role of the backend in web development. Learn the basics of Node.js and how to execute JavaScript outside of a browser.",
+        "tools": [
+          "Node.js",
+          "npm"
+        ],
+        "project": "Create a simple Node.js script that reads a file and prints its content to the console."
+      },
+      {
+        "step": 7,
+        "title": "Node.js Modules and npm",
+        "description": "Learn about Node.js modules, how to use them, and how to manage dependencies using npm.",
+        "tools": [
+          "Node.js",
+          "npm"
+        ],
+        "project": "Create a Node.js project that uses a popular npm package (e.g., 'moment' for date formatting or 'lodash' for utility functions)."
+      },
+      {
+        "step": 8,
+        "title": "Introduction to Express.js",
+        "description": "Learn how to build web applications and APIs using Express.js, a popular Node.js framework.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "Express.js"
+        ],
+        "project": "Build a simple Express.js server that serves static files and handles basic API routes (GET and POST)."
+      },
+      {
+        "step": 9,
+        "title": "Databases: Introduction to MongoDB",
+        "description": "Learn the basics of NoSQL databases and how to use MongoDB to store and retrieve data.",
+        "tools": [
+          "MongoDB",
+          "MongoDB Compass"
+        ],
+        "project": "Set up a MongoDB database and create a collection to store data (e.g., user information)."
+      },
+      {
+        "step": 10,
+        "title": "Connecting Node.js/Express.js to MongoDB",
+        "description": "Learn how to connect your Express.js application to your MongoDB database using a MongoDB driver (e.g., Mongoose).",
+        "tools": [
+          "Node.js",
+          "npm",
+          "Express.js",
+          "Mongoose"
+        ],
+        "project": "Connect your Express.js server to your MongoDB database and implement CRUD (Create, Read, Update, Delete) operations for a specific collection (e.g., users)."
+      },
+      {
+        "step": 11,
+        "title": "Introduction to React",
+        "description": "Learn the fundamentals of React, including components, JSX, state management, and props.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "React"
+        ],
+        "project": "Create a simple React application that displays a list of items fetched from a static JSON file."
+      },
+      {
+        "step": 12,
+        "title": "React Components and State Management",
+        "description": "Deep dive into React components, state management using useState and useEffect hooks, and handling events.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "React"
+        ],
+        "project": "Build a React to-do list application with features like adding, deleting, and marking tasks as complete."
+      },
+      {
+        "step": 13,
+        "title": "Connecting React to the Backend (API)",
+        "description": "Learn how to make API requests from your React application to your Express.js backend using fetch or Axios.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "React",
+          "Express.js",
+          "Axios (optional)"
+        ],
+        "project": "Connect your React to-do list application to your Express.js backend API to persist data in your MongoDB database."
+      },
+      {
+        "step": 14,
+        "title": "Authentication and Authorization",
+        "description": "Implement user authentication (login, registration) and authorization (access control) in your MERN stack application.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "React",
+          "Express.js",
+          "MongoDB",
+          "jsonwebtoken",
+          "bcrypt"
+        ],
+        "project": "Add user authentication to your MERN application, allowing users to register, log in, and access protected routes."
+      },
+      {
+        "step": 15,
+        "title": "Advanced React Concepts (Context API, Redux)",
+        "description": "Explore advanced React concepts like the Context API for global state management and Redux for complex application state.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "React",
+          "Context API or Redux"
+        ],
+        "project": "Refactor your React application to use the Context API or Redux for managing application state."
+      },
+      {
+        "step": 16,
+        "title": "Testing (Unit, Integration, End-to-End)",
+        "description": "Learn how to write tests for your MERN stack application using testing frameworks like Jest, Mocha, Chai, and Cypress.",
+        "tools": [
+          "Jest",
+          "Mocha",
+          "Chai",
+          "Cypress"
+        ],
+        "project": "Write unit tests for your React components and API endpoints in your Express.js backend."
+      },
+      {
+        "step": 17,
+        "title": "Deployment",
+        "description": "Learn how to deploy your MERN stack application to a cloud platform like Heroku, Netlify, or AWS.",
+        "tools": [
+          "Heroku",
+          "Netlify",
+          "AWS",
+          "Docker (optional)"
+        ],
+        "project": "Deploy your MERN stack application to a cloud platform and make it publicly accessible."
+      },
+      {
+        "step": 18,
+        "title": "Advanced Backend Concepts (RESTful API Design, Security)",
+        "description": "Deep dive into RESTful API design principles, best practices for API security, and optimizing your backend performance.",
+        "tools": [
+          "Node.js",
+          "Express.js",
+          "MongoDB",
+          "Postman",
+          "Security libraries"
+        ],
+        "project": "Refactor your existing API to adhere to RESTful principles and implement security measures like input validation and rate limiting."
+      },
+      {
+        "step": 19,
+        "title": "Advanced Frontend Concepts (Performance Optimization, Accessibility)",
+        "description": "Learn techniques for optimizing your React application's performance (e.g., code splitting, lazy loading) and making it accessible to users with disabilities (e.g., ARIA attributes).",
+        "tools": [
+          "React Profiler",
+          "Lighthouse",
+          "Accessibility testing tools"
+        ],
+        "project": "Optimize the performance of your React application and ensure it meets accessibility standards."
+      },
+      {
+        "step": 20,
+        "title": "Full MERN Stack Project",
+        "description": "Combine all your knowledge to build a complete MERN stack application with advanced features and a polished user experience.",
+        "tools": [
+          "MERN Stack Technologies",
+          "Any additional libraries/frameworks"
+        ],
+        "project": "Build a real-world application of your choice, such as a social media platform, e-commerce store, or project management tool, using the MERN stack."
+      }
+    ]
+  },
+  "system design": {
+    "timestamp": 1768581368305,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of System Design",
+        "description": "Understand the basic concepts and principles underlying system design. This includes scalability, reliability, availability, efficiency, and maintainability.  Learn about trade-offs between different design choices.",
+        "tools": [],
+        "project": "Analyze the architecture of a simple website or application you use daily and identify potential bottlenecks or areas for improvement."
+      },
+      {
+        "step": 2,
+        "title": "Basic Building Blocks: Data Structures and Algorithms",
+        "description": "Review fundamental data structures (arrays, linked lists, trees, graphs, hash tables) and algorithms (sorting, searching, graph traversal).  Understand their time and space complexity implications for system performance.",
+        "tools": [
+          "LeetCode",
+          "HackerRank",
+          "GeeksforGeeks"
+        ],
+        "project": "Implement a simple caching system using a hash table or a LRU cache."
+      },
+      {
+        "step": 3,
+        "title": "Operating System Concepts",
+        "description": "Learn about processes, threads, memory management, file systems, and inter-process communication.  Understand how OS features influence system design decisions.",
+        "tools": [
+          "Operating System Concepts (textbook)",
+          "MIT 6.S081"
+        ],
+        "project": "Design a simple process scheduler or memory allocator."
+      },
+      {
+        "step": 4,
+        "title": "Networking Fundamentals",
+        "description": "Understand the OSI model, TCP/IP protocol suite, HTTP, DNS, load balancing, and network security concepts.  Learn about different network topologies and protocols.",
+        "tools": [
+          "Computer Networking: A Top-Down Approach (textbook)",
+          "Wireshark"
+        ],
+        "project": "Set up a simple web server and configure load balancing using Nginx or HAProxy."
+      },
+      {
+        "step": 5,
+        "title": "Databases: Relational and NoSQL",
+        "description": "Explore relational databases (SQL) and NoSQL databases (key-value stores, document databases, graph databases). Understand their strengths, weaknesses, and use cases. Learn about database schema design, indexing, and query optimization.",
+        "tools": [
+          "MySQL",
+          "PostgreSQL",
+          "MongoDB",
+          "Redis",
+          "Cassandra"
+        ],
+        "project": "Design a database schema for a social media platform or e-commerce website. Implement basic CRUD operations using both SQL and NoSQL databases."
+      },
+      {
+        "step": 6,
+        "title": "Caching Strategies",
+        "description": "Learn about different caching techniques (client-side caching, server-side caching, content delivery networks (CDNs)). Understand cache invalidation strategies and their impact on system performance.",
+        "tools": [
+          "Redis",
+          "Memcached",
+          "Varnish"
+        ],
+        "project": "Integrate a caching layer into an existing web application to improve response times."
+      },
+      {
+        "step": 7,
+        "title": "Message Queues and Asynchronous Processing",
+        "description": "Understand the benefits of message queues for decoupling services and handling asynchronous tasks. Learn about different message queue technologies and their use cases.",
+        "tools": [
+          "RabbitMQ",
+          "Kafka",
+          "Amazon SQS"
+        ],
+        "project": "Implement a system for processing background tasks (e.g., image resizing, sending emails) using a message queue."
+      },
+      {
+        "step": 8,
+        "title": "Microservices Architecture",
+        "description": "Learn about the principles of microservices architecture, including service decomposition, communication patterns (REST, gRPC), and service discovery.  Understand the challenges of managing distributed systems.",
+        "tools": [
+          "Docker",
+          "Kubernetes",
+          "Istio",
+          "gRPC"
+        ],
+        "project": "Design and implement a simple microservices application (e.g., a movie database API) using Docker and Kubernetes."
+      },
+      {
+        "step": 9,
+        "title": "API Design",
+        "description": "Learn about RESTful API design principles, including HTTP methods, status codes, and resource naming conventions. Understand API security considerations (authentication, authorization). Explore GraphQL as an alternative API design paradigm.",
+        "tools": [
+          "Swagger/OpenAPI",
+          "Postman",
+          "GraphQL"
+        ],
+        "project": "Design and document a RESTful API for a specific application domain. Implement API authentication using OAuth 2.0."
+      },
+      {
+        "step": 10,
+        "title": "Scalability and Performance Optimization",
+        "description": "Learn about different techniques for scaling systems, including horizontal scaling, vertical scaling, and database sharding. Understand performance monitoring and profiling tools.",
+        "tools": [
+          "New Relic",
+          "Datadog",
+          "Prometheus",
+          "Grafana"
+        ],
+        "project": "Optimize the performance of a web application by identifying and addressing bottlenecks (e.g., slow database queries, inefficient code). Implement load testing to evaluate scalability."
+      },
+      {
+        "step": 11,
+        "title": "Consistency and Fault Tolerance",
+        "description": "Understand concepts like ACID, CAP theorem, and eventual consistency. Learn about techniques for building fault-tolerant systems, including replication, redundancy, and failover mechanisms.",
+        "tools": [
+          "Raft",
+          "Paxos",
+          "ZooKeeper"
+        ],
+        "project": "Design a system that can tolerate node failures and maintain data consistency."
+      },
+      {
+        "step": 12,
+        "title": "Security in System Design",
+        "description": "Learn about common security threats (e.g., SQL injection, cross-site scripting, denial-of-service attacks) and mitigation strategies. Understand security best practices for authentication, authorization, and data encryption.",
+        "tools": [
+          "OWASP",
+          "Burp Suite"
+        ],
+        "project": "Conduct a security audit of a web application and identify potential vulnerabilities. Implement security measures to protect against common attacks."
+      },
+      {
+        "step": 13,
+        "title": "Cloud Computing Platforms",
+        "description": "Gain experience with cloud computing platforms like AWS, Azure, or Google Cloud. Understand different cloud services (compute, storage, networking, databases) and their use cases.",
+        "tools": [
+          "AWS",
+          "Azure",
+          "Google Cloud Platform"
+        ],
+        "project": "Deploy a web application to a cloud platform and configure scaling, monitoring, and security."
+      },
+      {
+        "step": 14,
+        "title": "System Design Interviews",
+        "description": "Practice answering system design interview questions. Learn how to approach different types of problems and communicate your design choices effectively. Focus on clarifying requirements, identifying trade-offs, and presenting a well-reasoned solution.",
+        "tools": [
+          "Grokking the System Design Interview",
+          "System Design Interview – An insider's guide"
+        ],
+        "project": "Participate in mock system design interviews with peers or mentors. Review your performance and identify areas for improvement."
+      },
+      {
+        "step": 15,
+        "title": "Advanced Topics and Specializations",
+        "description": "Explore advanced topics such as distributed consensus, blockchain technology, real-time data processing, and machine learning infrastructure. Choose a specialization area based on your interests and career goals.",
+        "tools": [],
+        "project": "Contribute to an open-source project in your area of specialization or build a personal project to demonstrate your expertise."
+      }
+    ]
+  },
+  "backend engineer": {
+    "timestamp": 1768485202247,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of Computer Science",
+        "description": "Establish a strong foundation in computer science principles. This includes understanding data structures, algorithms, and basic programming concepts. This is the bedrock upon which all backend knowledge rests.",
+        "tools": [],
+        "project": "Implement basic data structures (linked list, stack, queue) and sorting algorithms (bubble sort, insertion sort)."
+      },
+      {
+        "step": 2,
+        "title": "Choosing a Backend Language (and Basic Syntax)",
+        "description": "Select a backend programming language (e.g., Python, JavaScript (Node.js), Java, Go, Ruby). Learn the core syntax, data types, control flow, and object-oriented programming concepts specific to your chosen language. Focus on language-specific best practices.",
+        "tools": [
+          "Python",
+          "JavaScript (Node.js)",
+          "Java",
+          "Go",
+          "Ruby",
+          "Integrated Development Environment (IDE) like VS Code, IntelliJ, PyCharm"
+        ],
+        "project": "Create a simple command-line application (e.g., a to-do list, a calculator, a basic file manager) to solidify language fundamentals."
+      },
+      {
+        "step": 3,
+        "title": "Version Control with Git",
+        "description": "Learn how to use Git for version control. Understand branching, merging, pull requests, and resolving conflicts. Master the basic Git commands.",
+        "tools": [
+          "Git",
+          "GitHub",
+          "GitLab",
+          "Bitbucket"
+        ],
+        "project": "Create a Git repository for your previous project and practice committing, branching, and merging changes."
+      },
+      {
+        "step": 4,
+        "title": "Databases: Relational Databases (SQL)",
+        "description": "Learn the fundamentals of relational databases and SQL (Structured Query Language). Understand database design principles (normalization), learn how to create tables, insert, update, delete, and query data. Practice joins, aggregations, and other advanced SQL features.",
+        "tools": [
+          "MySQL",
+          "PostgreSQL",
+          "SQLite",
+          "SQL Developer/pgAdmin (Database Management Tools)"
+        ],
+        "project": "Design and implement a simple database schema for a blog or e-commerce application. Populate it with sample data and practice writing SQL queries to retrieve information."
+      },
+      {
+        "step": 5,
+        "title": "Databases: NoSQL Databases",
+        "description": "Explore NoSQL databases (e.g., MongoDB, Cassandra, Redis). Understand the different types of NoSQL databases (document, key-value, graph) and their use cases. Learn how to interact with a NoSQL database using your chosen backend language.",
+        "tools": [
+          "MongoDB",
+          "Redis",
+          "Cassandra",
+          "MongoDB Compass (GUI for MongoDB)"
+        ],
+        "project": "Implement a simple application that uses a NoSQL database to store and retrieve data (e.g., a simple key-value store or a document-based blog).  Consider the pros/cons vs your SQL database project."
+      },
+      {
+        "step": 6,
+        "title": "Backend Frameworks",
+        "description": "Learn a popular backend framework for your chosen language (e.g., Django/Flask for Python, Express.js for JavaScript, Spring Boot for Java, Ruby on Rails for Ruby, Gin/Echo for Go). Understand the framework's structure, routing, middleware, and ORM (Object-Relational Mapper).",
+        "tools": [
+          "Django",
+          "Flask",
+          "Express.js",
+          "Spring Boot",
+          "Ruby on Rails",
+          "Gin",
+          "Echo"
+        ],
+        "project": "Build a REST API for a simple application using the chosen framework. Include endpoints for creating, reading, updating, and deleting resources (CRUD operations)."
+      },
+      {
+        "step": 7,
+        "title": "API Design Principles (REST & GraphQL)",
+        "description": "Understand RESTful API design principles (resources, HTTP methods, status codes).  Explore GraphQL as an alternative API design paradigm. Learn about API documentation (e.g., Swagger/OpenAPI).",
+        "tools": [
+          "Swagger/OpenAPI",
+          "Postman/Insomnia (API Testing Tools)",
+          "GraphQL"
+        ],
+        "project": "Document the REST API you built in the previous step using Swagger/OpenAPI. Create client-side code (using a frontend framework or a simple script) to interact with your API.  Consider building a small GraphQL endpoint to compare and contrast with REST."
+      },
+      {
+        "step": 8,
+        "title": "Authentication and Authorization",
+        "description": "Learn about authentication (verifying user identity) and authorization (controlling access to resources). Implement user authentication using techniques like sessions, cookies, and JSON Web Tokens (JWT). Understand different authorization models (e.g., role-based access control).",
+        "tools": [
+          "JWT (JSON Web Tokens)",
+          "OAuth 2.0",
+          "Passport.js (for Node.js)"
+        ],
+        "project": "Implement user authentication and authorization for your REST API. Allow users to register, log in, and access protected resources based on their roles."
+      },
+      {
+        "step": 9,
+        "title": "Testing",
+        "description": "Learn about different types of testing (unit testing, integration testing, end-to-end testing). Write unit tests for your backend code using testing frameworks (e.g., pytest for Python, Jest/Mocha for JavaScript, JUnit for Java).  Implement integration tests to ensure your API endpoints are working correctly.",
+        "tools": [
+          "pytest",
+          "Jest",
+          "Mocha",
+          "JUnit",
+          "Supertest (for testing Express.js APIs)"
+        ],
+        "project": "Write comprehensive unit and integration tests for your REST API. Aim for high test coverage."
+      },
+      {
+        "step": 10,
+        "title": "Deployment and DevOps",
+        "description": "Learn how to deploy your backend application to a cloud platform (e.g., AWS, Google Cloud, Azure, Heroku). Understand basic DevOps concepts like CI/CD (Continuous Integration/Continuous Deployment) and infrastructure as code.  Learn about Docker and containerization.",
+        "tools": [
+          "AWS",
+          "Google Cloud",
+          "Azure",
+          "Heroku",
+          "Docker",
+          "Kubernetes",
+          "Jenkins/GitHub Actions (CI/CD tools)"
+        ],
+        "project": "Containerize your REST API using Docker. Deploy it to a cloud platform and set up a simple CI/CD pipeline."
+      },
+      {
+        "step": 11,
+        "title": "Caching",
+        "description": "Understand caching strategies to improve the performance of your backend application. Learn how to use caching mechanisms like Redis or Memcached to store frequently accessed data.",
+        "tools": [
+          "Redis",
+          "Memcached"
+        ],
+        "project": "Implement caching in your REST API to reduce database load and improve response times."
+      },
+      {
+        "step": 12,
+        "title": "Message Queues (Asynchronous Tasks)",
+        "description": "Learn about message queues (e.g., RabbitMQ, Kafka) for handling asynchronous tasks. Understand how to use message queues to decouple components and improve system resilience.",
+        "tools": [
+          "RabbitMQ",
+          "Kafka",
+          "Celery (for Python)"
+        ],
+        "project": "Implement a background task in your REST API using a message queue (e.g., sending emails, processing images)."
+      },
+      {
+        "step": 13,
+        "title": "Monitoring and Logging",
+        "description": "Learn how to monitor your backend application and log important events. Use monitoring tools to track performance metrics and identify potential issues.  Set up centralized logging to aggregate logs from different components.",
+        "tools": [
+          "Prometheus",
+          "Grafana",
+          "ELK Stack (Elasticsearch, Logstash, Kibana)",
+          "New Relic",
+          "Datadog"
+        ],
+        "project": "Set up monitoring and logging for your deployed REST API. Track key performance metrics and configure alerts for critical events."
+      },
+      {
+        "step": 14,
+        "title": "Scaling",
+        "description": "Explore different scaling strategies for your backend application (horizontal scaling, vertical scaling). Understand load balancing and database sharding.",
+        "tools": [
+          "Load Balancers (e.g., Nginx, HAProxy)",
+          "Database Sharding Techniques"
+        ],
+        "project": "Simulate scaling your application (e.g., using a load testing tool) and observe how it behaves under different load conditions.  Experiment with different scaling strategies."
+      },
+      {
+        "step": 15,
+        "title": "Security Best Practices",
+        "description": "Deepen your understanding of backend security best practices. This includes OWASP Top 10 vulnerabilities, input validation, output encoding, and secure coding practices.  Learn about penetration testing and security audits.",
+        "tools": [
+          "OWASP ZAP (Penetration Testing Tool)",
+          "Static Analysis Tools"
+        ],
+        "project": "Perform a security audit of your REST API and identify potential vulnerabilities. Implement security best practices to mitigate those vulnerabilities."
+      }
+    ]
+  },
+  "mern stack": {
+    "timestamp": 1768488278240,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of Web Development",
+        "description": "Understand the basics of how the internet works and the core technologies that power the web. This step focuses on HTML, CSS, and JavaScript fundamentals.",
+        "tools": [
+          "Web Browser (Chrome, Firefox)",
+          "Text Editor (VS Code, Sublime Text)",
+          "Online Resources (MDN Web Docs, freeCodeCamp)"
+        ],
+        "project": "Build a simple static personal portfolio website using HTML and CSS.  No JavaScript required at this stage, focus on layout and styling."
+      },
+      {
+        "step": 2,
+        "title": "JavaScript Fundamentals",
+        "description": "Dive deep into JavaScript. Cover variables, data types, operators, control flow (if/else, loops), functions, and DOM manipulation.",
+        "tools": [
+          "Web Browser Developer Tools (console, debugger)",
+          "Text Editor (VS Code, Sublime Text)",
+          "Online Resources (MDN Web Docs, JavaScript.info)"
+        ],
+        "project": "Create a simple to-do list application using HTML, CSS, and JavaScript. Implement features to add, delete, and mark tasks as complete."
+      },
+      {
+        "step": 3,
+        "title": "Advanced JavaScript and ES6+",
+        "description": "Learn about more advanced JavaScript concepts like closures, prototypes, asynchronous JavaScript (Promises, async/await), ES6+ features (arrow functions, destructuring, spread operator, classes).",
+        "tools": [
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)",
+          "Online Resources (MDN Web Docs, JavaScript.info)",
+          "Babel (for transpiling ES6+ code to older versions)"
+        ],
+        "project": "Build a weather application using an external API (e.g., OpenWeatherMap). Fetch data using asynchronous JavaScript and display it on the page. Implement error handling."
+      },
+      {
+        "step": 4,
+        "title": "Introduction to Node.js and npm",
+        "description": "Learn about Node.js, a JavaScript runtime that allows you to run JavaScript on the server.  Understand how npm (Node Package Manager) is used to install and manage packages.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "Text Editor (VS Code, Sublime Text)",
+          "Terminal/Command Prompt"
+        ],
+        "project": "Create a simple command-line application using Node.js. For example, a script that reads a file, processes the data, and writes the result to another file."
+      },
+      {
+        "step": 5,
+        "title": "Express.js Fundamentals",
+        "description": "Learn about Express.js, a popular Node.js web application framework.  Cover routing, middleware, request/response handling, and basic server setup.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "Express.js",
+          "Postman or Insomnia (API testing tools)",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Build a simple API using Express.js.  Implement routes for creating, reading, updating, and deleting (CRUD) resources (e.g., a list of books). Use Postman/Insomnia to test the API endpoints."
+      },
+      {
+        "step": 6,
+        "title": "Introduction to MongoDB",
+        "description": "Learn about MongoDB, a NoSQL database.  Understand how to store data in collections and documents.  Cover basic CRUD operations using the MongoDB shell.",
+        "tools": [
+          "MongoDB",
+          "MongoDB Compass (GUI for MongoDB)",
+          "Text Editor (VS Code, Sublime Text)",
+          "Terminal/Command Prompt"
+        ],
+        "project": "Set up a MongoDB database and create a collection.  Insert, read, update, and delete documents using the MongoDB shell."
+      },
+      {
+        "step": 7,
+        "title": "Mongoose ODM",
+        "description": "Learn about Mongoose, an Object Data Modeling (ODM) library for MongoDB and Node.js. Understand how to define schemas, models, and interact with the database using JavaScript.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "Mongoose",
+          "MongoDB",
+          "MongoDB Compass",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Connect your Express.js API to MongoDB using Mongoose.  Implement CRUD operations for a specific resource (e.g., users, products) using Mongoose models.  Integrate error handling and validation."
+      },
+      {
+        "step": 8,
+        "title": "Building a Full-Stack MERN Application (Part 1: Backend)",
+        "description": "Integrate all the backend technologies (Node.js, Express.js, MongoDB, Mongoose) to build the API for your full-stack application. Focus on implementing authentication (user registration, login), authorization (role-based access control), and data validation.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "Express.js",
+          "Mongoose",
+          "MongoDB",
+          "MongoDB Compass",
+          "JWT (JSON Web Tokens)",
+          "Bcrypt (for password hashing)",
+          "Cors (for handling Cross-Origin Resource Sharing)",
+          "Postman or Insomnia",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Build the backend API for a blog application. Implement user registration, login, and CRUD operations for blog posts. Implement authorization so only logged-in users can create/edit/delete their own posts. Use JWT for authentication and Bcrypt for password hashing."
+      },
+      {
+        "step": 9,
+        "title": "Introduction to React",
+        "description": "Learn the fundamentals of React, a JavaScript library for building user interfaces. Understand components, JSX, state, props, and event handling.",
+        "tools": [
+          "Node.js",
+          "npm or Yarn",
+          "Create React App",
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Build a simple counter application using React. Implement buttons to increment and decrement the counter value. Focus on understanding state management and event handling."
+      },
+      {
+        "step": 10,
+        "title": "Advanced React Concepts",
+        "description": "Learn about more advanced React concepts like lifecycle methods (or useEffect hook in functional components), conditional rendering, list rendering, form handling, and component composition.",
+        "tools": [
+          "Node.js",
+          "npm or Yarn",
+          "Create React App",
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Build a dynamic form using React. Implement input validation, handle form submission, and display the submitted data. Use conditional rendering to display different UI elements based on the form state."
+      },
+      {
+        "step": 11,
+        "title": "React Hooks",
+        "description": "Deep dive into React Hooks, a feature that allows you to use state and other React features in functional components. Cover useState, useEffect, useContext, and custom hooks.",
+        "tools": [
+          "Node.js",
+          "npm or Yarn",
+          "Create React App",
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Refactor a previous React project (e.g., the dynamic form) to use React Hooks. Create a custom hook to manage a specific piece of state or logic."
+      },
+      {
+        "step": 12,
+        "title": "State Management with Redux or Context API",
+        "description": "Learn about state management solutions in React. Explore Redux for managing complex application state or use the built-in Context API for simpler scenarios.",
+        "tools": [
+          "Node.js",
+          "npm or Yarn",
+          "Create React App",
+          "Redux (or Context API)",
+          "Redux DevTools (if using Redux)",
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Implement Redux or Context API in a React application. Manage the state of a shared resource (e.g., user authentication status, theme) across multiple components."
+      },
+      {
+        "step": 13,
+        "title": "React Router",
+        "description": "Learn about React Router, a library for handling routing in React applications.  Understand how to create single-page applications with multiple views.",
+        "tools": [
+          "Node.js",
+          "npm or Yarn",
+          "Create React App",
+          "React Router",
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Implement React Router in a React application. Create multiple routes for different pages (e.g., home, about, contact). Implement navigation between pages using links."
+      },
+      {
+        "step": 14,
+        "title": "Building a Full-Stack MERN Application (Part 2: Frontend)",
+        "description": "Connect the React frontend to the Node.js/Express.js backend API. Implement features to fetch data from the API, display it in the UI, and allow users to create, update, and delete resources. Handle user authentication and authorization.",
+        "tools": [
+          "Node.js",
+          "npm or Yarn",
+          "Create React App",
+          "React Router",
+          "Redux (or Context API)",
+          "Axios or Fetch API (for making HTTP requests)",
+          "Web Browser Developer Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Connect the React frontend to the blog API you built in Step 8.  Implement features to display blog posts, allow users to create new posts (if authenticated), and edit/delete their own posts. Implement user authentication and authorization on the frontend."
+      },
+      {
+        "step": 15,
+        "title": "Testing",
+        "description": "Learn about different types of testing (unit, integration, end-to-end) and testing frameworks (Jest, Mocha, Chai, Cypress, React Testing Library). Write tests for both the frontend and backend of your MERN application.",
+        "tools": [
+          "Jest",
+          "Mocha",
+          "Chai",
+          "Cypress",
+          "React Testing Library",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Write unit tests for the backend API endpoints and React components in your MERN application. Implement integration tests to verify the interaction between different parts of the application. Consider adding end-to-end tests using Cypress to test the user flow from start to finish."
+      },
+      {
+        "step": 16,
+        "title": "Deployment",
+        "description": "Learn how to deploy your MERN application to a cloud platform (e.g., Heroku, AWS, Google Cloud, Digital Ocean). Configure your server and database for production. Set up continuous integration and continuous deployment (CI/CD) pipelines.",
+        "tools": [
+          "Heroku",
+          "AWS",
+          "Google Cloud Platform",
+          "Digital Ocean",
+          "Docker (optional)",
+          "GitHub Actions (or other CI/CD tools)",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Deploy your MERN application to a cloud platform. Configure a production database and set up environment variables. Implement CI/CD to automate the deployment process whenever you push changes to your code repository."
+      },
+      {
+        "step": 17,
+        "title": "Advanced Topics and Further Learning",
+        "description": "Explore advanced topics like GraphQL, TypeScript, serverless functions, microservices, and performance optimization. Continuously learn and stay up-to-date with the latest technologies and best practices in the MERN stack.",
+        "tools": [
+          "GraphQL",
+          "TypeScript",
+          "Serverless Functions (AWS Lambda, Google Cloud Functions, Azure Functions)",
+          "Docker",
+          "Kubernetes",
+          "Profiling Tools",
+          "Text Editor (VS Code, Sublime Text)"
+        ],
+        "project": "Experiment with one or more advanced topics. For example, integrate GraphQL into your existing MERN application or convert your JavaScript code to TypeScript. Build a simple serverless function to handle a specific task."
+      }
+    ]
+  },
+  "mern stack developer": {
+    "timestamp": 1768489019718,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of Web Development (HTML, CSS, JavaScript)",
+        "description": "Build a solid foundation in the core technologies of the web. Understand the structure, styling, and interactivity of web pages.",
+        "tools": [
+          "HTML5",
+          "CSS3",
+          "JavaScript (ES6+)"
+        ],
+        "project": "Build a simple static website (e.g., personal portfolio, landing page)."
+      },
+      {
+        "step": 2,
+        "title": "JavaScript Deep Dive",
+        "description": "Explore advanced JavaScript concepts like closures, prototypes, asynchronous programming (Promises, async/await), and DOM manipulation in detail. Learn to write clean and efficient JavaScript code.",
+        "tools": [
+          "JavaScript (ES6+)",
+          "DOM API",
+          "Fetch API",
+          "Local Storage",
+          "Session Storage"
+        ],
+        "project": "Create an interactive to-do list application with local storage."
+      },
+      {
+        "step": 3,
+        "title": "Version Control with Git",
+        "description": "Master Git for version control and collaboration. Learn to create repositories, commit changes, branch, merge, and resolve conflicts.",
+        "tools": [
+          "Git",
+          "GitHub",
+          "GitLab",
+          "Bitbucket"
+        ],
+        "project": "Contribute to an open-source project on GitHub."
+      },
+      {
+        "step": 4,
+        "title": "Node.js and npm",
+        "description": "Learn the basics of Node.js, a JavaScript runtime environment that allows you to run JavaScript on the server-side. Understand npm (Node Package Manager) for managing dependencies.",
+        "tools": [
+          "Node.js",
+          "npm",
+          "nvm (Node Version Manager)"
+        ],
+        "project": "Build a simple command-line application (e.g., file converter, text analyzer)."
+      },
+      {
+        "step": 5,
+        "title": "Express.js Framework",
+        "description": "Dive into Express.js, a minimalist and flexible Node.js web application framework. Learn to create routes, middleware, and handle HTTP requests.",
+        "tools": [
+          "Express.js",
+          "Postman",
+          "REST API principles"
+        ],
+        "project": "Build a simple REST API for a blog or e-commerce application."
+      },
+      {
+        "step": 6,
+        "title": "Databases with MongoDB",
+        "description": "Explore MongoDB, a NoSQL document database. Learn about data modeling, CRUD operations (Create, Read, Update, Delete), and querying data.",
+        "tools": [
+          "MongoDB",
+          "MongoDB Compass",
+          "Mongoose (ODM)",
+          "NoSQL concepts"
+        ],
+        "project": "Implement data persistence for your REST API using MongoDB."
+      },
+      {
+        "step": 7,
+        "title": "Authentication and Authorization",
+        "description": "Implement secure authentication and authorization mechanisms for your applications. Learn about JWT (JSON Web Tokens), Passport.js, and different authentication strategies.",
+        "tools": [
+          "JWT",
+          "Passport.js",
+          "bcrypt",
+          "Hashing algorithms",
+          "OAuth"
+        ],
+        "project": "Add user authentication to your existing REST API."
+      },
+      {
+        "step": 8,
+        "title": "React.js Fundamentals",
+        "description": "Learn the fundamentals of React.js, a popular JavaScript library for building user interfaces. Understand components, JSX, state management, and props.",
+        "tools": [
+          "React.js",
+          "JSX",
+          "Virtual DOM",
+          "Create React App"
+        ],
+        "project": "Build a simple user interface using React components (e.g., a form, a list, a counter)."
+      },
+      {
+        "step": 9,
+        "title": "React.js Advanced Concepts",
+        "description": "Explore advanced React concepts such as React Hooks, Context API, Redux (or other state management libraries), and custom hooks. Learn to optimize React applications for performance.",
+        "tools": [
+          "React Hooks (useState, useEffect, useContext)",
+          "Context API",
+          "Redux",
+          "Redux Toolkit",
+          "React Router"
+        ],
+        "project": "Build a more complex React application (e.g., a shopping cart, a blog with commenting)."
+      },
+      {
+        "step": 10,
+        "title": "MERN Stack Application Development",
+        "description": "Combine your knowledge of MongoDB, Express.js, React.js, and Node.js to build full-stack MERN applications.  Focus on connecting the frontend and backend, handling data flow, and deploying your application.",
+        "tools": [
+          "MongoDB",
+          "Express.js",
+          "React.js",
+          "Node.js",
+          "Axios",
+          "Fetch API"
+        ],
+        "project": "Build a complete MERN stack application (e.g., a social media platform, a task management application, an e-commerce application)."
+      },
+      {
+        "step": 11,
+        "title": "Testing and Debugging",
+        "description": "Learn to write unit tests, integration tests, and end-to-end tests for your MERN applications. Use debugging tools to identify and fix errors.",
+        "tools": [
+          "Jest",
+          "Mocha",
+          "Chai",
+          "Cypress",
+          "React Testing Library",
+          "Debugging tools in browsers and IDEs"
+        ],
+        "project": "Write tests for your MERN stack application."
+      },
+      {
+        "step": 12,
+        "title": "Deployment",
+        "description": "Learn how to deploy your MERN applications to various platforms such as Heroku, Netlify, AWS, or DigitalOcean.",
+        "tools": [
+          "Heroku",
+          "Netlify",
+          "AWS (EC2, S3)",
+          "DigitalOcean",
+          "Docker"
+        ],
+        "project": "Deploy your MERN stack application to a cloud platform."
+      },
+      {
+        "step": 13,
+        "title": "CI/CD (Continuous Integration/Continuous Deployment)",
+        "description": "Implement CI/CD pipelines to automate the build, test, and deployment process of your MERN applications.",
+        "tools": [
+          "Jenkins",
+          "Travis CI",
+          "CircleCI",
+          "GitHub Actions"
+        ],
+        "project": "Set up a CI/CD pipeline for your MERN stack application."
+      },
+      {
+        "step": 14,
+        "title": "Performance Optimization",
+        "description": "Learn techniques for optimizing the performance of your MERN applications, including code splitting, lazy loading, caching, and database optimization.",
+        "tools": [
+          "Chrome DevTools",
+          "Lighthouse",
+          "Webpack",
+          "Redis",
+          "MongoDB indexing"
+        ],
+        "project": "Optimize the performance of your deployed MERN stack application."
+      },
+      {
+        "step": 15,
+        "title": "Staying Up-to-Date",
+        "description": "Continuously learn and adapt to the latest trends and technologies in the MERN stack ecosystem. Read blogs, attend conferences, and contribute to open-source projects.",
+        "tools": [
+          "Online courses (e.g., Udemy, Coursera, freeCodeCamp)",
+          "Technical blogs",
+          "Conferences",
+          "Open-source projects"
+        ],
+        "project": "Contribute to a MERN stack open-source project or build a new project using the latest technologies."
+      }
+    ]
+  },
+  "generative ai": {
+    "timestamp": 1768580973580,
+    "data": [
+      {
+        "step": 1,
+        "title": "Introduction to Machine Learning and Deep Learning",
+        "description": "Gain a foundational understanding of machine learning concepts, including supervised, unsupervised, and reinforcement learning. Focus on the core principles of deep learning, including neural networks, activation functions, and backpropagation.",
+        "tools": [
+          "Python",
+          "NumPy",
+          "Pandas",
+          "Scikit-learn"
+        ],
+        "project": "Implement a basic linear regression model and a simple neural network for image classification (e.g., MNIST dataset)."
+      },
+      {
+        "step": 2,
+        "title": "Neural Network Architectures for Generative Models",
+        "description": "Explore different neural network architectures that form the basis of generative models, such as Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs), and Transformers. Understand their strengths and weaknesses in the context of generative tasks.",
+        "tools": [
+          "TensorFlow",
+          "Keras",
+          "PyTorch"
+        ],
+        "project": "Build a CNN for image recognition and an RNN for text generation using a small dataset."
+      },
+      {
+        "step": 3,
+        "title": "Variational Autoencoders (VAEs)",
+        "description": "Dive into the theory and implementation of Variational Autoencoders (VAEs). Learn about the encoder-decoder architecture, the variational inference process, and the role of the latent space. Understand how VAEs can be used for generating new data samples.",
+        "tools": [
+          "TensorFlow",
+          "Keras",
+          "PyTorch"
+        ],
+        "project": "Implement a VAE for generating images of faces or handwritten digits."
+      },
+      {
+        "step": 4,
+        "title": "Generative Adversarial Networks (GANs)",
+        "description": "Understand the theory behind Generative Adversarial Networks (GANs), including the generator and discriminator networks and the adversarial training process. Explore different GAN architectures, such as DCGAN, Conditional GAN, and StyleGAN.  Learn about common GAN training challenges and techniques for addressing them.",
+        "tools": [
+          "TensorFlow",
+          "Keras",
+          "PyTorch"
+        ],
+        "project": "Implement a DCGAN for generating realistic images of objects or faces."
+      },
+      {
+        "step": 5,
+        "title": "Transformer Networks and Attention Mechanisms",
+        "description": "Delve into the architecture of Transformer networks and the concept of attention mechanisms. Understand how Transformers can be used for natural language processing (NLP) and image generation tasks. Explore different variations of Transformers, such as BERT and GPT.",
+        "tools": [
+          "TensorFlow",
+          "Hugging Face Transformers",
+          "PyTorch"
+        ],
+        "project": "Fine-tune a pre-trained BERT model for text generation or text summarization."
+      },
+      {
+        "step": 6,
+        "title": "Large Language Models (LLMs)",
+        "description": "Study the architecture, training, and applications of large language models (LLMs) such as GPT-3, LaMDA, and Llama.  Learn about prompting techniques, few-shot learning, and the challenges of working with LLMs (e.g., bias, hallucinations).",
+        "tools": [
+          "Hugging Face Transformers",
+          "OpenAI API",
+          "Google Cloud AI Platform"
+        ],
+        "project": "Experiment with different prompting strategies to generate creative text formats (e.g., poems, code, scripts, musical pieces) using an LLM."
+      },
+      {
+        "step": 7,
+        "title": "Diffusion Models",
+        "description": "Explore the principles behind diffusion models for image generation. Understand the forward and reverse diffusion processes, and how they are used to generate high-quality images.  Learn about different diffusion model architectures, such as DDPM and Stable Diffusion.",
+        "tools": [
+          "TensorFlow",
+          "PyTorch",
+          "Diffusers (Hugging Face)"
+        ],
+        "project": "Implement a basic diffusion model for generating simple images (e.g., colored shapes) or fine-tune a pre-trained diffusion model on a specific image dataset."
+      },
+      {
+        "step": 8,
+        "title": "Advanced Generative AI Techniques",
+        "description": "Explore more advanced topics in generative AI, such as: Neural Style Transfer, Image-to-Image Translation (e.g., Pix2Pix, CycleGAN), Text-to-Image Generation (e.g., DALL-E, Midjourney), Video Generation, and 3D Generative Modeling.",
+        "tools": [
+          "TensorFlow",
+          "PyTorch",
+          "Specialized libraries for each technique"
+        ],
+        "project": "Implement an image-to-image translation model (e.g., converting sketches to realistic images) or experiment with a text-to-image generation API."
+      },
+      {
+        "step": 9,
+        "title": "Ethical Considerations and Responsible AI",
+        "description": "Discuss the ethical implications of generative AI, including bias, misinformation, privacy concerns, and potential misuse. Learn about techniques for mitigating bias and promoting responsible development and deployment of generative AI models.",
+        "tools": [
+          "AI Fairness 360",
+          "Responsible AI Toolboxes"
+        ],
+        "project": "Analyze a pre-trained generative model for potential biases and propose strategies for mitigating them."
+      },
+      {
+        "step": 10,
+        "title": "Deployment and Applications of Generative AI",
+        "description": "Learn about deploying generative AI models in real-world applications, including model optimization, cloud deployment, and integration with existing systems. Explore different application domains, such as art, design, content creation, drug discovery, and scientific research.",
+        "tools": [
+          "Docker",
+          "Kubernetes",
+          "AWS SageMaker",
+          "Google Cloud AI Platform",
+          "Azure Machine Learning"
+        ],
+        "project": "Deploy a generative AI model to a cloud platform and create a simple web application that allows users to interact with it."
+      }
+    ]
+  },
+  "machine learning": {
+    "timestamp": 1768581058780,
+    "data": [
+      {
+        "step": 1,
+        "title": "Introduction to Python Programming",
+        "description": "Learn the fundamentals of Python, including data types, variables, operators, control flow, functions, and object-oriented programming.",
+        "tools": [
+          "Python IDE (VS Code, PyCharm, Jupyter Notebook)",
+          "Online Python Tutor"
+        ],
+        "project": "Write a simple program that takes user input and performs basic calculations or string manipulations."
+      },
+      {
+        "step": 2,
+        "title": "Data Structures and Algorithms in Python",
+        "description": "Master essential data structures like lists, dictionaries, sets, and tuples. Understand basic algorithms for searching, sorting, and manipulating data.",
+        "tools": [
+          "LeetCode",
+          "HackerRank",
+          "GeeksforGeeks",
+          "Python documentation"
+        ],
+        "project": "Implement a sorting algorithm (e.g., bubble sort, merge sort) and a searching algorithm (e.g., binary search) from scratch."
+      },
+      {
+        "step": 3,
+        "title": "Introduction to Linear Algebra",
+        "description": "Learn the basics of vectors, matrices, matrix operations, linear transformations, eigenvalues, and eigenvectors. This is crucial for understanding the underlying math of many ML algorithms.",
+        "tools": [
+          "Khan Academy (Linear Algebra course)",
+          "MIT OpenCourseWare (Linear Algebra)",
+          "NumPy"
+        ],
+        "project": "Implement matrix addition, subtraction, and multiplication using NumPy. Calculate the determinant and inverse of a matrix."
+      },
+      {
+        "step": 4,
+        "title": "Introduction to Calculus",
+        "description": "Understand the fundamentals of calculus, including derivatives, integrals, limits, and optimization.  This knowledge is important for understanding gradient descent and other optimization techniques.",
+        "tools": [
+          "Khan Academy (Calculus course)",
+          "MIT OpenCourseWare (Single Variable Calculus)"
+        ],
+        "project": "Implement a function to calculate the derivative of a simple polynomial function."
+      },
+      {
+        "step": 5,
+        "title": "Introduction to Probability and Statistics",
+        "description": "Learn the fundamentals of probability theory, distributions, hypothesis testing, and statistical inference.  Understand concepts like mean, variance, standard deviation, and confidence intervals.",
+        "tools": [
+          "Khan Academy (Statistics and Probability course)",
+          "OpenIntro Statistics"
+        ],
+        "project": "Analyze a dataset using Python (e.g., using NumPy and SciPy) to calculate descriptive statistics and perform hypothesis testing."
+      },
+      {
+        "step": 6,
+        "title": "Introduction to NumPy",
+        "description": "Learn how to use NumPy for numerical computing in Python, including array creation, indexing, slicing, broadcasting, and linear algebra operations.",
+        "tools": [
+          "NumPy documentation",
+          "NumPy tutorial on SciPy.org"
+        ],
+        "project": "Implement a linear regression model from scratch using NumPy."
+      },
+      {
+        "step": 7,
+        "title": "Data Manipulation with Pandas",
+        "description": "Learn how to use Pandas for data manipulation and analysis, including data cleaning, filtering, grouping, and merging.",
+        "tools": [
+          "Pandas documentation",
+          "Real Python Pandas tutorials"
+        ],
+        "project": "Clean and preprocess a real-world dataset (e.g., from Kaggle) using Pandas, handling missing values and outliers."
+      },
+      {
+        "step": 8,
+        "title": "Data Visualization with Matplotlib and Seaborn",
+        "description": "Learn how to create informative and visually appealing plots using Matplotlib and Seaborn.",
+        "tools": [
+          "Matplotlib documentation",
+          "Seaborn documentation",
+          "DataCamp data visualization courses"
+        ],
+        "project": "Create a variety of visualizations (e.g., histograms, scatter plots, box plots) to explore and understand a dataset."
+      },
+      {
+        "step": 9,
+        "title": "Introduction to Scikit-learn",
+        "description": "Learn the basics of Scikit-learn, including model selection, training, evaluation, and hyperparameter tuning.",
+        "tools": [
+          "Scikit-learn documentation",
+          "Scikit-learn tutorials"
+        ],
+        "project": "Implement a simple classification model (e.g., logistic regression or decision tree) on a toy dataset using Scikit-learn."
+      },
+      {
+        "step": 10,
+        "title": "Supervised Learning: Regression",
+        "description": "Learn about different regression algorithms, including linear regression, polynomial regression, support vector regression, and decision tree regression.",
+        "tools": [
+          "Scikit-learn documentation",
+          "Machine Learning Mastery",
+          "Coursera/edX courses on machine learning"
+        ],
+        "project": "Build a regression model to predict house prices using a dataset like the Boston Housing dataset."
+      },
+      {
+        "step": 11,
+        "title": "Supervised Learning: Classification",
+        "description": "Learn about different classification algorithms, including logistic regression, support vector machines, decision trees, random forests, and k-nearest neighbors.",
+        "tools": [
+          "Scikit-learn documentation",
+          "Machine Learning Mastery",
+          "Coursera/edX courses on machine learning"
+        ],
+        "project": "Build a classification model to predict whether a customer will churn using a dataset like the Telecom Churn dataset."
+      },
+      {
+        "step": 12,
+        "title": "Model Evaluation and Selection",
+        "description": "Learn about different metrics for evaluating machine learning models, including accuracy, precision, recall, F1-score, ROC AUC, and mean squared error. Understand techniques for model selection, such as cross-validation and grid search.",
+        "tools": [
+          "Scikit-learn documentation",
+          "Machine Learning Mastery"
+        ],
+        "project": "Evaluate different machine learning models on a dataset and select the best model based on appropriate metrics."
+      },
+      {
+        "step": 13,
+        "title": "Unsupervised Learning: Clustering",
+        "description": "Learn about different clustering algorithms, including k-means clustering, hierarchical clustering, and DBSCAN.",
+        "tools": [
+          "Scikit-learn documentation",
+          "Machine Learning Mastery"
+        ],
+        "project": "Apply clustering to a dataset (e.g., customer segmentation) and visualize the results."
+      },
+      {
+        "step": 14,
+        "title": "Unsupervised Learning: Dimensionality Reduction",
+        "description": "Learn about dimensionality reduction techniques, including principal component analysis (PCA) and t-distributed stochastic neighbor embedding (t-SNE).",
+        "tools": [
+          "Scikit-learn documentation",
+          "Machine Learning Mastery"
+        ],
+        "project": "Apply PCA to reduce the dimensionality of a dataset and visualize the data in a lower-dimensional space."
+      },
+      {
+        "step": 15,
+        "title": "Introduction to Deep Learning with TensorFlow or PyTorch",
+        "description": "Learn the basics of neural networks, including feedforward networks, convolutional neural networks (CNNs), and recurrent neural networks (RNNs).  Choose either TensorFlow or PyTorch to learn.",
+        "tools": [
+          "TensorFlow documentation",
+          "PyTorch documentation",
+          "Keras documentation",
+          "TensorFlow tutorials",
+          "PyTorch tutorials"
+        ],
+        "project": "Build a simple neural network to classify images using TensorFlow or PyTorch (e.g., MNIST dataset)."
+      },
+      {
+        "step": 16,
+        "title": "Deep Learning: Convolutional Neural Networks (CNNs)",
+        "description": "Learn about convolutional neural networks (CNNs) for image recognition and computer vision tasks. Understand concepts like convolution, pooling, and backpropagation.",
+        "tools": [
+          "TensorFlow documentation",
+          "PyTorch documentation",
+          "Keras documentation",
+          "TensorFlow tutorials",
+          "PyTorch tutorials",
+          "Stanford CS231n"
+        ],
+        "project": "Build a CNN to classify images from a more complex dataset like CIFAR-10."
+      },
+      {
+        "step": 17,
+        "title": "Deep Learning: Recurrent Neural Networks (RNNs)",
+        "description": "Learn about recurrent neural networks (RNNs) for natural language processing and time series analysis. Understand concepts like LSTMs and GRUs.",
+        "tools": [
+          "TensorFlow documentation",
+          "PyTorch documentation",
+          "Keras documentation",
+          "TensorFlow tutorials",
+          "PyTorch tutorials",
+          "Stanford CS224n"
+        ],
+        "project": "Build an RNN to predict the next word in a sentence (language modeling)."
+      },
+      {
+        "step": 18,
+        "title": "Natural Language Processing (NLP)",
+        "description": "Learn about natural language processing techniques, including text preprocessing, feature extraction, and sentiment analysis. Use libraries like NLTK and SpaCy.",
+        "tools": [
+          "NLTK documentation",
+          "SpaCy documentation",
+          "Stanford CS224n"
+        ],
+        "project": "Build a sentiment analysis model to classify movie reviews as positive or negative."
+      },
+      {
+        "step": 19,
+        "title": "Model Deployment",
+        "description": "Learn how to deploy machine learning models to production using tools like Flask, Docker, and cloud platforms (e.g., AWS, Google Cloud, Azure).",
+        "tools": [
+          "Flask documentation",
+          "Docker documentation",
+          "AWS documentation",
+          "Google Cloud documentation",
+          "Azure documentation"
+        ],
+        "project": "Deploy a simple machine learning model as a web service using Flask and Docker."
+      },
+      {
+        "step": 20,
+        "title": "Advanced Topics and Specialization",
+        "description": "Explore advanced topics in machine learning, such as reinforcement learning, generative adversarial networks (GANs), or specific applications like computer vision or NLP. Choose a specialization based on your interests.",
+        "tools": [
+          "Research papers",
+          "Online courses",
+          "Conferences"
+        ],
+        "project": "Work on a personal project in your chosen specialization area."
+      }
+    ]
+  },
+  "software engineering": {
+    "timestamp": 1769595942944,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of Programming (Python)",
+        "description": "Learn the basics of programming, including variables, data types, control flow (if/else, loops), functions, and basic input/output. Python is chosen for its beginner-friendliness.",
+        "tools": [
+          "Python (latest version)",
+          "VS Code/IDLE/PyCharm",
+          "Online Python Tutor (for visualization)"
+        ],
+        "project": "Create a simple calculator program that can perform basic arithmetic operations."
+      },
+      {
+        "step": 2,
+        "title": "Data Structures and Algorithms (Python)",
+        "description": "Study fundamental data structures like arrays/lists, linked lists, stacks, queues, trees, and hash tables. Learn basic algorithms for searching and sorting. Understand time and space complexity (Big O notation).",
+        "tools": [
+          "Python",
+          "VS Code/PyCharm",
+          "Online resource like GeeksforGeeks or LeetCode (easy problems)"
+        ],
+        "project": "Implement a program that uses a hash table to store and retrieve user information (e.g., names and email addresses)."
+      },
+      {
+        "step": 3,
+        "title": "Object-Oriented Programming (OOP) (Python)",
+        "description": "Understand OOP concepts like classes, objects, inheritance, polymorphism, and encapsulation.  Learn how to design and implement reusable code using OOP principles.",
+        "tools": [
+          "Python",
+          "VS Code/PyCharm",
+          "UML diagram tools (optional)"
+        ],
+        "project": "Develop a simple game (e.g., text-based adventure or basic card game) using OOP concepts."
+      },
+      {
+        "step": 4,
+        "title": "Version Control with Git",
+        "description": "Learn how to use Git for version control. Understand branching, merging, and collaborating with others on code using platforms like GitHub or GitLab.",
+        "tools": [
+          "Git",
+          "GitHub/GitLab",
+          "Command Line/Terminal"
+        ],
+        "project": "Create a repository on GitHub for your projects and use Git to track changes and collaborate on a small project with a friend (e.g., a simple website)."
+      },
+      {
+        "step": 5,
+        "title": "Databases (SQL and NoSQL)",
+        "description": "Learn the fundamentals of database management.  Cover relational databases (SQL) like PostgreSQL or MySQL, and NoSQL databases like MongoDB.  Understand database design principles and how to interact with databases from your code.",
+        "tools": [
+          "PostgreSQL/MySQL/MongoDB",
+          "SQL Workbench/MongoDB Compass",
+          "Python libraries like psycopg2/pymongo"
+        ],
+        "project": "Design and implement a database to store information about books in a library. Create a Python application that can interact with the database to add, retrieve, update, and delete book records."
+      },
+      {
+        "step": 6,
+        "title": "Web Development Fundamentals (HTML, CSS, JavaScript)",
+        "description": "Learn the basics of front-end web development: HTML for structuring content, CSS for styling, and JavaScript for adding interactivity. Understand the Document Object Model (DOM).",
+        "tools": [
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "VS Code/Sublime Text",
+          "Chrome DevTools"
+        ],
+        "project": "Build a simple static website with multiple pages, styled with CSS, and with basic JavaScript interactions (e.g., image slider, form validation)."
+      },
+      {
+        "step": 7,
+        "title": "Backend Frameworks (e.g., Django/Flask - Python)",
+        "description": "Learn a backend web framework like Django or Flask (Python) to build dynamic web applications. Understand how to handle HTTP requests, routing, templating, and database interactions on the server-side.",
+        "tools": [
+          "Django/Flask",
+          "Python",
+          "VS Code/PyCharm",
+          "PostgreSQL/MySQL"
+        ],
+        "project": "Build a simple blog application with user authentication, posts, and comments using Django or Flask."
+      },
+      {
+        "step": 8,
+        "title": "Frontend Frameworks (e.g., React/Angular/Vue.js)",
+        "description": "Learn a modern frontend JavaScript framework like React, Angular, or Vue.js to build complex user interfaces. Understand component-based architecture, state management, and data binding.",
+        "tools": [
+          "React/Angular/Vue.js",
+          "JavaScript",
+          "VS Code",
+          "npm/yarn"
+        ],
+        "project": ""
+      },
+      {
+        "step": 9,
+        "title": "APIs and Microservices",
+        "description": "Learn how to design and consume RESTful APIs. Understand microservices architecture and how to build and deploy independent services that communicate with each other.",
+        "tools": [
+          "REST API principles",
+          "JSON",
+          "HTTP methods",
+          "API testing tools (Postman, Insomnia)",
+          "Docker (for microservices)",
+          "Flask/FastAPI (for building APIs)"
+        ],
+        "project": "Design and implement a REST API for a simple e-commerce application. Create separate microservices for user authentication, product management, and order processing."
+      },
+      {
+        "step": 10,
+        "title": "Testing (Unit, Integration, End-to-End)",
+        "description": "Learn different types of testing: unit testing (testing individual components), integration testing (testing interactions between components), and end-to-end testing (testing the entire system).  Understand how to write effective tests to ensure code quality.",
+        "tools": [
+          "Python testing frameworks (pytest, unittest)",
+          "JavaScript testing frameworks (Jest, Mocha, Cypress)",
+          "CI/CD tools (Jenkins, Travis CI)"
+        ],
+        "project": "Write comprehensive unit, integration, and end-to-end tests for your previous projects to ensure their functionality and reliability.  Set up a CI/CD pipeline to automatically run tests on every code change."
+      },
+      {
+        "step": 11,
+        "title": "DevOps Fundamentals (CI/CD, Infrastructure as Code)",
+        "description": "Learn the basics of DevOps practices. Understand continuous integration and continuous delivery (CI/CD) pipelines, and infrastructure as code (IaC) using tools like Docker and Kubernetes.  Learn about cloud platforms like AWS, Azure, or Google Cloud.",
+        "tools": [
+          "Docker",
+          "Kubernetes",
+          "AWS/Azure/Google Cloud",
+          "Jenkins/Travis CI",
+          "Terraform/Ansible"
+        ],
+        "project": "Containerize your application using Docker, deploy it to a Kubernetes cluster, and set up a CI/CD pipeline to automatically build and deploy new versions of your application whenever code changes are pushed to your repository."
+      },
+      {
+        "step": 12,
+        "title": "System Design",
+        "description": "Learn how to design scalable and reliable systems.  Study concepts like load balancing, caching, databases, messaging queues, and distributed systems.  Practice designing solutions to common software engineering problems.",
+        "tools": [
+          "System design interview questions",
+          "Diagramming tools",
+          "Case studies of real-world systems (e.g., Netflix, Uber)"
+        ],
+        "project": "Design a system to handle a large volume of user data (e.g., a social media feed or a recommendation engine). Consider factors like scalability, performance, reliability, and security."
+      }
+    ]
+  },
+  "mobile app develpoment": {
+    "timestamp": 1769702786239,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of Programming (Choose a Language)",
+        "description": "Lay the groundwork by learning basic programming concepts. Select a language commonly used in mobile app development (Kotlin for Android, Swift for iOS, or Dart for Flutter). Cover variables, data types, control flow (if/else, loops), functions, and object-oriented programming (OOP) principles.",
+        "tools": [
+          "Kotlin",
+          "Swift",
+          "Dart",
+          "Online Compilers (e.g., CodePen)",
+          "Integrated Development Environments (IDEs) like IntelliJ IDEA, Xcode, VS Code"
+        ],
+        "project": "Create a simple command-line calculator or a text-based game to practice core programming concepts."
+      },
+      {
+        "step": 2,
+        "title": "Version Control with Git",
+        "description": "Learn Git for version control. Understand concepts like repositories, commits, branches, merging, and pull requests. Practice collaborating with others using Git.",
+        "tools": [
+          "Git",
+          "GitHub",
+          "GitLab",
+          "Bitbucket",
+          "Command Line Interface (CLI)"
+        ],
+        "project": "Create a Git repository for your calculator project and practice making commits, branches, and merging changes."
+      },
+      {
+        "step": 3,
+        "title": "Mobile App Development Basics (Platform Specific)",
+        "description": "Choose a target platform (Android or iOS) or a cross-platform framework (Flutter or React Native).  Learn the platform's specific architecture, UI components, and development paradigms. For example, for Android, learn about Activities, Fragments, and Layouts. For iOS, learn about View Controllers, Storyboards, and UIKit. For Flutter, learn about Widgets and the Flutter framework structure.",
+        "tools": [
+          "Android Studio (Android)",
+          "Xcode (iOS)",
+          "VS Code (Flutter, React Native)",
+          "Android SDK",
+          "iOS SDK",
+          "Flutter SDK",
+          "React Native CLI"
+        ],
+        "project": "Create a simple 'Hello, World!' app for your chosen platform. Then, create a basic UI with a button and a text field."
+      },
+      {
+        "step": 4,
+        "title": "UI/UX Design Principles",
+        "description": "Understand the fundamentals of UI/UX design. Learn about user research, wireframing, prototyping, and visual design principles like color theory, typography, and layout. Focus on creating intuitive and user-friendly interfaces.",
+        "tools": [
+          "Figma",
+          "Adobe XD",
+          "Sketch",
+          "InVision",
+          "UI Kits (Material Design, Human Interface Guidelines)",
+          "Pen and Paper (for sketching)"
+        ],
+        "project": "Redesign the UI of a simple app (e.g., a timer or a to-do list) based on UI/UX principles."
+      },
+      {
+        "step": 5,
+        "title": "Platform-Specific Development (Advanced)",
+        "description": "Dive deeper into platform-specific features. For Android: Learn about background processing (Services, WorkManager), data persistence (SQLite, Room), networking (Retrofit, Volley), and location services. For iOS: Learn about Core Data, Networking (URLSession), Grand Central Dispatch (GCD) for concurrency, and location services (Core Location). If using Flutter or React Native, familiarize yourself with platform-specific implementations when needed.",
+        "tools": [
+          "Android Studio Profiler",
+          "Xcode Instruments",
+          "Debugging tools",
+          "Device emulators/simulators",
+          "API documentation for chosen platform/libraries"
+        ],
+        "project": "Develop an app that fetches data from a remote API and displays it in a list. Implement background processing to update the data periodically."
+      },
+      {
+        "step": 6,
+        "title": "Data Persistence and Storage",
+        "description": "Learn about different methods for storing data locally within your app. This includes SQLite databases, shared preferences (Android), UserDefaults (iOS), file storage, and NoSQL databases (like Realm). Choose the appropriate method based on the type and amount of data you need to store.",
+        "tools": [
+          "SQLite Browser",
+          "Realm Studio",
+          "Platform-specific storage APIs (e.g., SharedPreferences, UserDefaults, Core Data)",
+          "Database design tools"
+        ],
+        "project": "Implement a to-do list app that stores tasks locally using a database or local storage."
+      },
+      {
+        "step": 7,
+        "title": "Networking and APIs",
+        "description": "Master networking concepts and learn how to interact with APIs (Application Programming Interfaces). Understand HTTP methods (GET, POST, PUT, DELETE), JSON/XML data formats, and authentication techniques (OAuth, API keys). Learn how to handle network errors and data parsing.",
+        "tools": [
+          "Postman",
+          "Insomnia",
+          "Network debugging tools (e.g., Charles Proxy, Wireshark)",
+          "REST client libraries (Retrofit, Alamofire, dio)",
+          "JSON/XML parsers"
+        ],
+        "project": "Build an app that consumes data from a public API (e.g., weather data, news articles) and displays it in a user-friendly format."
+      },
+      {
+        "step": 8,
+        "title": "Testing and Debugging",
+        "description": "Learn how to write unit tests, integration tests, and UI tests to ensure the quality and stability of your app. Familiarize yourself with debugging tools and techniques to identify and fix bugs.",
+        "tools": [
+          "JUnit (Android)",
+          "XCTest (iOS)",
+          "Flutter Test",
+          "React Native Testing Library",
+          "Debugging tools in IDEs",
+          "Device logs"
+        ],
+        "project": "Write unit tests for the core logic of your to-do list app and use debugging tools to fix any issues."
+      },
+      {
+        "step": 9,
+        "title": "App Deployment and Distribution",
+        "description": "Learn how to build, package, and deploy your app to app stores (Google Play Store for Android, Apple App Store for iOS). Understand the requirements for app submission, including app metadata, screenshots, and testing guidelines. Learn about different distribution methods, such as beta testing and phased rollouts.",
+        "tools": [
+          "Google Play Console",
+          "App Store Connect",
+          "Fastlane",
+          "TestFlight (iOS)",
+          "Beta by Crashlytics (Android)",
+          "App signing tools"
+        ],
+        "project": "Prepare your to-do list app for deployment to an app store, including creating app icons, screenshots, and descriptions."
+      },
+      {
+        "step": 10,
+        "title": "Advanced Topics and Continuous Learning",
+        "description": "Explore advanced topics like push notifications, in-app purchases, location services, camera integration, and AR/VR integration. Stay up-to-date with the latest trends and technologies in mobile app development. Continuously learn and improve your skills by attending conferences, reading blogs, and participating in online communities.",
+        "tools": [
+          "Firebase Cloud Messaging (FCM)",
+          "Apple Push Notification Service (APNs)",
+          "In-app purchase SDKs",
+          "ARKit (iOS)",
+          "ARCore (Android)",
+          "Online courses (Coursera, Udemy, edX)",
+          "Developer blogs and forums"
+        ],
+        "project": "Implement push notifications in your to-do list app to remind users of upcoming tasks."
+      }
+    ]
+  },
+  "flutter app development": {
+    "timestamp": 1769702832006,
+    "data": [
+      {
+        "step": 1,
+        "title": "Dart Fundamentals",
+        "description": "Learn the basics of the Dart programming language, which is the foundation for Flutter development. Understand data types, variables, operators, control flow, functions, classes, and object-oriented programming principles.",
+        "tools": [
+          "Dart SDK",
+          "VS Code with Dart extension",
+          "DartPad (online)"
+        ],
+        "project": "Create a simple command-line calculator application."
+      },
+      {
+        "step": 2,
+        "title": "Flutter Basics - Widgets and Layouts",
+        "description": "Introduce yourself to Flutter's widget-based architecture. Learn about different types of widgets (stateless, stateful), basic layout widgets (Row, Column, Container, Padding, Margin), and how to create simple UI structures.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension",
+          "Flutter Inspector"
+        ],
+        "project": "Build a simple app that displays a static profile page with an image, name, and description using various layout widgets."
+      },
+      {
+        "step": 3,
+        "title": "Flutter - State Management (setState)",
+        "description": "Understand the concept of state management in Flutter. Learn how to use `setState()` to update the UI dynamically when data changes.  Cover the StatefulWidget lifecycle.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Create a counter app that increments and decrements a number displayed on the screen using `setState()`."
+      },
+      {
+        "step": 4,
+        "title": "Flutter - Navigation and Routing",
+        "description": "Learn how to navigate between different screens in a Flutter app.  Explore `Navigator` widget, named routes, and passing data between screens.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Build an app with two screens.  The first screen has a button that navigates to the second screen, displaying some text passed from the first screen."
+      },
+      {
+        "step": 5,
+        "title": "Flutter - Working with Images and Assets",
+        "description": "Learn how to include images and other assets (fonts, JSON files) in your Flutter app. Understand the asset directory structure and how to load and display them.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension",
+          "Image Editing Software (optional)"
+        ],
+        "project": "Create an app that displays a list of images fetched from the asset folder, each with a title."
+      },
+      {
+        "step": 6,
+        "title": "Flutter - Forms and User Input",
+        "description": "Learn how to create forms and handle user input in Flutter.  Explore `TextField`, `Form`, `TextFormField`, and validation techniques.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Build a simple login form with fields for username and password.  Implement basic validation to ensure the fields are not empty."
+      },
+      {
+        "step": 7,
+        "title": "Flutter - Lists and Data Display",
+        "description": "Learn how to display data in lists using `ListView`, `GridView`, and other list-related widgets. Understand how to dynamically generate list items from data sources.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Create an app that displays a list of dummy product items (name, price, image) using `ListView.builder`."
+      },
+      {
+        "step": 8,
+        "title": "Flutter - Networking (HTTP Requests)",
+        "description": "Learn how to make HTTP requests to retrieve data from APIs using the `http` package. Understand how to handle asynchronous operations and parse JSON responses.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension",
+          "Postman/Insomnia (API testing)"
+        ],
+        "project": "Build an app that fetches and displays a list of posts from a public API (e.g., JSONPlaceholder)."
+      },
+      {
+        "step": 9,
+        "title": "Flutter - State Management (Provider)",
+        "description": "Learn about a more advanced state management solution: Provider. Understand the concepts of `ChangeNotifier`, `Provider`, and how to manage application state more efficiently.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Refactor the counter app or the product list app to use the Provider package for state management."
+      },
+      {
+        "step": 10,
+        "title": "Flutter - Firebase Integration (Authentication)",
+        "description": "Learn how to integrate Firebase into your Flutter app.  Focus on user authentication using Firebase Authentication (email/password, Google Sign-in).",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension",
+          "Firebase Console"
+        ],
+        "project": "Implement user authentication in your app using Firebase Authentication.  Allow users to register, login, and logout."
+      },
+      {
+        "step": 11,
+        "title": "Flutter - Firebase Integration (Firestore)",
+        "description": "Learn how to use Firebase Firestore, a NoSQL cloud database.  Understand how to read, write, update, and delete data from Firestore.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension",
+          "Firebase Console"
+        ],
+        "project": "Build an app that allows users to create, read, update, and delete notes stored in Firestore."
+      },
+      {
+        "step": 12,
+        "title": "Flutter - Animations",
+        "description": "Explore Flutter's animation capabilities. Learn about different types of animations (implicit, explicit), `AnimatedContainer`, `AnimatedOpacity`, and custom animations using `AnimationController`.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Add animations to your existing apps to improve the user experience (e.g., fade-in effects, transitions between screens)."
+      },
+      {
+        "step": 13,
+        "title": "Flutter - Testing",
+        "description": "Learn how to write unit tests, widget tests, and integration tests for your Flutter app.  Understand the importance of testing for code quality and maintainability.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Write tests for the core functionalities of one of your existing projects."
+      },
+      {
+        "step": 14,
+        "title": "Flutter - Deployment",
+        "description": "Learn how to build and deploy your Flutter app to different platforms (Android, iOS, web).  Understand the build process, code signing, and app store submission.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/XCode",
+          "Google Play Console",
+          "Apple App Store Connect"
+        ],
+        "project": "Prepare your app for deployment and deploy it to a test environment (e.g., TestFlight for iOS)."
+      },
+      {
+        "step": 15,
+        "title": "Advanced Flutter Concepts",
+        "description": "Explore more advanced Flutter concepts, such as custom widgets, Streams, Futures, isolates, and platform channels.  Dive deeper into performance optimization and best practices.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio/VS Code with Flutter extension"
+        ],
+        "project": "Implement a complex feature in your app that requires the use of advanced Flutter concepts."
+      }
+    ]
+  },
+  "flutter app dev": {
+    "timestamp": 1769704588300,
+    "data": [
+      {
+        "step": 1,
+        "title": "Dart Fundamentals",
+        "description": "Learn the basics of the Dart programming language, which is the foundation for Flutter development.  Focus on data types, variables, control flow, functions, classes, and asynchronous programming.",
+        "tools": [
+          "Dart SDK",
+          "DartPad (online editor)",
+          "VS Code (optional with Dart extension)"
+        ],
+        "project": "Create a simple command-line calculator program."
+      },
+      {
+        "step": 2,
+        "title": "Flutter Installation and Setup",
+        "description": "Install the Flutter SDK and configure your development environment.  This includes setting up your IDE, emulator/simulator, and ensuring you can run a basic Flutter app.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio (or VS Code)",
+          "Android Emulator/iOS Simulator",
+          "Flutter Doctor command"
+        ],
+        "project": "Run the default 'Counter' app created by Flutter."
+      },
+      {
+        "step": 3,
+        "title": "Basic Flutter Widgets",
+        "description": "Understand core Flutter widgets like `Text`, `Image`, `Container`, `Row`, `Column`, `Scaffold`, `AppBar`, `Center`, and `Padding`. Learn about layout and how to arrange widgets on the screen.",
+        "tools": [
+          "Flutter SDK",
+          "Hot Reload/Hot Restart"
+        ],
+        "project": "Build a simple UI that displays an image, some text, and uses rows and columns for layout."
+      },
+      {
+        "step": 4,
+        "title": "State Management (Stateless and Stateful)",
+        "description": "Learn the difference between stateless and stateful widgets and how to manage state using `setState()`. Understand how to update the UI based on user interaction or data changes.",
+        "tools": [
+          "Flutter SDK",
+          "setState()"
+        ],
+        "project": "Create a simple counter app that updates the count on button presses using `setState()`."
+      },
+      {
+        "step": 5,
+        "title": "Navigation and Routing",
+        "description": "Learn how to navigate between different screens in your app using `Navigator`. Understand how to pass data between screens and handle route parameters.",
+        "tools": [
+          "Flutter SDK",
+          "Navigator.push",
+          "Navigator.pop",
+          "MaterialPageRoute"
+        ],
+        "project": "Create an app with two screens.  One screen displays a list of items, and clicking an item navigates to a details screen showing information about that item."
+      },
+      {
+        "step": 6,
+        "title": "Working with Lists and Data",
+        "description": "Learn how to display lists of data using widgets like `ListView`, `GridView`, and `ListTile`. Understand how to create and manage data models.",
+        "tools": [
+          "Flutter SDK",
+          "ListView",
+          "GridView",
+          "ListTile",
+          "Data Models"
+        ],
+        "project": "Create an app that displays a list of contacts (name, phone number, email) using a `ListView` and `ListTile` widgets."
+      },
+      {
+        "step": 7,
+        "title": "User Input and Forms",
+        "description": "Learn how to handle user input using widgets like `TextField`, `Checkbox`, `Radio`, and `DropdownButton`. Understand form validation and how to submit data.",
+        "tools": [
+          "Flutter SDK",
+          "TextField",
+          "Checkbox",
+          "Radio",
+          "DropdownButton",
+          "Form",
+          "TextFormField"
+        ],
+        "project": "Create a simple registration form with fields for name, email, password, and gender. Implement basic validation to ensure the user enters valid data."
+      },
+      {
+        "step": 8,
+        "title": "Asynchronous Programming and API Integration",
+        "description": "Learn how to make API requests using `http` package. Understand `async` and `await` keywords, and how to handle JSON data from APIs.",
+        "tools": [
+          "Flutter SDK",
+          "http package",
+          "async/await",
+          "JSON parsing"
+        ],
+        "project": "Fetch data from a public API (e.g., a list of todos or users) and display it in a list."
+      },
+      {
+        "step": 9,
+        "title": "State Management (Advanced - Provider or Riverpod)",
+        "description": "Learn a more robust state management solution like Provider or Riverpod. Understand how to manage complex application state and avoid boilerplate code.",
+        "tools": [
+          "Flutter SDK",
+          "Provider package",
+          "Riverpod package"
+        ],
+        "project": "Rebuild the API integration project from Step 8 using Provider or Riverpod for state management. Allow users to filter the data."
+      },
+      {
+        "step": 10,
+        "title": "Firebase Integration (Authentication and Data)",
+        "description": "Learn how to integrate Firebase into your Flutter app. Focus on authentication (email/password, Google sign-in) and data storage using Firestore.",
+        "tools": [
+          "Flutter SDK",
+          "Firebase Console",
+          "Firebase Authentication",
+          "Firestore"
+        ],
+        "project": "Create a simple to-do list app that uses Firebase Authentication for user login and Firestore to store to-do items."
+      },
+      {
+        "step": 11,
+        "title": "UI/UX Design Principles",
+        "description": "Learn basic UI/UX principles to create visually appealing and user-friendly apps.  Understand color palettes, typography, spacing, and user interaction patterns.",
+        "tools": [
+          "Figma (design tool)",
+          "Material Design Guidelines",
+          "Human Interface Guidelines (iOS)"
+        ],
+        "project": "Redesign an existing app (like the to-do list app) to improve its UI/UX based on design principles."
+      },
+      {
+        "step": 12,
+        "title": "Testing (Unit and Widget Tests)",
+        "description": "Learn how to write unit tests and widget tests to ensure the quality and reliability of your code. Understand test-driven development (TDD).",
+        "tools": [
+          "Flutter SDK",
+          "flutter_test package",
+          "Mockito (for mocking)"
+        ],
+        "project": "Write unit tests for the data models and logic in your to-do list app. Write widget tests to verify the UI components behave as expected."
+      },
+      {
+        "step": 13,
+        "title": "Animations",
+        "description": "Learn how to add animations to your Flutter app to enhance the user experience. Understand implicit and explicit animations, and how to use the `AnimatedBuilder` widget.",
+        "tools": [
+          "Flutter SDK",
+          "AnimatedContainer",
+          "AnimatedOpacity",
+          "AnimatedBuilder",
+          "TweenAnimationBuilder"
+        ],
+        "project": "Add animations to your to-do list app.  For example, animate the addition or deletion of a to-do item."
+      },
+      {
+        "step": 14,
+        "title": "Bloc/Cubit State Management",
+        "description": "Explore another advanced state management approach using Bloc or Cubit. Understand the concepts of events, states, and the flow of data in a BLoC architecture.",
+        "tools": [
+          "Flutter SDK",
+          "flutter_bloc package"
+        ],
+        "project": "Migrate the Provider/Riverpod based API fetching app to use BLoC or Cubit for state management."
+      },
+      {
+        "step": 15,
+        "title": "Platform-Specific Code (Native Integration)",
+        "description": "Learn how to write platform-specific code using platform channels. This allows you to access native features of the operating system (e.g., camera, GPS).",
+        "tools": [
+          "Flutter SDK",
+          "Platform Channels",
+          "Kotlin (Android)",
+          "Swift (iOS)"
+        ],
+        "project": "Create a Flutter app that accesses the device's camera using platform channels."
+      },
+      {
+        "step": 16,
+        "title": "Deployment (Android and iOS)",
+        "description": "Learn how to build and deploy your Flutter app to the Google Play Store (Android) and the App Store (iOS). Understand the different build configurations (debug, release) and code signing.",
+        "tools": [
+          "Android Studio",
+          "Xcode",
+          "Google Play Console",
+          "App Store Connect"
+        ],
+        "project": "Prepare your to-do list app for deployment to the Google Play Store and the App Store. Generate the necessary build artifacts and follow the deployment process."
+      }
+    ]
+  },
+  "flutter dev": {
+    "timestamp": 1769704618391,
+    "data": [
+      {
+        "step": 1,
+        "title": "Dart Fundamentals",
+        "description": "Master the Dart programming language, the foundation of Flutter.",
+        "tools": [
+          "Dart SDK",
+          "VS Code (with Dart extension)",
+          "IntelliJ IDEA (with Dart plugin)",
+          "DartPad (online editor)"
+        ],
+        "project": "Simple CLI Calculator"
+      },
+      {
+        "step": 2,
+        "title": "Flutter Basics: Setup and First App",
+        "description": "Set up your Flutter development environment and build a basic 'Hello World' application.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode (for iOS development)",
+          "Emulators/Simulators",
+          "VS Code (with Flutter extension)"
+        ],
+        "project": "Hello World App with a centered text widget"
+      },
+      {
+        "step": 3,
+        "title": "Widgets: Building Blocks of Flutter UI",
+        "description": "Learn about stateless and stateful widgets, layout widgets (Row, Column, Container), and basic UI elements.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Hot Reload",
+          "Flutter Inspector"
+        ],
+        "project": "Simple Counter App with increment and decrement buttons"
+      },
+      {
+        "step": 4,
+        "title": "Layouts and UI Design",
+        "description": "Explore more advanced layout widgets like ListView, GridView, Stack, and learn about responsive design principles.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Flutter Inspector",
+          "UI Design Tools (e.g., Figma, Adobe XD)"
+        ],
+        "project": "Basic List App displaying static data with images"
+      },
+      {
+        "step": 5,
+        "title": "State Management: setState and Beyond",
+        "description": "Understand state management using setState and learn about simple state management solutions like Provider.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Flutter Inspector",
+          "Provider package"
+        ],
+        "project": "A simple To-Do App using Provider for state management"
+      },
+      {
+        "step": 6,
+        "title": "Navigation and Routing",
+        "description": "Implement navigation between screens using Navigator, named routes, and understand different navigation patterns.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Navigator",
+          "Routes"
+        ],
+        "project": "Multi-screen app with navigation (e.g., home, detail, settings screens)"
+      },
+      {
+        "step": 7,
+        "title": "Networking and API Integration",
+        "description": "Learn how to fetch data from APIs using HTTP requests, handle JSON responses, and display data in your app.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "http package",
+          "JSON parsing libraries"
+        ],
+        "project": "App that fetches and displays data from a public API (e.g., JSONPlaceholder)"
+      },
+      {
+        "step": 8,
+        "title": "Data Persistence: Local Storage",
+        "description": "Implement local data storage using shared preferences and SQLite databases for persistent data.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "shared_preferences package",
+          "sqflite package"
+        ],
+        "project": "Note-taking app with local storage for saving notes"
+      },
+      {
+        "step": 9,
+        "title": "Firebase Integration",
+        "description": "Learn to use Firebase services like Authentication, Firestore, and Cloud Storage.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Firebase console",
+          "FlutterFire plugins"
+        ],
+        "project": "Basic chat application using Firebase Authentication and Firestore"
+      },
+      {
+        "step": 10,
+        "title": "Advanced State Management: Bloc/Riverpod",
+        "description": "Explore advanced state management solutions like BLoC (Business Logic Component) and Riverpod for complex applications.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "bloc package",
+          "flutter_bloc package",
+          "riverpod package"
+        ],
+        "project": "Implement the same To-Do App using Bloc or Riverpod for state management."
+      },
+      {
+        "step": 11,
+        "title": "Testing: Unit, Widget, and Integration Tests",
+        "description": "Write unit tests, widget tests, and integration tests to ensure code quality and application stability.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Flutter test package",
+          "Mocking libraries"
+        ],
+        "project": "Write tests for the To-Do App to verify its functionality"
+      },
+      {
+        "step": 12,
+        "title": "Animations and Custom UI",
+        "description": "Implement animations using Flutter's animation framework and create custom UI widgets.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "AnimatedBuilder",
+          "CustomPainter"
+        ],
+        "project": "Animated loading indicator or a custom UI component"
+      },
+      {
+        "step": 13,
+        "title": "Deployment to App Stores",
+        "description": "Learn how to prepare your Flutter app for deployment to the Google Play Store and Apple App Store.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Google Play Console",
+          "App Store Connect"
+        ],
+        "project": "Prepare the To-Do App for deployment (build, signing, creating store listings)"
+      },
+      {
+        "step": 14,
+        "title": "Performance Optimization",
+        "description": "Identify and address performance bottlenecks in your Flutter apps.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "Flutter DevTools",
+          "Profiling tools"
+        ],
+        "project": "Optimize the performance of a previously created app (e.g., reduce build size, improve frame rate)"
+      },
+      {
+        "step": 15,
+        "title": "Advanced UI: Slivers and Custom Scroll Effects",
+        "description": "Utilize slivers to create complex and engaging scrolling effects in your app.",
+        "tools": [
+          "Flutter SDK",
+          "Android Studio",
+          "Xcode",
+          "SliverAppBar",
+          "CustomScrollView"
+        ],
+        "project": "Create a profile screen with a collapsing toolbar using Slivers"
+      }
+    ]
+  }
+}

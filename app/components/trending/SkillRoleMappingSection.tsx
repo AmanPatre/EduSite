@@ -76,7 +76,7 @@ export default function SkillRoleMappingSection({
             />
 
             {/* View Mode Toggle */}
-            <div className="flex items-center justify-center gap-4 p-1 bg-slate-900 rounded-xl border border-slate-800 max-w-md mx-auto">
+            <div className="flex items-center justify-center gap-4 p-1 bg-[#0F0F12] rounded-xl border border-slate-800 max-w-md mx-auto">
                 <button
                     onClick={() => {
                         setViewMode('skill-to-role');
@@ -124,7 +124,7 @@ export default function SkillRoleMappingSection({
                         placeholder={viewMode === 'skill-to-role' ? "Search skills..." : "Search roles..."}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 mb-2"
+                        className="w-full bg-[#0F0F12] border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 mb-2"
                     />
 
                     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
@@ -138,7 +138,7 @@ export default function SkillRoleMappingSection({
                     w-full text-left px-4 py-3 rounded-lg border transition-all
                     ${selectedId === mapping.skillId
                                                 ? 'bg-purple-500/10 border-purple-500/50 text-purple-300'
-                                                : 'bg-slate-900/50 border-slate-800 text-slate-300 hover:border-slate-700'
+                                                : 'bg-[#0F0F12] border-slate-800 text-slate-300 hover:border-slate-700'
                                             }
                   `}
                                     >
@@ -161,7 +161,7 @@ export default function SkillRoleMappingSection({
                     w-full text-left px-4 py-3 rounded-lg border transition-all
                     ${selectedId === mapping.roleId
                                                 ? 'bg-purple-500/10 border-purple-500/50 text-purple-300'
-                                                : 'bg-slate-900/50 border-slate-800 text-slate-300 hover:border-slate-700'
+                                                : 'bg-[#0F0F12] border-slate-800 text-slate-300 hover:border-slate-700'
                                             }
                   `}
                                     >
@@ -180,7 +180,7 @@ export default function SkillRoleMappingSection({
 
                 {/* Right: Mapping Display */}
                 <div className="lg:col-span-2">
-                    <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+                    <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-6">
                         {viewMode === 'skill-to-role' && selectedSkillMapping ? (
                             <>
                                 <div className="mb-6">

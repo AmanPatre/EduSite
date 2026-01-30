@@ -1,221 +1,385 @@
 "use client";
 import { useSession, signIn } from "next-auth/react";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import SearchBar from "./components/SearchBar";
-import { Book, PlayCircle, Layers, ListVideo, Sparkles } from "lucide-react"; // Added Sparkles icon for recommendations
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, PlayCircle, Zap, Shield, Globe } from "lucide-react";
 
 export default function Home() {
   const { data: session } = useSession();
-  const [searchResults, setSearchResults] = useState<any>(null);
-  const [recommendations, setRecommendations] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
 
-  // 1. Fetch Recommendations (Only if logged in and no search results yet)
-  useEffect(() => {
-    const fetchRecs = async () => {
-      if (session && !searchResults) {
-        try {
-          const res = await axios.get("/api/recommendations");
-          setRecommendations(res.data);
-        } catch (err) {
-          console.error("Failed to fetch recommendations:", err);
-        }
-      }
-    };
-    fetchRecs();
-  }, [session, searchResults]);
-
-  // 2. Handle Search
-  const handleSearch = async (query: string) => {
-    setLoading(true);
-    setSearchResults(null);
-    try {
-      const [vidRes, docRes] = await Promise.all([
-        axios.post("/api/search", { query }),
-        axios.post("/api/docs", { query })
-      ]);
-      
-      setSearchResults({
-        videos: vidRes.data.videos || [],
-        playlists: vidRes.data.playlists || [],
-        docs: docRes.data.data || []
-      });
-    } catch (e) {
-      console.error(e);
-      alert("Search failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // --- VIEW: GUEST (Landing Page) ---
-  if (!session) {
-    return (
-      <div className="flex flex-col items-center justify-center pt-20 px-4 text-center">
-        <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl mb-6">
-          Stop Searching. <span className="text-blue-600">Start Learning.</span>
-        </h1>
-        <p className="max-w-2xl text-lg text-gray-600 mb-10">
-          EduSite aggregates the best free documentation, videos, and roadmaps from around the web into one distraction-free dashboard.
-        </p>
-        <button
-          onClick={() => signIn("google")}
-          className="rounded-full bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-blue-700 hover:scale-105"
-        >
-          Get Started for Free
-        </button>
-        
-        {/* Feature Grid */}
-        <div className="mt-24 grid grid-cols-1 gap-8 sm:grid-cols-3 max-w-5xl">
-           <div className="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4 mx-auto"><Book className="w-6 h-6"/></div>
-              <h3 className="font-bold text-lg">Curated Docs</h3>
-              <p className="text-gray-500 text-sm mt-2">Only the best official documentation and tutorials.</p>
-           </div>
-           <div className="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-4 mx-auto"><PlayCircle className="w-6 h-6"/></div>
-              <h3 className="font-bold text-lg">Smart Video Search</h3>
-              <p className="text-gray-500 text-sm mt-2">AI-ranked videos based on quality, not just views.</p>
-           </div>
-           <div className="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4 mx-auto"><Layers className="w-6 h-6"/></div>
-              <h3 className="font-bold text-lg">Distraction Free</h3>
-              <p className="text-gray-500 text-sm mt-2">No algorithms, no shorts, just pure learning materials.</p>
-           </div>
-        </div>
-      </div>
-    );
-  }
-
-  // --- VIEW: LOGGED IN (Dashboard) ---
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome back, {session.user?.name?.split(" ")[0]}
-        </h1>
-        <p className="text-gray-500 mb-8">What topic are we mastering today?</p>
-        <SearchBar onSearch={handleSearch} loading={loading} />
+    <div className="min-h-screen text-white overflow-hidden relative selection:bg-purple-500/30">
+
+      {/* BACKGROUND BLOBS (Landing Page Only) */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-[10%] left-[20%] w-[500px] h-[500px] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen animate-pulse"></div>
+        <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-blue-600/10 blur-[100px] rounded-full mix-blend-screen"></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[600px] h-[600px] bg-emerald-600/10 blur-[120px] rounded-full mix-blend-screen"></div>
       </div>
 
-      {/* === RECOMMENDATIONS SECTION (Only if NO search results yet) === */}
-      {!searchResults && recommendations && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-          
-          <div className="flex items-center gap-2 mb-6">
-            <Sparkles className="text-yellow-500 w-5 h-5" />
-            <h2 className="text-xl font-bold text-gray-800">Recommended for you</h2>
-            
-          </div>
+      <main className="relative z-10 pt-20 pb-32 px-6">
 
-          <div className="space-y-8">
-            {/* 1. Recommended Videos Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {recommendations.videos?.map((vid:any, i:number) => (
-                <a key={i} href={vid.url} target="_blank" className="group block bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition">
-                   <div className="relative h-32 bg-gray-200">
-                      <img src={vid.thumbnail} className="w-full h-full object-cover" alt=""/>
-                      <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">
-                        {vid.duration}
-                      </span>
-                   </div>
-                   <div className="p-3">
-                      <h3 className="font-bold text-sm line-clamp-2 group-hover:text-blue-600 leading-snug">{vid.title}</h3>
-                      <p className="text-xs text-gray-500 mt-1">{vid.channel}</p>
-                   </div>
-                </a>
-              ))}
+        {/* HERO SECTION */}
+        <div className="max-w-7xl mx-auto text-center relative mb-32">
+
+
+
+          {/* Headline */}
+          <h1 className="text-5xl md:text-7xl mt-20 font-bold tracking-tight mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700">
+            Master Your Learning Journey <br />
+            with  <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
+              EduZard
+              <svg className="absolute -bottom-2 left-0 w-full h-3 text-purple-500/50" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="3" fill="none" />
+              </svg>
+            </span>
+          </h1>
+
+          {/* Subtext */}
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+            EduZard aggregates the best free documentation, videos, and roadmaps from around the web into one distraction-free, intelligent dashboard. Stop searching, start learning.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-200">
+            {session ? (
+              <Link href="/learn" className="group relative px-6 py-3 bg-white text-black font-bold rounded-full hover:bg-slate-200 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]">
+                Start Learning
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            ) : (
+              <button
+                onClick={() => signIn("google")}
+                className="group relative px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-slate-200 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+              >
+                Start Learning
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            )}
+
+
+          </div>
+        </div>
+
+
+        {/* === FEATURE SHOWCASE (ZIG-ZAG LAYOUT) === */}
+        <section className="relative max-w-7xl mx-auto space-y-32 mb-32">
+
+          {/* ROW 1: Image Left | Text Right */}
+          <div className="flex flex-col md:flex-row items-center gap-12 group">
+            {/* IMAGE SIDE */}
+            <div className="flex-1 relative w-full perspective-[1000px]">
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl group-hover:shadow-blue-500/10 transition-all duration-500 transform group-hover:rotate-y-2">
+                {/* Placeholder for Real Photo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                  <img src="/Learn Page.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                </div>
+
+              </div>
+              {/* Glow Behind */}
+              <div className="absolute -inset-4 bg-b  lue-500/20 blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
             </div>
 
-            {/* 2. Recommended Docs Grid (Added This Section) */}
-            <div>
-              <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Suggested Readings</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {recommendations.docs?.map((doc:any, i:number) => (
-                  <a key={i} href={doc.url} target="_blank" className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-400 transition hover:shadow-sm">
-                     <span className="text-xs font-bold text-blue-600 uppercase mb-1">{doc.source || "Documentation"}</span>
-                     <h4 className="font-semibold text-gray-900 text-sm mb-1">{doc.title}</h4>
-                     <p className="text-xs text-gray-500 line-clamp-2">{doc.snippet}</p>
-                  </a>
-                ))}
+            {/* TEXT SIDE */}
+            <div className="flex-1 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                Learn Best Content  <br /> around the World.
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed">
+                Access the internet's best  resources without the noise. We aggregate top-tier yt videos and official documentation so you can focus on mastering complex topics.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Curated Playlists</strong>
+                    <span className="text-sm text-slate-500"> Best docs and videos crash courses from top sources.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Unified Search</strong>
+                    <span className="text-sm text-slate-500">
+                      Find docs and videos instantly in one intelligent interface.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Zero Noise</strong>
+                    <span className="text-sm text-slate-500">No algorithms, no ads, no comments—just pure learning..</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* ROW 2: Text Left | Image Right */}
+          <div className="flex flex-col-reverse md:flex-row items-center gap-12 group">
+            {/* TEXT SIDE */}
+            <div className="flex-1 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                Don't Guess. <br /> Know What's Next..
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed">
+                Stop learning outdated tech. Our real-time market tracker analyzes thousands of developer activities to identify high-growth skills before they go mainstream..
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Live Market Data</strong>
+                    <span className="text-sm text-slate-500">
+                      See exactly what students and pros are learning right now.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Growth Spikes</strong>
+                    <span className="text-sm text-slate-500">
+                      Identify rising stars instantly.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Smart Filtering</strong>
+                    <span className="text-sm text-slate-500">
+                      Sort by category, demand, or learning time.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* IMAGE SIDE */}
+            <div className="flex-1 relative w-full perspective-[1000px]">
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl group-hover:shadow-purple-500/10 transition-all duration-500 transform group-hover:-rotate-y-2">
+                {/* Placeholder for Real Photo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/20">
+                      <span className="text-purple-400 text-2xl font-bold">2</span>
+                    </div>
+                    <p className="text-slate-500 font-mono text-sm">Roadmap Screenshot</p>
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                      <img src="/trendingskills.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  </div>
+                </div>
+                {/* Optional Badge */}
+
+              </div>
+              {/* Glow Behind */}
+              <div className="absolute -inset-4 bg-purple-500/20 blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+          </div>
+
+          {/* 3 */}
+          <div className="flex flex-col md:flex-row items-center gap-12 group">
+            {/* IMAGE SIDE */}
+            <div className="flex-1 relative w-full perspective-[1000px]">
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl group-hover:shadow-blue-500/10 transition-all duration-500 transform group-hover:rotate-y-2">
+                {/* Placeholder for Real Photo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                  <img src="/Jobs.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                </div>
+
+              </div>
+              {/* Glow Behind */}
+              <div className="absolute -inset-4 bg-b  lue-500/20 blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+
+            {/* TEXT SIDE */}
+            <div className="flex-1 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                Align With Industry Demand.
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed">
+                Build the skills employers are actually looking for. We visualize the gap between distinct role categories so you can position yourself perfectly for the next hiring cycle.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Role Breakdown</strong>
+                    <span className="text-sm text-slate-500"> Clear visualization of Job roles.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Monthly Updates</strong>
+                    <span className="text-sm text-slate-500">
+                      Fresh data every 30 days to keep your career strategy current.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Data-Backed Decisions</strong>
+                    <span className="text-sm text-slate-500">Choose your next career move based on facts, not hype.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/*4 */}
+          <div className="flex flex-col-reverse md:flex-row items-center gap-12 group">
+            {/* TEXT SIDE */}
+            <div className="flex-1 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                Your Career ROI
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed">
+                Not all skills are created equal. We visualize the relationship between "Learning Difficulty" and "Market Value" so you can find the sweet spot—high-paying skills that are easier to master.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Effort vs. Reward</strong>
+                    <span className="text-sm text-slate-500">
+                      A Scatter Plot showing exactly which tech yields the highest return.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Hidden Gems:</strong>
+                    <span className="text-sm text-slate-500">
+                      Spot low-effort, high-demand skills (the "Quick Wins").</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Avoid Traps</strong>
+                    <span className="text-sm text-slate-500">
+                      Identify technologies that are incredibly hard to learn but interest is fading.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* IMAGE SIDE */}
+            <div className="flex-1 relative w-full perspective-[1000px]">
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl group-hover:shadow-purple-500/10 transition-all duration-500 transform group-hover:-rotate-y-2">
+                {/* Placeholder for Real Photo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/20">
+                      <span className="text-purple-400 text-2xl font-bold">2</span>
+                    </div>
+                    <p className="text-slate-500 font-mono text-sm">Roadmap Screenshot</p>
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                      <img src="/ROI.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  </div>
+                </div>
+                {/* Optional Badge */}
+
+              </div>
+              {/* Glow Behind */}
+              <div className="absolute -inset-4 bg-purple-500/20 blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+          </div>
+
+          {/* 5 */}
+          <div className="flex flex-col md:flex-row items-center gap-12 group">
+            {/* IMAGE SIDE */}
+            <div className="flex-1 relative w-full perspective-[1000px]">
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl group-hover:shadow-blue-500/10 transition-all duration-500 transform group-hover:rotate-y-2">
+                {/* Placeholder for Real Photo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                  <img src="/roadmap.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                </div>
+
+              </div>
+              {/* Glow Behind */}
+              <div className="absolute -inset-4 bg-b  lue-500/20 blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+
+            {/* TEXT SIDE */}
+            <div className="flex-1 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                Your Personal Roadmap.
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed">
+                No more random tutorials. Get a clear, simple path that takes you from beginner to pro without the confusion.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Stay Focused</strong>
+                    <span className="text-sm text-slate-500"> One step at a time. No distractions.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Track Growth</strong>
+                    <span className="text-sm text-slate-500">
+                      See exactly how far you've come.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div>
+                    <strong className="block text-white">Clear Steps</strong>
+                    <span className="text-sm text-slate-500">Know exactly what to learn next.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </section>
+
+
+        {/* === BIG VIDEO SECTION === */}
+        <section className="relative px-6">
+          <div className="max-w-6xl mx-auto rounded-3xl bg-slate-900/20 border border-slate-800 p-4 md:p-12 relative overflow-hidden text-center group">
+
+            {/* Section Header */}
+            <div className="relative z-10 mb-12">
+
+              <h2 className="text-4xl font-bold text-white mb-4">See Functionality in Action</h2>
+              <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+                Watch how EduSite transforms your learning workflow entirely. From generating a roadmap to tracking your first streak.
+              </p>
+            </div>
+
+            {/* Video Container */}
+            <div className="relative aspect-video w-full rounded-2xl bg-black overflow-hidden border border-slate-800 shadow-2xl group-hover:shadow-red-900/20 transition-shadow duration-500">
+              {/* Placeholder Video Background */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black opacity-80"></div>
+
+              {/* Play Button Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <button className="group/play w-24 h-24 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center transition-all hover:scale-110 border border-white/10">
+                  <PlayCircle className="w-12 h-12 text-white fill-white/10 group-hover/play:fill-white transition-colors duration-300" />
+                </button>
+              </div>
+
+              <div className="absolute bottom-8 left-0 right-0 text-center z-10">
+                <p className="text-sm text-slate-500 font-mono bg-slate-950/80 inline-block px-4 py-2 rounded-lg border border-slate-800">
+                  &lt;video src="/demo.mp4" controls /&gt;
+                </p>
               </div>
             </div>
+
+            {/* Ambient Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-500/5 blur-[150px] rounded-full pointer-events-none -z-10"></div>
           </div>
-        </div>
-      )}
+        </section>
 
-      {/* === SEARCH RESULTS SECTION === */}
-      {searchResults && (
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-in fade-in duration-500">
-            
-            {/* LEFT COLUMN: Docs */}
-            <div className="lg:col-span-1 space-y-4">
-               <h3 className="font-bold text-lg flex items-center gap-2 text-gray-800"><Book className="w-5 h-5"/> Documentation</h3>
-               {searchResults.docs.length > 0 ? (
-                  searchResults.docs.map((doc:any, i:number)=>(
-                    <a key={i} href={doc.url} target="_blank" className="block p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-500 transition shadow-sm group">
-                        <span className="text-xs font-bold text-blue-600 uppercase bg-blue-50 px-2 py-0.5 rounded-full">{doc.source || "Web"}</span>
-                        <h4 className="font-semibold text-gray-900 mt-2 group-hover:text-blue-700">{doc.title}</h4>
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{doc.snippet}</p>
-                    </a>
-                  ))
-               ) : (
-                  <div className="text-center p-8 bg-gray-100 rounded-xl text-gray-500 text-sm">No documentation found.</div>
-               )}
-            </div>
+      </main>
 
-            {/* RIGHT COLUMN: Videos & Playlists */}
-            <div className="lg:col-span-2 space-y-8">
-               
-               {/* Videos */}
-               <div>
-                 <h3 className="font-bold text-lg flex items-center gap-2 mb-4 text-gray-800"><PlayCircle className="w-5 h-5"/> Videos</h3>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {searchResults.videos.map((vid:any, i:number)=>(
-                      <a key={i} href={vid.url} target="_blank" className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition">
-                         <div className="relative h-44 bg-gray-100">
-                            <img src={vid.thumbnail} className="w-full h-full object-cover" alt=""/>
-                            <span className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">{vid.duration || vid.estimatedDuration}</span>
-                         </div>
-                         <div className="p-4">
-                            <h4 className="font-bold text-gray-900 group-hover:text-blue-600 line-clamp-2">{vid.title}</h4>
-                            <p className="text-xs text-gray-500 mt-1">{vid.channel}</p>
-                         </div>
-                      </a>
-                    ))}
-                 </div>
-               </div>
 
-               {/* Playlists */}
-               {searchResults.playlists && searchResults.playlists.length > 0 && (
-                 <div>
-                   <h3 className="font-bold text-lg flex items-center gap-2 mb-4 text-gray-800"><ListVideo className="w-5 h-5"/> Full Courses & Playlists</h3>
-                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {searchResults.playlists.map((pl:any, i:number)=>(
-                        <a key={`pl-${i}`} href={pl.url} target="_blank" className="flex items-center gap-4 p-3 bg-white rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-md transition">
-                           <div className="relative w-24 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                              <img src={pl.thumbnail} className="w-full h-full object-cover" alt=""/>
-                              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                 <ListVideo className="text-white w-6 h-6 drop-shadow-md"/>
-                              </div>
-                           </div>
-                           <div className="flex-1 min-w-0">
-                              <h4 className="font-bold text-sm text-gray-900 line-clamp-1 group-hover:text-blue-600">{pl.title}</h4>
-                              <p className="text-xs text-gray-500 mt-0.5">{pl.channel}</p>
-                              <span className="inline-block mt-1 bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                {pl.totalVideos} Videos
-                              </span>
-                           </div>
-                        </a>
-                      ))}
-                   </div>
-                 </div>
-               )}
 
-            </div>
-         </div>
-      )}
     </div>
   );
 }

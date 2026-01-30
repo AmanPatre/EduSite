@@ -1,11 +1,11 @@
 {
-  "timestamp": 1768245425601,
+  "timestamp": 1769703006481,
   "data": [
     {
       "id": "insight-1",
       "type": "trend",
       "title": "AI-Powered Code Generation",
-      "description": "AI tools like GitHub Copilot and Tabnine are becoming integral to the development workflow, boosting developer productivity by an estimated 40%. This trend is reshaping the demand for specific coding skills.",
+      "description": "AI tools are increasingly integrated into IDEs, automating code writing and accelerating development cycles, boosting productivity by an estimated 30%.",
       "relatedSkills": [
         "skill-3",
         "skill-4",
@@ -17,8 +17,8 @@
     {
       "id": "insight-2",
       "type": "trend",
-      "title": "Serverless Architecture Ascendant",
-      "description": "Serverless computing is gaining traction due to its scalability and cost-effectiveness, especially for event-driven applications. Expect a 25% increase in serverless deployments in the next year.",
+      "title": "Serverless Computing Dominance",
+      "description": "Serverless architectures are gaining traction for scalability and cost efficiency, predicted to manage over 60% of new cloud deployments by 2025.",
       "relatedSkills": [
         "skill-4",
         "skill-6",
@@ -31,55 +31,57 @@
     {
       "id": "insight-3",
       "type": "trend",
-      "title": "Composable Frontend Dominance",
-      "description": "The rise of component-based architectures accelerates development speed. Frameworks like React and Next.js remain highly sought-after.",
+      "title": "Cross-Platform Frameworks Evolving",
+      "description": "Cross-platform frameworks continue to evolve, targeting native performance; Flutter and React Native remain frontrunners with ongoing improvements to address performance concerns.",
       "relatedSkills": [
-        "skill-1",
         "skill-2",
-        "skill-7"
+        "skill-11"
       ],
-      "impact": "High",
-      "timeframe": "Ongoing"
+      "impact": "Medium",
+      "timeframe": "Next 18 months"
     },
     {
       "id": "insight-4",
       "type": "warning",
-      "title": "Generic Python Saturation",
-      "description": "Entry-level Python roles are becoming increasingly saturated. Specialization in areas like data science or AI is now essential for career advancement.",
+      "title": "Generic Python Roles Saturated",
+      "description": "Entry-level Python developer roles are becoming increasingly saturated, requiring candidates to possess specialized skills like data science or AI to stand out.",
       "relatedSkills": [
         "skill-4"
       ],
-      "impact": "Medium",
-      "timeframe": "Ongoing"
-    },
-    {
-      "id": "insight-5",
-      "type": "warning",
-      "title": "Legacy JavaScript Frameworks",
-      "description": "Demand for developers skilled solely in older JavaScript frameworks (e.g., AngularJS) is rapidly declining. Migration to modern frameworks is crucial.",
-      "relatedSkills": [],
       "impact": "High",
       "timeframe": "Next 6 months"
     },
     {
+      "id": "insight-5",
+      "type": "warning",
+      "title": "Basic React Proficiency Insufficient",
+      "description": "Basic React proficiency is no longer enough; deeper understanding of state management (Redux, Context) and performance optimization is now crucial.",
+      "relatedSkills": [
+        "skill-2"
+      ],
+      "impact": "Medium",
+      "timeframe": "Next 12 months"
+    },
+    {
       "id": "insight-6",
       "type": "warning",
-      "title": "Basic Docker Knowledge Sufficient?",
-      "description": "Simple Docker usage is becoming commoditized. Deep understanding of container orchestration and security is now needed to stand out.",
+      "title": "Monolithic Application Approach Declining",
+      "description": "Traditional monolithic application development is losing ground to microservices and distributed architectures; familiarity with containerization is paramount.",
       "relatedSkills": [
+        "skill-6",
         "skill-8"
       ],
-      "impact": "Low",
-      "timeframe": "Q4 2024"
+      "impact": "Medium",
+      "timeframe": "Next 18 months"
     },
     {
       "id": "insight-7",
       "type": "opportunity",
-      "title": "LangChain Specialization Soars",
-      "description": "Expertise in LangChain and similar AI orchestration frameworks is in high demand, with a shortage of qualified professionals. Salaries for these roles are growing rapidly.",
+      "title": "AI-Driven Cybersecurity Experts",
+      "description": "High demand for engineers skilled in using AI for cybersecurity, including threat detection and automated vulnerability analysis.",
       "relatedSkills": [
         "skill-3",
-        "skill-9"
+        "skill-4"
       ],
       "impact": "High",
       "timeframe": "Next 12 months"
@@ -87,26 +89,29 @@
     {
       "id": "insight-8",
       "type": "opportunity",
-      "title": "Rust Secures Systems",
-      "description": "Rust is gaining prominence in security-critical applications and systems programming. Companies are actively seeking Rust developers to build robust and secure infrastructure.",
+      "title": "Edge Computing Specialists Needed",
+      "description": "Edge computing is rapidly expanding, creating a need for developers who can optimize applications for resource-constrained environments.",
       "relatedSkills": [
-        "skill-5"
+        "skill-5",
+        "skill-10",
+        "skill-4"
       ],
-      "impact": "High",
-      "timeframe": "Ongoing"
+      "impact": "Medium",
+      "timeframe": "Q3 2025"
     },
     {
       "id": "insight-9",
       "type": "opportunity",
-      "title": "Go for Cloud Infrastructure",
-      "description": "Go continues its strong growth in cloud infrastructure development and DevOps. Proficiency in Go enhances career prospects in the cloud-native space.",
+      "title": "LangChain Prompt Engineering Ascends",
+      "description": "The nascent field of prompt engineering with frameworks like LangChain is experiencing explosive growth, with significant salary premiums for skilled practitioners.",
       "relatedSkills": [
-        "skill-6",
-        "skill-8",
-        "skill-10"
+        "skill-9",
+        "skill-3",
+        "skill-4",
+        "skill-7"
       ],
-      "impact": "Medium",
-      "timeframe": "Next 18 months"
+      "impact": "High",
+      "timeframe": "Next 6 months"
     }
   ]
 }

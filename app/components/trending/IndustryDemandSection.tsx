@@ -59,7 +59,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
         <section className="space-y-6">
             <SectionHeader
                 icon={Briefcase}
-                iconColor="text-blue-500"
+                iconColor="text-purple-500"
                 title="Industry Demand"
                 description="Job openings by role category this month"
             />
@@ -69,7 +69,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                 <div className="flex items-center gap-2 text-sm">
                     <button
                         onClick={handleBack}
-                        className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
+                        className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Back to All Categories
@@ -80,7 +80,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
             )}
 
             {/* Main Chart */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+            <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-bold text-slate-100">
                         {selectedCategory
@@ -120,7 +120,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                             <Tooltip
                                 cursor={{ fill: '#1e293b' }}
                                 contentStyle={{
-                                    backgroundColor: '#0f172a',
+                                    backgroundColor: '#0F0F12',
                                     border: '1px solid #1e293b',
                                     borderRadius: '8px',
                                     padding: '12px'
@@ -129,7 +129,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                                     if (active && payload && payload.length) {
                                         const data = payload[0].payload;
                                         return (
-                                            <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 shadow-xl">
+                                            <div className="bg-[#0F0F12] border border-slate-800 rounded-lg p-3 shadow-xl">
                                                 <p className="font-bold text-slate-100 mb-2">{data.name}</p>
                                                 <div className="space-y-1 text-sm">
                                                     <p className="text-slate-300">
@@ -139,7 +139,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                                                         <span className="text-slate-500">Growth:</span> +{data.growth}%
                                                     </p>
                                                     {data.salary && (
-                                                        <p className="text-blue-400">
+                                                        <p className="text-purple-400">
                                                             <span className="text-slate-500">Avg Salary:</span> {data.salary}
                                                         </p>
                                                     )}
@@ -157,7 +157,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                                 dataKey="jobs"
                                 radius={[8, 8, 0, 0]}
                                 onClick={handleBarClick}
-                                onMouseEnter={(data) => setHoveredBar(data.id)}
+                                onMouseEnter={(data) => setHoveredBar(data.id || null)}
                                 onMouseLeave={() => setHoveredBar(null)}
                                 cursor={!selectedCategory ? 'pointer' : 'default'}
                             >
@@ -197,7 +197,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                                     <p className="text-xs text-slate-500 mt-1">Role Types</p>
                                 </div>
                                 <div className="text-center">
-                                    <p className="text-2xl font-bold text-blue-400">
+                                    <p className="text-2xl font-bold text-purple-400">
                                         {selectedCategory.subcategories[0]?.avgSalary || 'N/A'}
                                     </p>
                                     <p className="text-xs text-slate-500 mt-1">Top Avg Salary</p>
@@ -242,7 +242,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                         <button
                             key={role.id}
                             onClick={() => setSelectedCategory(role)}
-                            className="group bg-slate-900/50 border border-slate-800 rounded-xl p-5 text-left transition-all hover:border-slate-700 hover:shadow-xl hover:-translate-y-1"
+                            className="group bg-[#0F0F12] border border-slate-800 rounded-xl p-5 text-left transition-all hover:border-slate-700 hover:shadow-xl hover:-translate-y-1"
                         >
                             <div className="flex items-start justify-between mb-3">
                                 <div
@@ -255,7 +255,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                                     +{role.growth}%
                                 </span>
                             </div>
-                            <h4 className="font-bold text-slate-100 mb-1 group-hover:text-blue-400 transition-colors">
+                            <h4 className="font-bold text-slate-100 mb-1 group-hover:text-purple-400 transition-colors">
                                 {role.category}
                             </h4>
                             <p className="text-2xl font-black text-slate-200 mb-2">
@@ -264,7 +264,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                             <p className="text-xs text-slate-500">
                                 {role.subcategories.length} role types
                             </p>
-                            <div className="mt-3 flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="mt-3 flex items-center gap-1 text-xs text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
                                 View breakdown <ChevronRight className="w-3 h-3" />
                             </div>
                         </button>
