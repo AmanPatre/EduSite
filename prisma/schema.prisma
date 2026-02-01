@@ -111,3 +111,38 @@ model Activity {
   
   createdAt DateTime @default(now())
 }
+
+model TrendScore {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  skillName         String   @unique
+  category          String
+  trendScore        Int      // 0-100
+  githubScore       Float
+  githubWeight      Float
+  youtubeScore      Float
+  youtubeWeight     Float
+  githubSampleSize  Int
+  youtubeSampleSize Int
+  updatedAt         DateTime @updatedAt
+  createdAt         DateTime @default(now())
+}
+
+model TrendHistory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  skillName String   @unique
+  scores    Json     // Array of scores [65, 68, 72...]
+  updatedAt DateTime @updatedAt
+}
+model SkillRoleMap {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  skillName String   @unique
+  roles     Json     // Stores the list of roles & match scores
+  updatedAt DateTime @updatedAt // Used to check 24h expiration
+
+}
+model RoleSkillMap {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  roleName  String   @unique
+  skills    Json     // Stores the list of skills & importance
+  updatedAt DateTime @updatedAt
+}

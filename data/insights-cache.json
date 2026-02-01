@@ -1,72 +1,23 @@
 {
-  "timestamp": 1769703006481,
+  "timestamp": 1769928574263,
   "data": [
     {
       "id": "insight-1",
       "type": "trend",
-      "title": "AI-Powered Code Generation",
-      "description": "AI tools are increasingly integrated into IDEs, automating code writing and accelerating development cycles, boosting productivity by an estimated 30%.",
+      "title": "AI-Driven Code Generation",
+      "description": "AI is revolutionizing code development, with tools like GitHub Copilot X and Tabnine increasing developer velocity by an estimated 40%. This is leading to a shift towards prompt engineering and AI-assisted debugging.",
       "relatedSkills": [
         "skill-3",
-        "skill-4",
-        "skill-7"
+        "skill-4"
       ],
       "impact": "High",
-      "timeframe": "Next 6 months"
+      "timeframe": "Ongoing"
     },
     {
       "id": "insight-2",
       "type": "trend",
-      "title": "Serverless Computing Dominance",
-      "description": "Serverless architectures are gaining traction for scalability and cost efficiency, predicted to manage over 60% of new cloud deployments by 2025.",
-      "relatedSkills": [
-        "skill-4",
-        "skill-6",
-        "skill-8",
-        "skill-10"
-      ],
-      "impact": "Medium",
-      "timeframe": "Next 12 months"
-    },
-    {
-      "id": "insight-3",
-      "type": "trend",
-      "title": "Cross-Platform Frameworks Evolving",
-      "description": "Cross-platform frameworks continue to evolve, targeting native performance; Flutter and React Native remain frontrunners with ongoing improvements to address performance concerns.",
-      "relatedSkills": [
-        "skill-2",
-        "skill-11"
-      ],
-      "impact": "Medium",
-      "timeframe": "Next 18 months"
-    },
-    {
-      "id": "insight-4",
-      "type": "warning",
-      "title": "Generic Python Roles Saturated",
-      "description": "Entry-level Python developer roles are becoming increasingly saturated, requiring candidates to possess specialized skills like data science or AI to stand out.",
-      "relatedSkills": [
-        "skill-4"
-      ],
-      "impact": "High",
-      "timeframe": "Next 6 months"
-    },
-    {
-      "id": "insight-5",
-      "type": "warning",
-      "title": "Basic React Proficiency Insufficient",
-      "description": "Basic React proficiency is no longer enough; deeper understanding of state management (Redux, Context) and performance optimization is now crucial.",
-      "relatedSkills": [
-        "skill-2"
-      ],
-      "impact": "Medium",
-      "timeframe": "Next 12 months"
-    },
-    {
-      "id": "insight-6",
-      "type": "warning",
-      "title": "Monolithic Application Approach Declining",
-      "description": "Traditional monolithic application development is losing ground to microservices and distributed architectures; familiarity with containerization is paramount.",
+      "title": "Serverless Architectures Expand",
+      "description": "Serverless adoption is accelerating as businesses seek scalability and cost efficiency, projected to grow by 25% annually. This trend emphasizes skills in function-as-a-service (FaaS) platforms and event-driven architectures.",
       "relatedSkills": [
         "skill-6",
         "skill-8"
@@ -75,26 +26,70 @@
       "timeframe": "Next 18 months"
     },
     {
+      "id": "insight-3",
+      "type": "trend",
+      "title": "Frontend Framework Consolidation",
+      "description": "While JavaScript frameworks remain dominant, the market is seeing a consolidation around React and Next.js, with these frameworks accounting for over 60% of new project choices. This leads to greater standardization and reusable components.",
+      "relatedSkills": [
+        "skill-1",
+        "skill-2",
+        "skill-7"
+      ],
+      "impact": "High",
+      "timeframe": "Next 12 Months"
+    },
+    {
+      "id": "insight-4",
+      "type": "warning",
+      "title": "Generalist Mobile Dev Saturation",
+      "description": "The market for generalist mobile developers is becoming increasingly saturated, with lower-than-average salary growth compared to specialized roles. Focus on niche skills like AR/VR or cross-platform expertise is crucial.",
+      "relatedSkills": [
+        "skill-11"
+      ],
+      "impact": "Medium",
+      "timeframe": "Ongoing"
+    },
+    {
+      "id": "insight-5",
+      "type": "warning",
+      "title": "Traditional Data Engineering Lag",
+      "description": "Traditional ETL-focused data engineering roles are facing increased competition from cloud-native data solutions and automated pipelines. Upgrading skills to include real-time data processing and AI-driven analytics is essential.",
+      "relatedSkills": [
+        "skill-4"
+      ],
+      "impact": "Medium",
+      "timeframe": "Next 24 Months"
+    },
+    {
+      "id": "insight-6",
+      "type": "warning",
+      "title": "Waterfall Methodology Decline",
+      "description": "Projects exclusively using Waterfall methodologies are becoming less competitive due to slower iteration cycles and reduced agility. Transition to Agile and DevOps practices is crucial for project success.",
+      "relatedSkills": [],
+      "impact": "Low",
+      "timeframe": "Ongoing"
+    },
+    {
       "id": "insight-7",
       "type": "opportunity",
-      "title": "AI-Driven Cybersecurity Experts",
-      "description": "High demand for engineers skilled in using AI for cybersecurity, including threat detection and automated vulnerability analysis.",
+      "title": "Generative AI Tooling Experts",
+      "description": "There is a significant shortage of engineers skilled in developing and deploying generative AI tooling, especially around LangChain and similar frameworks. Roles focused on prompt engineering and model fine-tuning are in high demand.",
       "relatedSkills": [
         "skill-3",
+        "skill-9",
         "skill-4"
       ],
       "impact": "High",
-      "timeframe": "Next 12 months"
+      "timeframe": "Next 6 Months"
     },
     {
       "id": "insight-8",
       "type": "opportunity",
-      "title": "Edge Computing Specialists Needed",
-      "description": "Edge computing is rapidly expanding, creating a need for developers who can optimize applications for resource-constrained environments.",
+      "title": "WebAssembly (Wasm) Innovation",
+      "description": "WebAssembly is gaining traction for high-performance web applications and server-side execution, with a growing ecosystem and increasing browser support. Expertise in Wasm and its related tooling presents a significant opportunity.",
       "relatedSkills": [
         "skill-5",
-        "skill-10",
-        "skill-4"
+        "skill-10"
       ],
       "impact": "Medium",
       "timeframe": "Q3 2025"
@@ -102,16 +97,11 @@
     {
       "id": "insight-9",
       "type": "opportunity",
-      "title": "LangChain Prompt Engineering Ascends",
-      "description": "The nascent field of prompt engineering with frameworks like LangChain is experiencing explosive growth, with significant salary premiums for skilled practitioners.",
-      "relatedSkills": [
-        "skill-9",
-        "skill-3",
-        "skill-4",
-        "skill-7"
-      ],
-      "impact": "High",
-      "timeframe": "Next 6 months"
+      "title": "Low-Code/No-Code Specialists",
+      "description": "Despite concerns about limitations, skilled developers are needed to integrate Low-Code/No-Code platforms with existing systems and extend their functionality. Demand is growing for experts who can bridge the gap between citizen developers and professional software engineers.",
+      "relatedSkills": [],
+      "impact": "Low",
+      "timeframe": "Next 18 months"
     }
   ]
 }

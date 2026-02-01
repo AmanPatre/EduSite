@@ -7,30 +7,45 @@
 // Includes interactive chart showing learning trends over time
 
 import React, { useState } from 'react';
-import { TrendingUp, Flame, Users, Search } from 'lucide-react';
+import { TrendingUp, Flame, Activity, Search } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { TrendingSkill } from '@/data/trendingData';
 import SectionHeader from './SectionHeader';
+import TransparencyNote from './TransparencyNote';
 import Link from 'next/link';
+// Define the shape of our API Data
+interface TrendScoreResult {
+    name: string;
+    category: string;
+    trendScore: number;
+    breakdown: {
+        github: number;
+        youtube: number;
+    };
+}
 
 interface TrendingSkillsSectionProps {
-    skills: TrendingSkill[];
+    skills: any[]; // Accepting the raw API response
 }
 
 export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionProps) {
     // Safety check
-    const initialSelection = skills.length > 0 ? [skills[0]?.id, skills[2]?.id].filter(Boolean) : [];
+    const hasData = skills && skills.length > 0;
+    const initialSelection: string[] = []; // Start with nothing selected
 
     const [selectedSkills, setSelectedSkills] = useState<string[]>(initialSelection);
     const [filter, setFilter] = useState<'all' | 'Frontend' | 'Backend' | 'AI/ML' | 'DevOps' | 'Mobile' | 'Design'>('all');
     const [searchTerm, setSearchTerm] = useState('');
 
     // If no data
-    if (!skills || skills.length === 0) {
-        // ... (loading state)
+    if (!hasData) {
         return (
             <section className="space-y-6 animate-pulse">
-                {/* ... skeleton ... */}
+                <div className="h-10 w-48 bg-slate-800 rounded-lg"></div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="h-40 bg-slate-800 rounded-xl"></div>
+                    ))}
+                </div>
             </section>
         );
     }
@@ -39,68 +54,37 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
     let displaySkills = skills;
 
     if (searchTerm.trim() !== '') {
-        // 1. Search Mode (Global Search)
         displaySkills = skills.filter(skill =>
             skill.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
     } else {
-        // 2. Tab Mode
         if (filter === 'all') {
-            // "Default": Show Top 8 Trending (Sorted by Growth)
-            displaySkills = [...skills]
-                .sort((a, b) => b.growthRate - a.growthRate)
-                .slice(0, 8);
+            // Default: Show Top 8 (API already sends them sorted by score)
+            displaySkills = skills.slice(0, 8);
         } else {
-            // Category Filter
             displaySkills = skills.filter(skill => skill.category === filter);
         }
     }
 
-    // Ensure we sort whatever result we have by growth for nicer display
-    const sortedDisplaySkills = [...displaySkills].sort((a, b) => b.growthRate - a.growthRate);
-
-
-    // ... (Chart Data Preparation Logic remains same)
-    const historyLength = skills[0]?.learningTrend?.length || 3;
-    const monthLabels = Array.from({ length: historyLength }, (_, i) => {
-        const d = new Date();
-        d.setMonth(d.getMonth() - ((historyLength - 1) - i));
-        return d.toLocaleString('default', { month: 'short' });
-    });
-
-    const chartData = selectedSkills.length > 0
-        ? skills
-            .filter(skill => selectedSkills.includes(skill.id))
-            .map(skill => ({
-                name: skill.name,
-                data: skill.learningTrend.map((value, index) => ({
-                    month: monthLabels[index],
-                    [skill.name]: value
-                }))
-            }))
-        : [];
-
-    const mergedChartData = chartData.length > 0
-        ? chartData[0].data.map((item, index) => {
-            const merged: any = { month: item.month };
-            chartData.forEach(skillData => {
-                const skillName = skillData.name;
-                merged[skillName] = skillData.data[index][skillName];
-            });
-            return merged;
-        })
-        : [];
-
-    // ... helpers
-    const toggleSkillSelection = (skillId: string) => {
-        // ...
+    const toggleSkillSelection = (skillName: string) => {
         setSelectedSkills(prev =>
-            prev.includes(skillId)
-                ? prev.filter(id => id !== skillId)
-                : [...prev, skillId]
+            prev.includes(skillName)
+                ? prev.filter(n => n !== skillName)
+                : [...prev, skillName]
         );
     };
-    const colors = ['#3b82f6', '#a855f7', '#22c55e', '#f59e0b', '#ec4899'];
+
+    // Helper to generate a fake "trend history" for the chart if we don't have one yet
+    // In Phase 4, we will use real history from DB
+    const getMockTrendHistory = (score: number) => {
+        // Create a curve ending at the current score
+        return [
+            Math.max(0, score - 15),
+            Math.max(0, score - 10),
+            Math.max(0, score - 5),
+            score
+        ];
+    };
 
     return (
         <section className="space-y-6">
@@ -109,7 +93,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                     icon={Flame}
                     iconColor="text-orange-500"
                     title="Trending Skills"
-                    description="What students are learning most this month"
+                    description="Real-time popularity score (0-100) based on GitHub & YouTube activity."
                 />
 
                 {/* SEARCH BAR */}
@@ -127,18 +111,20 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                 </div>
             </div>
 
-            {/* Filter Tabs (Only show if NOT searching) */}
+            <TransparencyNote />
+
+            {/* Filter Tabs */}
             {searchTerm === '' && (
                 <div className="flex flex-wrap gap-2">
                     <button
                         onClick={() => setFilter('all')}
                         className={`
-                           px-4 py-2 rounded-lg text-sm font-medium transition-all
-                           ${filter === 'all'
-                                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30' // Highlight "Top Trending"
+               px-4 py-2 rounded-lg text-sm font-medium transition-all
+               ${filter === 'all'
+                                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
                                 : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                             }
-                         `}
+             `}
                     >
                         🔥 Top Trending
                     </button>
@@ -147,12 +133,12 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                             key={category}
                             onClick={() => setFilter(category)}
                             className={`
-                  px-4 py-2 rounded-lg text-sm font-medium transition-all
-                  ${filter === category
+      px-4 py-2 rounded-lg text-sm font-medium transition-all
+      ${filter === category
                                     ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30'
                                     : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                                 }
-                `}
+    `}
                         >
                             {category}
                         </button>
@@ -160,23 +146,17 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                 </div>
             )}
 
-            {/* Search Results Header */}
-            {searchTerm !== '' && (
-                <p className="text-sm text-slate-400">
-                    Found {sortedDisplaySkills.length} result{sortedDisplaySkills.length !== 1 ? 's' : ''} for <span className="text-purple-400 font-bold">"{searchTerm}"</span>
-                </p>
-            )}
-
             {/* Skills Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {sortedDisplaySkills.map((skill, index) => {
-                    const isSelected = selectedSkills.includes(skill.id);
-                    const isTopTrending = index < 3;
+                {displaySkills.map((skill, index) => {
+                    const isSelected = selectedSkills.includes(skill.name);
+                    const isTop3 = index < 3 && filter === 'all';
+                    const mockHistory = getMockTrendHistory(skill.trendScore);
 
                     return (
                         <div
-                            key={skill.id}
-                            onClick={() => toggleSkillSelection(skill.id)}
+                            key={skill.name}
+                            onClick={() => toggleSkillSelection(skill.name)}
                             className={`
                 relative group cursor-pointer rounded-xl border p-5 transition-all duration-300
                 ${isSelected
@@ -186,81 +166,50 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
               `}
                         >
                             {/* Top Trending Badge */}
-                            {isTopTrending && (
+                            {isTop3 && (
                                 <div className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg">
                                     🔥 #{index + 1}
                                 </div>
                             )}
 
-                            {/* Skill Icon & Name */}
-                            <div className="flex items-start justify-between mb-3">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-3xl">{skill.icon}</span>
-                                    <div>
-                                        <h3 className="font-bold text-slate-100 group-hover:text-purple-400 transition-colors">
-                                            {skill.name}
-                                        </h3>
-                                        <span className="text-xs text-slate-500 uppercase tracking-wide">
-                                            {skill.category}
-                                        </span>
-                                    </div>
+                            {/* Title Row */}
+                            <div className="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 className="text-xl font-bold text-slate-100">{skill.name}</h3>
+                                    <span className="text-xs text-slate-500 uppercase">{skill.category}</span>
+                                </div>
+
+                                {/* Score Circle */}
+                                <div className={`
+                    flex items-center justify-center w-10 h-10 rounded-full font-bold text-sm
+                    ${skill.trendScore >= 80 ? 'bg-green-500/20 text-green-400 border border-green-500/50' :
+                                        skill.trendScore >= 50 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50' :
+                                            'bg-slate-700/50 text-slate-400 border border-slate-600'}
+                `}>
+                                    {skill.trendScore}
                                 </div>
                             </div>
 
-                            {/* Metrics */}
-                            <div className="space-y-2 mb-3">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-slate-400 flex items-center gap-1">
-                                        <Users className="w-3 h-3" />
-                                        Learners
-                                    </span>
-                                    <span className="text-sm font-bold text-slate-200">
-                                        {(skill.currentLearners / 1000).toFixed(1)}k
-                                    </span>
+                            {/* Metrics Row */}
+                            <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
+                                <div className="bg-slate-800/50 p-2 rounded flex flex-col items-center">
+                                    <span className="text-slate-400">GitHub</span>
+                                    <span className="font-bold text-slate-200">{skill.breakdown.github.toFixed(0)}</span>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-slate-400 flex items-center gap-1">
-                                        <TrendingUp className="w-3 h-3" />
-                                        Growth
-                                    </span>
-                                    <span className={`text-sm font-bold ${skill.growthRate > 50 ? 'text-green-400' :
-                                        skill.growthRate > 30 ? 'text-purple-400' :
-                                            'text-slate-400'
-                                        }`}>
-                                        {skill.growthRate > 0 ? '+' : ''}{skill.growthRate}%
-                                    </span>
+                                <div className="bg-slate-800/50 p-2 rounded flex flex-col items-center">
+                                    <span className="text-slate-400">YouTube</span>
+                                    <span className="font-bold text-slate-200">{skill.breakdown.youtube.toFixed(0)}</span>
                                 </div>
                             </div>
 
-                            {/* Mini Sparkline */}
-                            <div className="h-12 -mx-2">
+                            {/* Sparkline (Visual only for Phase 3) */}
+                            <div className="h-10 -mx-2">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={skill.learningTrend.map((val, i) => ({ i, val }))}>
-                                        <defs>
-                                            <linearGradient id={`gradient-${skill.id}`} x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor={isSelected ? '#a855f7' : '#64748b'} stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor={isSelected ? '#a855f7' : '#64748b'} stopOpacity={0} />
-                                            </linearGradient>
-                                        </defs>
-                                        <Area
-                                            type="monotone"
-                                            dataKey="val"
-                                            stroke={isSelected ? '#a855f7' : '#64748b'}
-                                            strokeWidth={2}
-                                            fill={`url(#gradient-${skill.id})`}
-                                        />
+                                    <AreaChart data={mockHistory.map((val, i) => ({ v: val }))}>
+                                        <Area type="monotone" dataKey="v" stroke={isSelected ? '#a855f7' : '#475569'} fill="none" strokeWidth={2} />
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
-
-                            {/* View Details Link */}
-                            <Link
-                                href={`/trending/${skill.slug}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="mt-3 text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                                View Details →
-                            </Link>
 
                             {/* Selection Indicator */}
                             {isSelected && (
@@ -270,71 +219,6 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                     );
                 })}
             </div>
-
-            {/* Large Interactive Chart */}
-            {selectedSkills.length > 0 && (
-                <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-slate-100">Learning Trend Comparison</h3>
-                        <span className="text-xs text-slate-500">
-                            Click on cards above to compare skills
-                        </span>
-                    </div>
-                    <div className="h-80 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={mergedChartData}>
-                                <defs>
-                                    {selectedSkills.map((skillId, index) => {
-                                        const skill = skills.find(s => s.id === skillId);
-                                        return (
-                                            <linearGradient key={skillId} id={`color-${skillId}`} x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor={colors[index % colors.length]} stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor={colors[index % colors.length]} stopOpacity={0} />
-                                            </linearGradient>
-                                        );
-                                    })}
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                                <XAxis
-                                    dataKey="month"
-                                    stroke="#64748b"
-                                    fontSize={12}
-                                    tickLine={false}
-                                />
-                                <YAxis
-                                    stroke="#64748b"
-                                    fontSize={12}
-                                    tickLine={false}
-                                    tickFormatter={(val) => `${(val / 1000).toFixed(0)}k`}
-                                />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: '#0f172a',
-                                        border: '1px solid #1e293b',
-                                        borderRadius: '8px'
-                                    }}
-                                    itemStyle={{ color: '#fff' }}
-                                    formatter={(value: any) => [`${(value / 1000).toFixed(1)}k learners`, '']}
-                                />
-                                {selectedSkills.map((skillId, index) => {
-                                    const skill = skills.find(s => s.id === skillId);
-                                    return skill ? (
-                                        <Area
-                                            key={skillId}
-                                            type="monotone"
-                                            dataKey={skill.name}
-                                            stroke={colors[index % colors.length]}
-                                            strokeWidth={3}
-                                            fillOpacity={1}
-                                            fill={`url(#color-${skillId})`}
-                                        />
-                                    ) : null;
-                                })}
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-            )}
         </section>
     );
 }

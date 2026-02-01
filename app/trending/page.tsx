@@ -1,4 +1,4 @@
-"use client";
+
 
 // ============================================
 // TRENDING DASHBOARD - MAIN PAGE
@@ -11,19 +11,17 @@
 // 5. Market Insights - AI-powered analysis
 
 
-import React, { useState, useEffect } from 'react';
-import { Activity } from 'lucide-react';
-import axios from 'axios'; // Import Axios
+import React from 'react';
+import Navbar from "../components/Navbar";
+import PageWrapper from "../components/PageWrapper";
+import TrendingSkillsSection from "../components/trending/TrendingSkillsSection";
+import MarketInsightsSection from "../components/trending/MarketInsightsSection";
+import IndustryDemandSection from "../components/trending/IndustryDemandSection";
+import SkillRoleMappingSection from "../components/trending/SkillRoleMappingSection";
+import EffortRewardSection from "../components/trending/EffortRewardSection";
 
-import TrendingSkillsSection from '@/app/components/trending/TrendingSkillsSection';
-import IndustryDemandSection from '@/app/components/trending/IndustryDemandSection';
-import SkillRoleMappingSection from '@/app/components/trending/SkillRoleMappingSection';
-import EffortRewardSection from '@/app/components/trending/EffortRewardSection';
-import MarketInsightsSection from '@/app/components/trending/MarketInsightsSection';
-
-// Import data
+// Import mock data for other sections
 import {
-  trendingSkills as mockSkills, // Renamed to avoid confusion
   industryRoles,
   skillRoleMappings,
   roleSkillMappings,
@@ -31,108 +29,77 @@ import {
   marketInsights
 } from '@/data/trendingData';
 
-export default function TrendingPage() {
-  // 1. State for Real Data
-  const [realSkills, setRealSkills] = useState([]);
-  const [realJobs, setRealJobs] = useState([]);
-  const [realInsights, setRealInsights] = useState([]); // New State
-  const [loading, setLoading] = useState(true);
+// Force dynamic rendering since we are fetching live trend data
+export const dynamic = 'force-dynamic';
 
-  // 2. Fetch data with Axios
-  useEffect(() => {
-    async function loadData() {
-      try {
-        // Parallel Fetch for Speed
-        const [skillsRes, jobsRes, insightsRes] = await Promise.all([
-          axios.get('/api/trending-proxy'),
-          axios.get('/api/jobs-proxy'),
-          axios.post('/api/market-analytics') // Independent Gemini Call
-        ]);
+async function getTrendScores() {
+  try {
+    // Determine base URL based on environment (server-side only)
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
 
-        setRealSkills(skillsRes.data);
-        setRealJobs(jobsRes.data);
-        setRealInsights(insightsRes.data);
+    // 2. FETCH JOBS (Parallel)
+    const jobsResPromise = fetch(`${baseUrl}/api/jobs-proxy`, {
+      next: { revalidate: 3600 }
+    });
 
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        setLoading(false);
-      }
+    const [res, jobsRes] = await Promise.all([
+      fetch(`${baseUrl}/api/trend-scores`, { next: { revalidate: 0 } }),
+      jobsResPromise
+    ]);
+
+    let realSkills = [];
+    if (res.ok) {
+      realSkills = await res.json();
     }
-    loadData();
-  }, []);
 
-  // Use real data if available, otherwise fallback to mock
-  const displaySkills = realSkills.length > 0 ? realSkills : loading ? [] : mockSkills;
-  const displayJobs = realJobs.length > 0 ? realJobs : industryRoles;
-  const displayInsights = realInsights.length > 0 ? realInsights : marketInsights; // Fallback
+    let realJobs = [];
+    if (jobsRes.ok) {
+      realJobs = await jobsRes.json();
+    }
+
+    return { skills: realSkills, jobs: realJobs };
+  } catch (error) {
+    console.error('Failed to fetch trend scores or jobs:', error);
+    return { skills: [], jobs: [] };
+  }
+}
+
+export default async function TrendingPage() {
+  const { skills: trendSkills, jobs: trendJobs } = await getTrendScores();
 
   return (
-    <div className="min-h-screen bg-[#05050A] text-slate-100 font-sans pb-20 selection:bg-purple-500/30 relative overflow-hidden">
+    <div className="relative min-h-screen bg-[#030014] overflow-hidden selection:bg-purple-500/30">
 
-      {/* HEADER */}
-      <div className="border-b border-slate-800 bg-[#05050A]/80 backdrop-blur-md z-20 relative pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-start justify-between relative">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] bg-purple-500/10 blur-[60px] rounded-full pointer-events-none"></div>
-            <div className="relative">
-              <h1 className="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 pb-2 flex items-center gap-3">
-                <Activity className="w-8 h-8 text-pink-500" />
-                Trending Dashboard
-              </h1>
-
-            </div>
-
-          </div>
-        </div>
+      {/* Background Gradients */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-500/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* MAIN CONTENT */}
-      <main className="max-w-7xl mx-auto px-6 py-10 space-y-16">
+      <Navbar />
 
-        {/* SECTION 1: TRENDING SKILLS (REAL DATA) */}
-        <TrendingSkillsSection skills={displaySkills} />
+      <PageWrapper>
+        <main className="container mx-auto px-4 pt-32 pb-20 relative z-10 space-y-24">
 
-        {/* DIVIDER */}
-        <div className="border-t border-slate-800" />
 
-        {/* SECTION 2: INDUSTRY DEMAND (REAL JOBS) */}
-        <IndustryDemandSection roles={displayJobs} />
 
-        {/* DIVIDER */}
-        <div className="border-t border-slate-800" />
+          {/* 1. Trending Skills (The Core Feature) */}
+          <TrendingSkillsSection skills={trendSkills} />
 
-        {/* SECTION 3: SKILL ↔ ROLE MAPPING */}
-        <SkillRoleMappingSection
-          skillMappings={skillRoleMappings}
-          roleMappings={roleSkillMappings}
-        />
+          {/* 2. Breakdown & Insights */}
 
-        {/* DIVIDER */}
-        <div className="border-t border-slate-800" />
+          <IndustryDemandSection roles={trendJobs.length > 0 ? trendJobs : industryRoles} />
+          <SkillRoleMappingSection
+            skillMappings={skillRoleMappings}
+            roleMappings={roleSkillMappings}
+          />
+          <EffortRewardSection data={effortRewardData} />
+          <MarketInsightsSection insights={marketInsights} />
 
-        {/* SECTION 4: EFFORT VS REWARD */}
-        <EffortRewardSection data={effortRewardData} />
-
-        {/* DIVIDER */}
-        <div className="border-t border-slate-800" />
-
-        {/* SECTION 5: MARKET INSIGHTS */}
-        <MarketInsightsSection insights={displayInsights} />
-
-      </main>
-
-      {/* FOOTER */}
-      <footer className="border-t border-slate-800 mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center">
-          <p className="text-sm text-slate-500">
-            Data updated monthly • Built with Next.js, TypeScript, and Recharts
-          </p>
-          <p className="text-xs text-slate-600 mt-2">
-            Helping students make informed learning decisions 🚀
-          </p>
-        </div>
-      </footer>
+        </main>
+      </PageWrapper>
     </div>
   );
 }
