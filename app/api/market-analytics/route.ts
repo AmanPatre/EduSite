@@ -4,6 +4,8 @@ import { trendingSkills, TrendingSkill } from '@/data/trendingData';
 import { prisma } from "@/lib/prisma";
 import redis from "@/lib/redis";
 
+export const dynamic = "force-dynamic";
+
 export async function POST() {
     try {
         const apiKey = process.env.GEMINI_API_KEY;
