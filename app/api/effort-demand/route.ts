@@ -5,6 +5,8 @@ import redis from "@/lib/redis";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);

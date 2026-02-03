@@ -5,6 +5,8 @@ import redis from "@/lib/redis";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
     try {
         const { role } = await req.json();
