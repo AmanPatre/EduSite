@@ -61,9 +61,12 @@ export default function Home() {
           {/* ROW 1: Image Left | Text Right */}
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
             <div className="flex-1 relative w-full perspective-[1000px] order-1 md:order-1">
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:rotate-y-2">
+              {/* Glow Effect */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-purple-600/20 blur-[80px] rounded-full z-0 pointer-events-none"></div>
+
+              <div className="relative z-10 aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:rotate-y-2">
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-                  <img src="/Learn Page.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                  <img src="/learn2.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
             </div>
@@ -118,45 +121,133 @@ export default function Home() {
               </ul>
             </div>
             <div className="flex-1 relative w-full perspective-[1000px] order-1 md:order-2">
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:-rotate-y-2">
+              {/* Glow Effect */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-purple-600/20 blur-[80px] rounded-full z-0 pointer-events-none"></div>
+
+              <div className="relative z-10 aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:-rotate-y-2">
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
                   <div className="text-center w-full h-full relative">
-                    <img src="/trendingskills.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <img src="/trendingskills2.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ROW 3: ROI Section */}
+          {/* ROW 3: Mapping Section */}
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
             <div className="flex-1 relative w-full perspective-[1000px] order-1 md:order-1">
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:rotate-y-2">
+              {/* Glow Effect */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-purple-600/20 blur-[80px] rounded-full z-0 pointer-events-none"></div>
+
+              <div className="relative z-10 aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:rotate-y-2">
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-                  <img src="/Jobs.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                  <img src="/mapping.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
             </div>
             <div className="flex-1 space-y-6 order-2 md:order-2 px-2">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 leading-tight">
-                Align With Industry Demand.
+                Connect Skills to <br /> Real Careers.
               </h2>
               <p className="text-base md:text-lg text-slate-400 leading-relaxed">
-                Build the skills employers are actually looking for. We visualize the gap between distinct role categories so you can position yourself perfectly for the next hiring cycle.
+                Wondering where "React" can take you? Or what you need to become a "DevOps Engineer"? Our AI maps the relationships between skills and job roles instantly.
               </p>
               {/* Simplified List for Code Brevity */}
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-slate-300">
                   <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
-                  <div><strong className="block text-white">Role Breakdown</strong><span className="text-sm text-slate-500">Visualization of Job roles.</span></div>
+                  <div><strong className="block text-white">Bidirectional Mapping</strong><span className="text-sm text-slate-500">Find roles for your skills, or skills for a role.</span></div>
                 </li>
                 <li className="flex items-start gap-3 text-slate-300">
                   <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
-                  <div><strong className="block text-white">Monthly Updates</strong><span className="text-sm text-slate-500">Fresh data every 30 days.</span></div>
+                  <div><strong className="block text-white">Strategic Insight</strong><span className="text-sm text-slate-500">Understand why specific skills are critical for the job.</span></div>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400" /></div>
+                  <div><strong className="block text-white">Gap Analysis</strong><span className="text-sm text-slate-500">Identify exactly what you're missing for your dream job.</span></div>
                 </li>
               </ul>
             </div>
           </div>
+
+          {/* ROW 4: Roadmap Section */}
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
+            <div className="flex-1 space-y-6 order-2 md:order-1 px-2">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 leading-tight">
+                Your Personal GPS <br /> for Tech Skills.
+              </h2>
+              <p className="text-base md:text-lg text-slate-400 leading-relaxed">
+                Stop getting lost in tutorials. Our AI generates a step-by-step curriculum tailored to your goals, complete with projects and progress tracking.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  { title: "AI Curriculum", desc: "Personalized learning paths generated instantly." },
+                  { title: "Progress Tracking", desc: "Mark steps complete and track your streak." },
+                  { title: "Project Integration", desc: "Build real-world projects at every milestone." }
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-slate-300">
+                    <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" /></div>
+                    <div>
+                      <strong className="block text-white">{item.title}</strong>
+                      <span className="text-sm text-slate-500">{item.desc}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex-1 relative w-full perspective-[1000px] order-1 md:order-2">
+              {/* Glow Effect */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-purple-600/20 blur-[80px] rounded-full z-0 pointer-events-none"></div>
+
+              <div className="relative z-10 aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:-rotate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+                  <div className="text-center w-full h-full relative">
+                    <img src="/roadmap2.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ROW 5: Effort vs Reward */}
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
+            <div className="flex-1 relative w-full perspective-[1000px] order-1 md:order-1">
+              {/* Glow Effect */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-purple-600/20 blur-[80px] rounded-full z-0 pointer-events-none"></div>
+
+              <div className="relative z-10 aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl transition-all duration-500 transform md:group-hover:rotate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+                  <img src="/effort.png" alt="Dashboard Preview" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 space-y-6 order-2 md:order-1 px-2">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 leading-tight">
+                Maximize Your <br /> Learning ROI.
+              </h2>
+              <p className="text-base md:text-lg text-slate-400 leading-relaxed">
+                Not all skills are created equal. Use our interactive scatter plot to find the sweet spot between low learning effort and high market demand.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  { title: "Smart Trends", desc: "Visualize the effort vs reward ratio for top tech skills." },
+                  { title: "AI Reasoning", desc: "Click any bubble to understand why a skill is positioned there." },
+                  { title: "Quick Wins", desc: "Identify low-hanging fruit to boost your career fast." }
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-slate-300">
+                    <div className="mt-1"><CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" /></div>
+                    <div>
+                      <strong className="block text-white">{item.title}</strong>
+                      <span className="text-sm text-slate-500">{item.desc}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+
         </section>
 
         {/* === BIG VIDEO SECTION === */}
