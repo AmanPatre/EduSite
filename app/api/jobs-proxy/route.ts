@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import redis from '@/lib/redis';
 
 export const dynamic = 'force-dynamic';
 
@@ -97,22 +98,34 @@ const industryTemplate = [
 
 export async function GET() {
     try {
-        console.log("Fetching Jobs from Remotive...");
-        // 1. Fetch EVERYTHING (1 Request)
-        const res = await fetch('https://remotive.com/api/remote-jobs', {
-            next: { revalidate: 3600 } // Cache for 1 hour
-        });
+        const CACHE_KEY = "jobs:all";
+
+        // 1. REDIS CACHE CHECK
+        try {
+            const cachedRedis = await redis?.get(CACHE_KEY);
+            if (cachedRedis) {
+                console.log("[CACHE HIT] Jobs Proxy (Redis)");
+                return NextResponse.json(JSON.parse(cachedRedis));
+            }
+        } catch (e) {
+            console.warn("[ERROR] Redis Read:", e);
+        }
+
+        console.log("[CACHE MISS] Jobs Proxy - Fetching from Remotive...");
+        // 2. Fetch EVERYTHING (1 Request)
+        // We removed 'next: { revalidate: 3600 }' because we handle it in Redis now
+        const res = await fetch('https://remotive.com/api/remote-jobs');
 
         if (!res.ok) {
-            console.error("Remotive API Error");
+            console.error("[ERROR] Remotive API Failed");
             return NextResponse.json({ error: "Failed to fetch jobs" }, { status: 500 });
         }
 
         const data = await res.json();
         const allJobs = data.jobs || [];
-        console.log(`Fetched ${allJobs.length} jobs completely.`);
+        console.log(`[EXTERNAL API] Fetched ${allJobs.length} jobs`);
 
-        // 2. Process Data into Categories
+        // 3. Process Data into Categories
         // Deep copy the template so we don't mutate the const
         const results = JSON.parse(JSON.stringify(industryTemplate));
 
@@ -129,7 +142,7 @@ export async function GET() {
                     return keywords.some((k: string) => text.includes(k));
                 }).length;
 
-                // 3. APPLY MULTIPLIER (Remote x 6 = Estimated Total)
+                // 4. APPLY MULTIPLIER (Remote x 6 = Estimated Total)
                 // Remotive only shows strictly remote jobs. 
                 // We estimate the full market is ~6x larger (Hybrid + Onsite).
                 const estimatedTotal = rawCount * 10;
@@ -141,10 +154,17 @@ export async function GET() {
             category.totalJobs = catTotal;
         });
 
+        // 5. SAVE TO REDIS (1 Hour)
+        try {
+            await redis?.set(CACHE_KEY, JSON.stringify(results), 'EX', 3600);
+        } catch (e) {
+            console.warn("[ERROR] Redis Write:", e);
+        }
+
         return NextResponse.json(results);
 
     } catch (error) {
-        console.error("Job Proxy Error:", error);
+        console.error("[ERROR] Job Proxy:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }

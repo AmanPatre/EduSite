@@ -146,3 +146,9 @@ model RoleSkillMap {
   skills    Json     // Stores the list of skills & importance
   updatedAt DateTime @updatedAt
 }
+
+model EffortDemandSnapshot {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  data      Json     // Array of { skillName, effort, demand, salary, roi, ... }
+  updatedAt DateTime @updatedAt
+}

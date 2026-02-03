@@ -1,26 +1,42 @@
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { trendingSkills, TrendingSkill } from '@/data/trendingData';
-
-// Cache configuration
-const CACHE_FILE = path.join(process.cwd(), 'data', 'insights-cache.json');
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+import { prisma } from "@/lib/prisma";
+import redis from "@/lib/redis";
 
 export async function POST() {
     try {
         const apiKey = process.env.GEMINI_API_KEY;
+        const CACHE_KEY = "market:insights:global";
 
-        // 1. Check Cache
-        if (fs.existsSync(CACHE_FILE)) {
-            const cacheRaw = fs.readFileSync(CACHE_FILE, 'utf-8');
-            const cache = JSON.parse(cacheRaw);
-            const now = Date.now();
+        // 1. REDIS CACHE CHECK (Speed)
+        try {
+            const cachedRedis = await redis?.get(CACHE_KEY);
+            if (cachedRedis) {
+                console.log('[CACHE HIT] Market Analytics (Redis)');
+                return NextResponse.json(JSON.parse(cachedRedis));
+            }
+        } catch (e) {
+            console.warn('[ERROR] Redis Read:', e);
+        }
 
-            if (now - cache.timestamp < CACHE_DURATION) {
-                return NextResponse.json(cache.data);
+        // 2. MONGODB CACHE CHECK (Persistence)
+        const cachedDb = await prisma.searchCache.findUnique({
+            where: { query: CACHE_KEY }
+        });
+
+        if (cachedDb) {
+            // Check freshness (24 hours)
+            const isFresh = (Date.now() - new Date(cachedDb.updatedAt).getTime()) < 24 * 60 * 60 * 1000;
+            if (isFresh && cachedDb.data) {
+                console.log('[CACHE HIT] Market Analytics (DB)');
+
+                // Refill Redis
+                try {
+                    await redis?.set(CACHE_KEY, JSON.stringify(cachedDb.data), 'EX', 24 * 60 * 60);
+                } catch (e) { }
+
+                return NextResponse.json(cachedDb.data);
             }
         }
 
@@ -31,8 +47,7 @@ export async function POST() {
             );
         }
 
-        // 2. Prepare Prompt with Skill Mapping ONLY
-        // We only provide the ID mapping so Gemini knows which ID belongs to "React", "Rust", etc.
+        // 3. GENERATE NEW CONTENT (AI)
         const skillContext = trendingSkills.map((s: TrendingSkill) => `${s.name} (ID: ${s.id})`).join(', ');
 
         const prompt = `
@@ -73,7 +88,6 @@ export async function POST() {
         ]
             `;
 
-        // 3. Call Gemini
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
@@ -81,21 +95,31 @@ export async function POST() {
         const response = await result.response;
         let text = response.text();
 
-        // Cleanup Markdown if present
         text = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
         const insights = JSON.parse(text);
 
-        // 4. Save to Cache
-        fs.writeFileSync(CACHE_FILE, JSON.stringify({
-            timestamp: Date.now(),
-            data: insights
-        }, null, 2));
+        // 4. SAVE TO MONGODB (Persistence)
+        await prisma.searchCache.upsert({
+            where: { query: CACHE_KEY },
+            update: { data: insights },
+            create: {
+                query: CACHE_KEY,
+                data: insights
+            }
+        });
+
+        // 5. SAVE TO REDIS (Speed)
+        try {
+            await redis?.set(CACHE_KEY, JSON.stringify(insights), 'EX', 24 * 60 * 60); // 1 Day
+        } catch (e) {
+            console.warn('[ERROR] Redis Write:', e);
+        }
 
         return NextResponse.json(insights);
 
     } catch (error) {
-        console.error("Gemini API Error:", error);
+        console.error('[ERROR] Gemini API:', error);
         return NextResponse.json(
             { error: "Failed to generate insights" },
             { status: 500 }

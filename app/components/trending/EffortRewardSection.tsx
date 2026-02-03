@@ -17,9 +17,12 @@ interface EffortRewardSectionProps {
     data: EffortRewardData[];
 }
 
-export default function EffortRewardSection({ data }: EffortRewardSectionProps) {
+export default function EffortRewardSection({ data: initialData }: EffortRewardSectionProps) {
+    const [data, setData] = useState<EffortRewardData[]>(initialData);
     const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
 
     // Filter data by category
     const filteredData = selectedCategory === 'all'
@@ -54,15 +57,102 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
 
     const categories = ['all', 'Frontend', 'Backend', 'AI/ML', 'DevOps', 'Mobile', 'Design'];
 
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!searchQuery.trim()) return;
+
+        setIsSearching(true);
+        try {
+            const res = await fetch(`/api/effort-demand?skill=${encodeURIComponent(searchQuery)}`);
+            const newData = await res.json();
+
+            if (Array.isArray(newData)) {
+                // Determine if we merge or replace? 
+                // Let's MERGE for now so they see it compared to others, 
+                // but if it exists, replace it.
+
+                const newSkill = newData[0];
+                if (newSkill) {
+                    // REPLACEMENT: Only show the searched skill as requested
+                    setData([newSkill]);
+
+                    // Highlight the new skill & Select it to show reason
+                    setHoveredSkill(newSkill.skillId);
+                    // We need to type cast or update interface for placementReason, but for now assuming it comes through
+                    setHoveredSkill(null); // Clear hover to rely on selection
+                    setSelectedCategory('all');
+                }
+            }
+        } catch (error) {
+            console.error("Failed to search skill:", error);
+        } finally {
+            setIsSearching(false);
+            setSearchQuery('');
+        }
+    };
+
+    // State for clicked skill to show details
+    const [selectedSkillData, setSelectedSkillData] = useState<EffortRewardData & { placementReason?: string } | null>(null);
+
     return (
         <section className="space-y-6">
-            <SectionHeader
-                icon={Target}
-                iconColor="text-green-500"
-                title="Effort vs Reward Analysis"
-                description="Make smart learning decisions based on effort required and job demand"
-                badge="Decision Maker"
-            />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <SectionHeader
+                    icon={Target}
+                    iconColor="text-green-500"
+                    title="Effort vs Reward Analysis"
+                    description="Make smart learning decisions based on effort required and job demand"
+
+                />
+
+                {/* Search Bar */}
+                <form onSubmit={handleSearch} className="flex gap-2 w-full md:w-auto">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Analyze a specific skill..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="bg-[#0F0F12] border border-slate-800 rounded-lg py-2 pl-4 pr-10 text-sm text-slate-200 focus:outline-none focus:border-green-500/50 transition-colors w-full md:w-64"
+                        />
+                        {/* Status Icon inside input */}
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+                            {isSearching ? <div className="animate-spin h-3 w-3 border-2 border-slate-500 border-t-green-500 rounded-full" /> : <Target size={14} />}
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isSearching || !searchQuery.trim()}
+                        className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-green-900/20"
+                    >
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            {/* AI Reasoning Panel (Appears on Selection) */}
+            {selectedSkillData && (
+                <div className="bg-gradient-to-r from-slate-900 to-[#0F0F12] border border-blue-500/30 rounded-xl p-4 relative animate-in fade-in slide-in-from-top-2">
+                    <button
+                        onClick={() => setSelectedSkillData(null)}
+                        className="absolute top-2 right-3 text-slate-500 hover:text-slate-300"
+                    >
+                        ×
+                    </button>
+                    <div className="flex gap-4 items-start">
+                        <div className="bg-blue-500/20 p-2 rounded-lg mt-1">
+                            <TrendingUp className="text-blue-400" size={20} />
+                        </div>
+                        <div>
+                            <h4 className="text-blue-400 font-bold text-sm mb-1">AI Insight: Why is {selectedSkillData.skillName} here?</h4>
+                            <p className="text-slate-300 text-sm leading-relaxed">
+                                {selectedSkillData.placementReason || `${selectedSkillData.skillName} has a Market Demand of ${selectedSkillData.demandLevel}/10 and Learning Effort of ${selectedSkillData.effortLevel}/10.`}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Category Filter */}
             <div className="flex flex-wrap gap-2">
@@ -90,7 +180,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                         Learning Effort vs Job Demand
                     </h3>
                     <p className="text-sm text-slate-400">
-                        Bubble size represents number of job openings. Click any point to view details.
+                        Bubble size represents number of job openings. <span className="text-green-400 font-bold">Click any bubble for AI reasoning.</span>
                     </p>
                 </div>
 
@@ -168,11 +258,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                                                 <div className="space-y-2 text-sm mb-3">
                                                     <div className="flex justify-between">
                                                         <span className="text-slate-500">Learning Time:</span>
-                                                        <span className="text-slate-200 font-medium">{data.learningMonths} months</span>
-                                                    </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="text-slate-500">Job Openings:</span>
-                                                        <span className="text-slate-200 font-medium">{data.jobOpenings.toLocaleString()}</span>
+                                                        <span className="text-slate-200 font-medium">{data.learningMonths?.toString().replace(/months?/gi, '').trim()} months</span>
                                                     </div>
                                                     <div className="flex justify-between">
                                                         <span className="text-slate-500">Avg Salary:</span>
@@ -189,12 +275,9 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                                                     <p className="text-[10px] text-slate-500">{quadrant.desc}</p>
                                                 </div>
 
-                                                <Link
-                                                    href={`/trending/${data.slug}`}
-                                                    className="mt-3 block text-center text-xs text-blue-400 hover:text-blue-300 font-medium"
-                                                >
-                                                    View Full Details →
-                                                </Link>
+                                                <p className="text-[10px] text-slate-500 mt-2 text-center italic">Click for AI reasoning</p>
+
+
                                             </div>
                                         );
                                     }
@@ -206,13 +289,20 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                                 data={scatterData}
                                 onMouseEnter={(data) => setHoveredSkill(data.skillId)}
                                 onMouseLeave={() => setHoveredSkill(null)}
+                                onClick={(data) => {
+                                    // Set selected skill data (including placementReason if available)
+                                    // data.payload contains the full object
+                                    setSelectedSkillData(data.payload as any);
+                                }}
                             >
                                 {scatterData.map((entry, index) => (
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={getROIColor(entry.roi)}
-                                        opacity={hoveredSkill === entry.skillId ? 1 : 0.7}
+                                        opacity={hoveredSkill === entry.skillId || (selectedSkillData?.skillId === entry.skillId) ? 1 : 0.6}
                                         cursor="pointer"
+                                        stroke={selectedSkillData?.skillId === entry.skillId ? "#fff" : "none"}
+                                        strokeWidth={2}
                                     />
                                 ))}
                             </Scatter>
@@ -231,9 +321,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                     <p className="text-sm text-slate-400">
                         Best learning investment. High demand with reasonable effort.
                     </p>
-                    <p className="text-xs text-slate-500 mt-2">
-                        Examples: {data.filter(d => d.roi === 'High').slice(0, 2).map(d => d.skillName).join(', ')}
-                    </p>
+
                 </div>
 
                 <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
@@ -244,9 +332,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                     <p className="text-sm text-slate-400">
                         Good investment but requires more effort or has moderate demand.
                     </p>
-                    <p className="text-xs text-slate-500 mt-2">
-                        Examples: {data.filter(d => d.roi === 'Medium').slice(0, 2).map(d => d.skillName).join(', ')}
-                    </p>
+
                 </div>
 
                 <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4">
@@ -257,9 +343,7 @@ export default function EffortRewardSection({ data }: EffortRewardSectionProps) 
                     <p className="text-sm text-slate-400">
                         Consider carefully. High effort with lower demand or niche applications.
                     </p>
-                    <p className="text-xs text-slate-500 mt-2">
-                        Not necessarily bad, but requires strategic planning
-                    </p>
+
                 </div>
             </div>
         </section>

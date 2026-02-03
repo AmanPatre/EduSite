@@ -39,7 +39,7 @@ export async function POST(req: Request) {
           }
         }
       } catch (error) {
-        console.log("failed to save search histoty ", error);
+        console.error("[ERROR] History Log Failed:", error);
       }
 
       // Log as Activity for Skill Balance
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
           }
         }
       } catch (error) {
-        console.warn("Failed to log search activity", error);
+        console.warn("[ERROR] Activity Log Failed:", error);
       }
     })();
 
@@ -69,14 +69,14 @@ export async function POST(req: Request) {
     try {
       const cacheData = await redis?.get(cacheKey);
       if (cacheData) {
-        console.log(`Cache HIT for "${sanitizedQuery}" from REDIS`);
+        console.log(`[CACHE HIT] Search '${sanitizedQuery}' (Redis)`);
         return NextResponse.json(JSON.parse(cacheData));
       }
     } catch (error) {
       console.warn("Redis read error:", error);
     }
 
-    console.log("Cache MISS - calling YouTube API...");
+    console.log("[CACHE MISS] Search - Calling YouTube API...");
 
     const videoResults = await fetchYouTubeVideos(query);
     const playlistResults = await fetchYouTubePlaylists(query);
@@ -156,14 +156,14 @@ Return JSON ONLY in this format:
 
     // --- Save to Redis ---
     try {
-      await redis?.set(cacheKey, JSON.stringify(finalResponse), "EX", 3600);
+      await redis?.set(cacheKey, JSON.stringify(finalResponse), "EX", 86400); // 24 Hours
     } catch (error) {
-      console.warn("Redis write error", error);
+      console.warn("[ERROR] Redis Write:", error);
     }
 
     return NextResponse.json(finalResponse);
   } catch (error: any) {
-    console.error("Search API Error:", error);
+    console.error("[ERROR] Search API:", error);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }

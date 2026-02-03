@@ -44,11 +44,17 @@ export default function DashboardPage() {
                 const { activities, roadmaps } = res.data;
                 setStats({ activities, roadmaps });
 
-                // Process Heatmap Data
+                // Process Heatmap Data (Use Local Date to match user's perspective)
                 const map = new Map();
+                // Helper: Get local YYYY-MM-DD
+                const getLocalYMD = (d: Date) => {
+                    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                };
+
                 activities.forEach((act: any) => {
-                    const date = new Date(act.createdAt).toISOString().split('T')[0];
-                    map.set(date, (map.get(date) || 0) + 1);
+                    const date = new Date(act.createdAt);
+                    const dateKey = getLocalYMD(date);
+                    map.set(dateKey, (map.get(dateKey) || 0) + 1);
                 });
 
                 // Generate Month-wise Data (Discrete Blocks)
@@ -58,10 +64,10 @@ export default function DashboardPage() {
                 let endDate: Date;
 
                 if (selectedYear === "Current") {
-                    // Last 365 Days logic
+                    // Last 365 Days logic - Start from exactly 365 days ago
                     startDate = new Date(today);
                     startDate.setDate(today.getDate() - 364);
-                    // Start from the month of the startDate
+                    // Reset to start of that month to align blocks
                     startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
                     endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
                 } else {
@@ -91,13 +97,23 @@ export default function DashboardPage() {
                     // Fill days
                     for (let d = 1; d <= daysInMonth; d++) {
                         const dateObj = new Date(year, month, d);
-                        const dateStr = dateObj.toISOString().split('T')[0];
+                        const dateStr = getLocalYMD(dateObj); // Use same helper
+
+                        // Compare dates purely on YYYY-MM-DD to avoid time issues
+                        const todayStr = getLocalYMD(today);
+                        const isFuture = dateStr > todayStr;
+
+                        // Last 365 window check
+                        const windowStart = new Date(today);
+                        windowStart.setDate(today.getDate() - 364);
+                        const windowStartStr = getLocalYMD(windowStart);
+                        const isBeforeWindow = selectedYear === "Current" && dateStr < windowStartStr;
 
                         currentWeek.push({
                             date: dateStr,
                             count: map.get(dateStr) || 0,
-                            inFuture: dateObj > today,
-                            isBeforeWindow: selectedYear === "Current" && (dateObj < new Date(new Date().setDate(new Date().getDate() - 364)))
+                            inFuture: isFuture,
+                            isBeforeWindow: isBeforeWindow
                         });
 
                         if (currentWeek.length === 7) {
@@ -201,8 +217,14 @@ export default function DashboardPage() {
                         <div className="bg-[#0F0F12] border border-slate-800 p-4 rounded-xl flex items-center gap-3">
                             <div className="p-2 bg-orange-500/10 rounded-lg text-orange-500"><Flame className="w-5 h-5" /></div>
                             <div>
-                                <div className="text-sm text-slate-500">Total Activities</div>
-                                <div className="text-xl font-bold">{stats?.activities?.length || 0}</div>
+                                <div className="text-sm text-slate-500">Activities This Month</div>
+                                <div className="text-xl font-bold">
+                                    {stats?.activities?.filter((act: any) => {
+                                        const d = new Date(act.createdAt);
+                                        const now = new Date();
+                                        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                                    }).length || 0}
+                                </div>
                             </div>
                         </div>
                         <div className="bg-[#0F0F12] border border-slate-800 p-4 rounded-xl flex items-center gap-3">

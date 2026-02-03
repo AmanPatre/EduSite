@@ -2696,5 +2696,228 @@
         "project": "Create a profile screen with a collapsing toolbar using Slivers"
       }
     ]
+  },
+  "computer networking": {
+    "timestamp": 1770043757515,
+    "data": [
+      {
+        "step": 1,
+        "title": "Introduction to Networking Fundamentals",
+        "description": "Understand the basic concepts of computer networks, including network types (LAN, WAN, MAN), network topologies (bus, star, ring), and the OSI and TCP/IP models.",
+        "tools": [],
+        "project": "Identify the network topology in your home or workplace and describe its advantages and disadvantages."
+      },
+      {
+        "step": 2,
+        "title": "The OSI Model: Layers 1-4 (Physical, Data Link, Network, Transport)",
+        "description": "Dive deep into the first four layers of the OSI model. Learn about physical layer technologies (cables, connectors), data link layer concepts (MAC addresses, Ethernet), network layer protocols (IP addressing, routing), and transport layer protocols (TCP, UDP).",
+        "tools": [
+          "Wireshark",
+          "Ping",
+          "Traceroute"
+        ],
+        "project": "Use Wireshark to capture and analyze network traffic. Identify TCP and UDP packets, examine IP addresses, and analyze Ethernet frames."
+      },
+      {
+        "step": 3,
+        "title": "IP Addressing and Subnetting",
+        "description": "Master IP addressing schemes (IPv4, IPv6), subnetting techniques, CIDR notation, and IP address allocation. Learn about public and private IP addresses, and NAT.",
+        "tools": [
+          "IP calculator",
+          "Subnet calculator"
+        ],
+        "project": "Design a subnetting scheme for a given network scenario, including the number of hosts per subnet and the required number of subnets."
+      },
+      {
+        "step": 4,
+        "title": "Routing Protocols",
+        "description": "Explore routing protocols, including distance-vector routing (RIP) and link-state routing (OSPF). Understand the principles of routing tables and routing algorithms.",
+        "tools": [
+          "GNS3",
+          "Cisco Packet Tracer"
+        ],
+        "project": "Set up a simple network topology in GNS3 or Cisco Packet Tracer and configure RIP or OSPF routing between routers."
+      },
+      {
+        "step": 5,
+        "title": "The OSI Model: Layers 5-7 (Session, Presentation, Application)",
+        "description": "Understand the upper layers of the OSI model and their roles in supporting network applications. Learn about protocols such as HTTP, HTTPS, SMTP, DNS, and DHCP.",
+        "tools": [
+          "Telnet",
+          "Netcat",
+          "Nslookup"
+        ],
+        "project": "Use Telnet or Netcat to connect to a web server and send an HTTP request manually. Analyze the server's response."
+      },
+      {
+        "step": 6,
+        "title": "Network Security Fundamentals",
+        "description": "Learn about common network security threats, including malware, viruses, worms, and denial-of-service attacks. Understand security principles such as confidentiality, integrity, and availability.",
+        "tools": [
+          "Nmap",
+          "Metasploit (basic usage)"
+        ],
+        "project": "Use Nmap to scan a network for open ports and identify potential vulnerabilities. (Only perform this on a network you own or have explicit permission to scan.)"
+      },
+      {
+        "step": 7,
+        "title": "Firewalls and Intrusion Detection/Prevention Systems",
+        "description": "Explore firewall technologies (packet filtering, stateful inspection, proxy firewalls) and intrusion detection/prevention systems (IDS/IPS). Learn about configuring firewalls and analyzing security logs.",
+        "tools": [
+          "iptables",
+          "ufw",
+          "Snort"
+        ],
+        "project": "Configure a simple firewall using iptables or ufw to block specific types of traffic or access to certain ports."
+      },
+      {
+        "step": 8,
+        "title": "Wireless Networking",
+        "description": "Understand wireless networking standards (802.11a/b/g/n/ac/ax), wireless security protocols (WEP, WPA, WPA2, WPA3), and wireless network configuration. Learn about access points and wireless controllers.",
+        "tools": [
+          "Wireless network analyzer",
+          "inSSIDer",
+          "Wireshark (for wireless traffic)"
+        ],
+        "project": "Configure a secure wireless network using WPA2 or WPA3 encryption. Analyze wireless traffic with Wireshark to examine security protocols."
+      },
+      {
+        "step": 9,
+        "title": "Virtualization and Cloud Networking",
+        "description": "Explore virtualization technologies (VMware, VirtualBox, KVM) and cloud networking concepts. Learn about virtual switches, virtual routers, and cloud networking services (AWS VPC, Azure VNet).",
+        "tools": [
+          "VirtualBox",
+          "VMware Workstation",
+          "AWS Free Tier",
+          "Azure Free Account"
+        ],
+        "project": "Set up a virtual network using VirtualBox or VMware. Create virtual machines and configure them to communicate with each other. Optionally, deploy a simple application in a cloud environment like AWS or Azure using their virtual networking services."
+      },
+      {
+        "step": 10,
+        "title": "Network Automation and Scripting",
+        "description": "Learn about network automation tools and techniques, including scripting languages (Python), configuration management tools (Ansible, Chef, Puppet), and network APIs. Understand the principles of Infrastructure as Code (IaC).",
+        "tools": [
+          "Python",
+          "Ansible",
+          "Netmiko",
+          "NAPALM"
+        ],
+        "project": "Write a Python script using Netmiko or NAPALM to automate a common network task, such as retrieving the configuration from a router or configuring a VLAN."
+      }
+    ]
+  },
+  "blockchain engineer": {
+    "timestamp": 1770046415875,
+    "data": [
+      {
+        "step": 1,
+        "title": "Fundamentals of Computer Science",
+        "description": "Build a solid foundation in core CS concepts. This includes understanding data structures, algorithms, and basic programming principles.",
+        "tools": [
+          "Online Courses (Coursera, edX, Udacity), Textbooks (Introduction to Algorithms, Data Structures and Algorithm Analysis in C++)"
+        ],
+        "project": "Implement basic data structures like linked lists, stacks, queues, and trees in a chosen programming language."
+      },
+      {
+        "step": 2,
+        "title": "Programming Fundamentals",
+        "description": "Become proficient in at least one programming language that is commonly used in blockchain development. Python is a good starting point due to its versatility and large community. Solidity is essential for Ethereum development.",
+        "tools": [
+          "Python, Solidity, JavaScript, Online IDEs (Repl.it), Code Editors (VS Code, Sublime Text)"
+        ],
+        "project": "Create a simple command-line application that interacts with data structures and files."
+      },
+      {
+        "step": 3,
+        "title": "Introduction to Cryptography",
+        "description": "Learn the basics of cryptography, including hashing algorithms, symmetric and asymmetric encryption, digital signatures, and cryptographic protocols. Understanding these concepts is crucial for blockchain security.",
+        "tools": [
+          "Online Courses (Coursera - Cryptography I, II), Textbooks (Understanding Cryptography), Crypto Libraries (OpenSSL)"
+        ],
+        "project": "Implement a simple encryption/decryption program using a symmetric encryption algorithm like AES."
+      },
+      {
+        "step": 4,
+        "title": "Networking Fundamentals",
+        "description": "Understand how networks operate, including the OSI model, TCP/IP protocol suite, and network security principles. Blockchain relies heavily on networking concepts.",
+        "tools": [
+          "Online Courses (Cisco Networking Academy), Textbooks (Computer Networking: A Top-Down Approach)"
+        ],
+        "project": "Set up a simple local network with multiple virtual machines and configure communication between them."
+      },
+      {
+        "step": 5,
+        "title": "Blockchain Basics",
+        "description": "Study the fundamental concepts of blockchain technology, including distributed ledgers, consensus mechanisms (Proof-of-Work, Proof-of-Stake), immutability, and decentralization.",
+        "tools": [
+          "Online Courses (Coursera - Blockchain Basics, edX - Blockchain Fundamentals), Whitepapers (Bitcoin, Ethereum), Books (Mastering Bitcoin, Mastering Ethereum)"
+        ],
+        "project": "Build a simplified blockchain using Python (or your preferred language) that implements basic block creation and chaining. No consensus yet."
+      },
+      {
+        "step": 6,
+        "title": "Ethereum Development",
+        "description": "Focus on Ethereum, a popular blockchain platform, and learn how to develop smart contracts using Solidity. Understand the Ethereum Virtual Machine (EVM) and gas concepts.",
+        "tools": [
+          "Solidity Documentation, Remix IDE, Truffle, Ganache, OpenZeppelin"
+        ],
+        "project": "Develop a simple ERC-20 token smart contract on a local Ethereum testnet using Truffle and Ganache."
+      },
+      {
+        "step": 7,
+        "title": "Smart Contract Security",
+        "description": "Learn about common smart contract vulnerabilities (e.g., reentrancy, overflow, underflow) and best practices for writing secure smart contracts. Use static analysis tools and security auditing techniques.",
+        "tools": [
+          "Mythril, Slither, Oyente, Smart Contract Auditing Guides (ConsenSys, Trail of Bits)"
+        ],
+        "project": "Analyze an existing vulnerable smart contract and identify the vulnerabilities. Write a report on the findings and propose solutions."
+      },
+      {
+        "step": 8,
+        "title": "Decentralized Application (DApp) Development",
+        "description": "Build front-end interfaces for interacting with smart contracts. Learn how to use libraries like Web3.js or Ethers.js to connect your front-end to the blockchain.",
+        "tools": [
+          "React, Vue.js, Web3.js, Ethers.js, Metamask"
+        ],
+        "project": "Build a simple DApp that allows users to interact with your ERC-20 token smart contract (e.g., transfer tokens, view balance)."
+      },
+      {
+        "step": 9,
+        "title": "Advanced Blockchain Concepts",
+        "description": "Explore more advanced blockchain topics, such as Layer-2 scaling solutions (e.g., Rollups, State Channels), sidechains, cross-chain interoperability, and different consensus mechanisms in detail.",
+        "tools": [
+          "Research Papers, Online Forums (Stack Overflow, Reddit), Project Documentation (Optimism, Arbitrum, Polygon)"
+        ],
+        "project": "Research a specific Layer-2 scaling solution and write a report on its architecture, security properties, and potential benefits."
+      },
+      {
+        "step": 10,
+        "title": "Blockchain Testing and Deployment",
+        "description": "Learn how to thoroughly test smart contracts and DApps before deploying them to a production environment. Understand deployment strategies and gas optimization techniques.",
+        "tools": [
+          "Truffle, Ganache, Hardhat, Remix, Gas Profilers"
+        ],
+        "project": "Write comprehensive unit tests for your ERC-20 token smart contract and deploy it to a public testnet (e.g., Ropsten, Goerli). Measure gas costs and optimize the contract for efficiency."
+      },
+      {
+        "step": 11,
+        "title": "Other Blockchain Platforms (Optional)",
+        "description": "Expand your knowledge by exploring other blockchain platforms besides Ethereum, such as Polkadot, Cosmos, Solana, or Hyperledger Fabric. This can broaden your skillset and make you more versatile.",
+        "tools": [
+          "Platform Documentation, Online Courses, Developer Communities"
+        ],
+        "project": "Choose another blockchain platform and build a simple smart contract or application on it."
+      },
+      {
+        "step": 12,
+        "title": "Continuous Learning and Contribution",
+        "description": "Stay up-to-date with the latest developments in the blockchain space by reading research papers, attending conferences, and participating in online communities. Contribute to open-source projects to gain experience and build your reputation.",
+        "tools": [
+          "Blockchain News Websites (CoinDesk, CoinTelegraph), Research Paper Databases (Google Scholar), GitHub"
+        ],
+        "project": "Contribute to an existing open-source blockchain project or start your own project and solicit contributions from others."
+      }
+    ]
   }
 }

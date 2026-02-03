@@ -1,37 +1,50 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { prisma } from "@/lib/prisma";
+import redis from "@/lib/redis";
 
 export async function POST(req: Request) {
-  const CACHE_FILE = path.join(process.cwd(), 'data', 'roadmap-cache.json');
-  const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
-
   try {
     const { topic } = await req.json();
+    if (!topic) return NextResponse.json({ error: "Topic is required" }, { status: 400 });
 
-    // 1. Sanitize the Key (so "React" and "react" are the same)
-    const cacheKey = topic.trim().toLowerCase();
+    const normalizedTopic = topic.trim().toLowerCase();
+    const CACHE_KEY = `roadmap:${normalizedTopic}`;
 
-    let cache: Record<string, any> = {};
+    // 1. REDIS CACHE CHECK (Speed Layer)
+    try {
+      const cachedRedis = await redis?.get(CACHE_KEY);
+      if (cachedRedis) {
+        console.log(`[CACHE HIT] Roadmap '${topic}' (Redis)`);
+        return NextResponse.json({ roadmap: JSON.parse(cachedRedis) });
+      }
+    } catch (e) {
+      console.warn("[ERROR] Redis Read:", e);
+    }
 
-    // 2. Read existing cache if it exists
-    if (fs.existsSync(CACHE_FILE)) {
-      try {
-        const fileContent = fs.readFileSync(CACHE_FILE, 'utf-8');
-        cache = JSON.parse(fileContent);
+    // 2. MONGODB CACHE CHECK (Persistence Layer)
+    // We reuse the 'SearchCache' model but prefix the query to avoid collisions
+    const dbQueryKey = `roadmap:${normalizedTopic}`;
+    const cachedDb = await prisma.searchCache.findUnique({
+      where: { query: dbQueryKey }
+    });
 
-        // Check if THIS SPECIFIC TOPIC is cached and fresh
-        if (cache[cacheKey] && (Date.now() - cache[cacheKey].timestamp < CACHE_DURATION)) {
-          console.log(`Serving '${topic}' from cache ⚡`);
-          return NextResponse.json({ roadmap: cache[cacheKey].data });
-        }
-      } catch (e) {
-        // If file is corrupt, ignore and overwrite later
-        console.warn("Cache file corrupted, starting fresh.");
+    if (cachedDb) {
+      // Check freshness (e.g., 30 days for roadmaps as they change slowly)
+      const isFresh = (Date.now() - new Date(cachedDb.updatedAt).getTime()) < 30 * 24 * 60 * 60 * 1000;
+      if (isFresh && cachedDb.data) {
+        console.log(`[CACHE HIT] Roadmap '${topic}' (DB)`);
+
+        // Populate Redis for next time
+        try {
+          await redis?.set(CACHE_KEY, JSON.stringify(cachedDb.data), 'EX', 24 * 60 * 60); // 24 hours in RAM
+        } catch (e) { }
+
+        return NextResponse.json({ roadmap: cachedDb.data });
       }
     }
 
+    // 3. GENERATE NEW CONTENT (AI)
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: "Missing GEMINI_API_KEY" }, { status: 500 });
@@ -58,23 +71,27 @@ export async function POST(req: Request) {
     text = text.replace(/```json/g, '').replace(/```/g, '').trim();
     const roadmap = JSON.parse(text);
 
-    // 3. Update the specific topic in the cache (don't delete other topics)
-    cache[cacheKey] = {
-      timestamp: Date.now(),
-      data: roadmap
-    };
+    // 4. SAVE TO MONGODB (Persistence)
+    await prisma.searchCache.upsert({
+      where: { query: dbQueryKey },
+      update: { data: roadmap },
+      create: {
+        query: dbQueryKey,
+        data: roadmap
+      }
+    });
 
-    // 4. Write the WHOLE dictionary back to disk
-    // Ensure "data" folder exists
-    const dataDir = path.join(process.cwd(), 'data');
-    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
-
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
+    // 5. SAVE TO REDIS (Speed)
+    try {
+      await redis?.set(CACHE_KEY, JSON.stringify(roadmap), 'EX', 24 * 60 * 60); // 1 Day
+    } catch (e) {
+      console.warn("[ERROR] Redis Write:", e);
+    }
 
     return NextResponse.json({ roadmap });
 
   } catch (error) {
-    console.error("Roadmap Generation Error:", error);
+    console.error("[ERROR] Roadmap Gen:", error);
     return NextResponse.json({ error: "Failed to generate roadmap" }, { status: 500 });
   }
 }

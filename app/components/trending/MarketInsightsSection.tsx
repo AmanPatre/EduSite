@@ -86,7 +86,7 @@ export default function MarketInsightsSection({ insights }: MarketInsightsSectio
                 iconColor="text-purple-500"
                 title="Market Insights"
                 description="Data-driven insights to guide your learning journey"
-                badge="AI-Powered"
+
             />
 
             {/* Filters */}
@@ -114,24 +114,7 @@ export default function MarketInsightsSection({ insights }: MarketInsightsSectio
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-400 font-medium">Impact:</span>
-                    <div className="flex gap-2">
-                        {(['all', 'High', 'Medium', 'Low'] as const).map(impact => (
-                            <button
-                                key={impact}
-                                onClick={() => setFilterImpact(impact)}
-                                className={`
-                  px-3 py-1 rounded-lg text-xs font-bold uppercase transition-all
-                  ${filterImpact === impact
-                                        ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/30'
-                                        : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800'
-                                    }
-                `}
-                            >
-                                {impact}
-                            </button>
-                        ))}
-                    </div>
+
                 </div>
             </div>
 
@@ -199,36 +182,7 @@ export default function MarketInsightsSection({ insights }: MarketInsightsSectio
                                 {insight.description}
                             </p>
 
-                            {/* Related Skills */}
-                            {insight.relatedSkills.length > 0 && (
-                                <div className="relative z-10">
-                                    <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">
-                                        Related Skills
-                                    </p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {insight.relatedSkills.map(skillId => {
-                                            const skill = getSkillById(skillId);
-                                            return skill ? (
-                                                <SkillTag
-                                                    key={skillId}
-                                                    skillName={skill.name}
-                                                    slug={skill.slug}
-                                                    size="sm"
-                                                    variant="outlined"
-                                                />
-                                            ) : null;
-                                        })}
-                                    </div>
-                                </div>
-                            )}
 
-                            {/* Timeframe */}
-                            <div className="mt-4 pt-4 border-t border-slate-800 relative z-10">
-                                <div className="flex items-center justify-between text-xs">
-                                    <span className="text-slate-500">Timeframe:</span>
-                                    <span className={`font-bold ${style.color}`}>{insight.timeframe}</span>
-                                </div>
-                            </div>
 
                             {/* Hover Glow Effect */}
                             <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${style.bg} blur-xl`} />
@@ -254,33 +208,7 @@ export default function MarketInsightsSection({ insights }: MarketInsightsSectio
                 </div>
             )}
 
-            {/* Summary Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-purple-400">
-                        {insights.filter(i => i.type === 'trend').length}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">Trends</p>
-                </div>
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-amber-400">
-                        {insights.filter(i => i.type === 'warning').length}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">Warnings</p>
-                </div>
-                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-emerald-400">
-                        {insights.filter(i => i.type === 'opportunity').length}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">Opportunities</p>
-                </div>
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-red-400">
-                        {insights.filter(i => i.impact === 'High').length}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">High Impact</p>
-                </div>
-            </div>
+
 
             {/* Info Box */}
             <div className="bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 border border-purple-500/20 rounded-xl p-5">

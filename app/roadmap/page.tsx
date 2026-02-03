@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import axios from "axios";
-import { Loader2, Play, BookOpen, CheckCircle, ArrowRight, ChevronDown, ChevronUp, RefreshCw, Save, Check } from "lucide-react";
+import { Loader2, Play, CheckCircle, ChevronDown, ChevronUp, RefreshCw, Save, Check } from "lucide-react";
 import ResourceViewer from "../components/roadmap/ResourceViewer";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
-export default function RoadmapPage() {
+function RoadmapContent() {
     const { data: session } = useSession();
     const searchParams = useSearchParams();
     const urlId = searchParams.get('id');
@@ -43,7 +43,7 @@ export default function RoadmapPage() {
             }
         };
         fetchSavedRoadmap();
-    }, [session]);
+    }, [session, urlId]);
 
     const generateRoadmap = async () => {
         if (!topic.trim()) return;
@@ -328,5 +328,13 @@ export default function RoadmapPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function RoadmapPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0F0F12]"><Loader2 className="w-8 h-8 animate-spin text-purple-500" /></div>}>
+            <RoadmapContent />
+        </Suspense>
     );
 }

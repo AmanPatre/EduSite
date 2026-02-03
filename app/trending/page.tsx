@@ -44,9 +44,15 @@ async function getTrendScores() {
       next: { revalidate: 3600 }
     });
 
-    const [res, jobsRes] = await Promise.all([
+    // 3. FETCH EFFORT-DEMAND (Parallel)
+    const effortResPromise = fetch(`${baseUrl}/api/effort-demand`, {
+      next: { revalidate: 86400 } // Cache for 24 hours
+    });
+
+    const [res, jobsRes, effortRes] = await Promise.all([
       fetch(`${baseUrl}/api/trend-scores`, { next: { revalidate: 0 } }),
-      jobsResPromise
+      jobsResPromise,
+      effortResPromise
     ]);
 
     let realSkills = [];
@@ -59,15 +65,23 @@ async function getTrendScores() {
       realJobs = await jobsRes.json();
     }
 
-    return { skills: realSkills, jobs: realJobs };
+    let realEffortData = effortRewardData;
+    if (effortRes.ok) {
+      const data = await effortRes.json();
+      if (Array.isArray(data) && data.length > 0) {
+        realEffortData = data;
+      }
+    }
+
+    return { skills: realSkills, jobs: realJobs, effortData: realEffortData };
   } catch (error) {
     console.error('Failed to fetch trend scores or jobs:', error);
-    return { skills: [], jobs: [] };
+    return { skills: [], jobs: [], effortData: effortRewardData };
   }
 }
 
 export default async function TrendingPage() {
-  const { skills: trendSkills, jobs: trendJobs } = await getTrendScores();
+  const { skills: trendSkills, jobs: trendJobs, effortData } = await getTrendScores();
 
   return (
     <div className="relative min-h-screen bg-[#030014] overflow-hidden selection:bg-purple-500/30">
@@ -90,12 +104,12 @@ export default async function TrendingPage() {
 
           {/* 2. Breakdown & Insights */}
 
-          <IndustryDemandSection roles={trendJobs.length > 0 ? trendJobs : industryRoles} />
+
           <SkillRoleMappingSection
             skillMappings={skillRoleMappings}
             roleMappings={roleSkillMappings}
           />
-          <EffortRewardSection data={effortRewardData} />
+          <EffortRewardSection data={effortData} />
           <MarketInsightsSection insights={marketInsights} />
 
         </main>

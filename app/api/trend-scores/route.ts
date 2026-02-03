@@ -5,12 +5,27 @@ import { fetchYouTubeActivity } from '../../../lib/youtube/fetchActivity';
 import { calculateTrendScore } from '../../../lib/trending/calculateScore';
 import { prisma } from '../../../lib/prisma';
 import { saveTrendScores } from '../../../lib/trending/saveTrendScores';
+import redis from '../../../lib/redis';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function GET() {
     try {
+        const CACHE_KEY = 'trend:scores:all';
+
+        // 0. REDIS CACHE CHECK (Speed Layer)
+        // Check if we have the full response cached in RAM
+        try {
+            const cachedRedis = await redis?.get(CACHE_KEY);
+            if (cachedRedis) {
+                console.log('[CACHE HIT] Trend Scores (Redis)');
+                return NextResponse.json(JSON.parse(cachedRedis));
+            }
+        } catch (e) {
+            console.warn('[ERROR] Redis Read:', e);
+        }
+
         // 1. Check Cache (Database)
         // We only refresh if data is older than 24 hours
         const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -27,7 +42,7 @@ export async function GET() {
 
         // If we have cached data for most skills, return it!
         if (cachedData.length >= skills.length * 0.8) {
-            console.log('Serving from DB Cache (0 API Quota used)');
+            console.log('[CACHE HIT] Trend Scores (DB)');
 
             const results = cachedData.map(c => ({
                 name: c.skillName,
@@ -49,11 +64,30 @@ export async function GET() {
 
             // Sort by trend score
             results.sort((a, b) => b.trendScore - a.trendScore);
+
+            // SAVE TO REDIS (24 Hours) - Even if it came from DB, cache it in Redis for faster subsequent detailed access
+            try {
+                await redis?.set(CACHE_KEY, JSON.stringify(results), 'EX', 86400); // 1 Day
+            } catch (e) {
+                console.warn('Redis write error:', e);
+            }
+
             return NextResponse.json(results);
         }
 
         // 2. Cache MISS - Fetch Fresh Data
-        console.log('Cache Stale or Empty. Fetching fresh API data...');
+        console.log('[CACHE MISS] Trend Scores - Fetching fresh data...');
+
+        // CRITICAL FIX: "Touch" the existing records immediately to prevent race conditions.
+        // If Request A starts deciding to fetch, we update timestamps so Request B sees them as "Fresh"
+        // and returns the old data instead of triggering a parallel quota-heavy fetch.
+        if (cachedData.length > 0) {
+            await prisma.trendScore.updateMany({
+                where: { id: { in: cachedData.map(c => c.id) } },
+                data: { updatedAt: new Date() }
+            });
+            console.log('[CONCURRENCY] Touched existing records to prevent race conditions.');
+        }
 
         const dateRange = getLast30Days();
 
@@ -126,7 +160,14 @@ export async function GET() {
 
         // Sort and Return
         results.sort((a, b) => b.trendScore - a.trendScore);
-        console.log(`Successfully refreshed and cached ${results.length} trend scores`);
+        console.log(`[DB UPDATE] Refreshed ${results.length} trend scores`);
+
+        // SAVE TO REDIS (24 Hours)
+        try {
+            await redis?.set(CACHE_KEY, JSON.stringify(results), 'EX', 86400); // 1 Day
+        } catch (e) {
+            console.warn('Redis write error:', e);
+        }
 
         return NextResponse.json(results);
 
