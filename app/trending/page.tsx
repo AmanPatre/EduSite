@@ -35,9 +35,11 @@ export const dynamic = 'force-dynamic';
 async function getTrendScores() {
   try {
     // Determine base URL based on environment (server-side only)
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
+    const baseUrl = process.env.NEXTAUTH_URL
+      ? process.env.NEXTAUTH_URL
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3000';
 
     // 2. FETCH JOBS (Parallel)
     const jobsResPromise = fetch(`${baseUrl}/api/jobs-proxy`, {
