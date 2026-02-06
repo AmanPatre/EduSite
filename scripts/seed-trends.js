@@ -62,15 +62,28 @@ const skillsToTrack = {
     "Blender": { name: "Blender", category: "Design", github: "topic:blender", youtube: "blender 3d tutorial" }
 };
 
+// Helper to get date 30 days ago
+const getThirtyDaysAgo = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 30);
+    return d;
+};
+
 async function fetchGitHubData(query) {
     try {
+        const thirtyDaysAgo = getThirtyDaysAgo().toISOString().split('T')[0];
+        // Add "created:>=DATE" to find NEW repos from last 30 days
+        const timeQuery = `${query} created:>=${thirtyDaysAgo}`;
+
         const response = await axios.get(`https://api.github.com/search/repositories`, {
-            params: { q: query, sort: 'stars', order: 'desc', per_page: 5 },
+            params: { q: timeQuery, sort: 'stars', order: 'desc', per_page: 5 },
             headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
         });
         const items = response.data.items || [];
         const totalForks = items.reduce((sum, item) => sum + item.forks_count, 0);
         const avgStars = items.length > 0 ? items.reduce((sum, item) => sum + item.stargazers_count, 0) / items.length : 0;
+
+        // Return stats specifically for these NEW repos
         return { repoCount: response.data.total_count, totalForks, avgStars, sampleSize: items.length };
     } catch (e) {
         console.error(`GitHub Error (${query}):`, e.message);
@@ -80,10 +93,19 @@ async function fetchGitHubData(query) {
 
 async function fetchYouTubeData(query) {
     try {
+        const thirtyDaysAgo = getThirtyDaysAgo().toISOString();
         const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
+
+        // Search for videos published in the last 30 days
         const response = await youtube.search.list({
-            part: 'snippet', q: query, type: 'video', maxResults: 5, order: 'relevance'
+            part: 'snippet',
+            q: query,
+            type: 'video',
+            publishedAfter: thirtyDaysAgo, // <--- CRITICAL: 30-day filter
+            maxResults: 50, // Match original API logic (fetch up to 50)
+            order: 'relevance'
         });
+
         const videoIds = response.data.items.map(item => item.id.videoId).join(',');
 
         if (!videoIds) return { videoCount: 0, totalViews: 0, avgEngagement: 0, sampleSize: 0 };
@@ -96,8 +118,11 @@ async function fetchYouTubeData(query) {
         const totalViews = videos.reduce((sum, v) => sum + parseInt(v.statistics.viewCount || 0), 0);
         const totalLikes = videos.reduce((sum, v) => sum + parseInt(v.statistics.likeCount || 0), 0);
         const totalComments = videos.reduce((sum, v) => sum + parseInt(v.statistics.commentCount || 0), 0);
+
+        // Avoid division by zero
         const avgEngagement = videos.length > 0 ? (totalLikes + totalComments) / videos.length : 0;
 
+        // Note: response.data.pageInfo.totalResults is often an estimate, but usable
         return { videoCount: response.data.pageInfo.totalResults, totalViews, avgEngagement, sampleSize: videos.length };
     } catch (e) {
         console.error(`YouTube Error (${query}):`, e.message);
@@ -106,11 +131,18 @@ async function fetchYouTubeData(query) {
 }
 
 function calculateScore(github, youtube) {
-    // Normalization factors (approximate max values)
-    const MAX_REPO_COUNT = 500000;
-    const MAX_STARS = 50000;
-    const MAX_VIEWS = 5000000;
-    const MAX_ENGAGEMENT = 10000;
+    // === REVISED THRESHOLDS FOR 30-DAY GROWTH ===
+    // Since these are MONTHLY stats, numbers will be roughly 1/100th of "All-Time" stats.
+
+    // Max new repos created in a month for a hot topic
+    const MAX_REPO_COUNT = 2000;
+    // Max avg stars on *brand new* repos in their first month
+    const MAX_STARS = 500;
+
+    // Max views on NEW tutorials in the last 30 days
+    const MAX_VIEWS = 2000000; // 2M views/month is viral
+    // Max engagement on new videos
+    const MAX_ENGAGEMENT = 5000;
 
     // GitHub Score (50%)
     const gScore = ((github.repoCount / MAX_REPO_COUNT) * 40) + ((github.avgStars / MAX_STARS) * 60);
@@ -120,7 +152,7 @@ function calculateScore(github, youtube) {
 
     // Weighted Total
     let total = (Math.min(gScore, 100) * 0.5) + (Math.min(yScore, 100) * 0.5);
-    return Math.round(total * 10) / 10; // Round 1 decimal
+    return Math.round(total * 10) / 10;
 }
 
 async function main() {
