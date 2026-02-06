@@ -47,7 +47,7 @@ export default function Navbar() {
                 <BookOpen className="h-4 w-4" />Roadmap
               </Link>
               <Link href="/trending" className="flex items-center gap-1.5 text-sm font-medium text-slate-300 hover:text-purple-400 transition">
-                <Activity className="h-4 w-4" />Trending
+                <Activity className="h-4 w-4" />Insights
               </Link>
               <Link href="/dashboard" className="flex items-center gap-1.5 text-sm font-medium text-slate-300 hover:text-purple-400 transition">
                 <History className="h-4 w-4" />Dashboard
