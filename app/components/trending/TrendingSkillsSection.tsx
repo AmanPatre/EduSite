@@ -17,6 +17,7 @@ interface TrendScoreResult {
     name: string;
     category: string;
     trendScore: number;
+    history?: number[]; // Added history
     breakdown: {
         github: number;
         youtube: number;
@@ -72,18 +73,6 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                 ? prev.filter(n => n !== skillName)
                 : [...prev, skillName]
         );
-    };
-
-    // Helper to generate a fake "trend history" for the chart if we don't have one yet
-    // In Phase 4, we will use real history from DB
-    const getMockTrendHistory = (score: number) => {
-        // Create a curve ending at the current score
-        return [
-            Math.max(0, score - 15),
-            Math.max(0, score - 10),
-            Math.max(0, score - 5),
-            score
-        ];
     };
 
     return (
@@ -151,7 +140,6 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                 {displaySkills.map((skill, index) => {
                     const isSelected = selectedSkills.includes(skill.name);
                     const isTop3 = index < 3 && filter === 'all';
-                    const mockHistory = getMockTrendHistory(skill.trendScore);
 
                     return (
                         <div
@@ -205,7 +193,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                             {/* Sparkline (Visual only for Phase 3) */}
                             <div className="h-10 -mx-2">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={mockHistory.map((val, i) => ({ v: val }))}>
+                                    <AreaChart data={(skill.history || []).map((val: any) => ({ v: val }))}>
                                         <Area type="monotone" dataKey="v" stroke={isSelected ? '#a855f7' : '#475569'} fill="none" strokeWidth={2} />
                                     </AreaChart>
                                 </ResponsiveContainer>

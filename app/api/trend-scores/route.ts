@@ -26,9 +26,14 @@ export async function GET() {
         // We do NOT fetch from YouTube/GitHub here to prevent Timeouts (504).
         console.log('[DB READ] Fetching from MongoDB Permanent Cache');
 
+        // Fetch scores AND history
         const results = await prisma.trendScore.findMany({
-            orderBy: { trendScore: 'desc' }
+            orderBy: { trendScore: 'desc' },
+
         });
+
+        const histories = await prisma.trendHistory.findMany({});
+        const historyMap = new Map(histories.map(h => [h.skillName, h.scores]));
 
         if (results.length === 0) {
             console.warn('⚠️ No data in DB. Please run "npm run seed-trends" locally.');
@@ -43,6 +48,7 @@ export async function GET() {
             name: c.skillName,
             category: c.category,
             trendScore: c.trendScore,
+            history: historyMap.get(c.skillName) || [], // <--- Added History
             breakdown: {
                 github: c.githubScore,
                 youtube: c.youtubeScore,
