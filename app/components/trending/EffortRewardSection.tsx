@@ -179,9 +179,7 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                     <h3 className="text-lg font-bold text-slate-100 mb-2">
                         Learning Effort vs Job Demand
                     </h3>
-                    <p className="text-sm text-slate-400">
-                        Bubble size represents number of job openings. <span className="text-green-400 font-bold">Click any bubble for AI reasoning.</span>
-                    </p>
+
                 </div>
 
                 <div className="h-[500px] w-full relative">
