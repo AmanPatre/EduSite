@@ -32,7 +32,7 @@ export default function Home() {
 
           {/* Subtext */}
           <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-            Synapse aggregates the best free documentation, videos, and roadmaps from around the web into one distraction-free, intelligent dashboard. Stop searching, start learning.
+            Synapse is a learning intelligence platform that combines deterministic market data with constrained AI reasoning to generate personalized, job-aligned learning paths.
           </p>
 
           {/* CTAs */}

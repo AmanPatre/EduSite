@@ -22,50 +22,50 @@ const skillsToTrack = {
     // Frontend
     "React": { name: "React", category: "Frontend", github: "react language:TypeScript", youtube: "react tutorial" },
     "Next.js": { name: "Next.js", category: "Frontend", github: "nextjs language:TypeScript", youtube: "nextjs tutorial" },
-    /*"Vue.js": { name: "Vue.js", category: "Frontend", github: "vue language:TypeScript", youtube: "vuejs tutorial" },
+    "Vue.js": { name: "Vue.js", category: "Frontend", github: "vue language:TypeScript", youtube: "vuejs tutorial" },
     "Angular": { name: "Angular", category: "Frontend", github: "angular language:TypeScript", youtube: "angular tutorial" },
     "TypeScript": { name: "TypeScript", category: "Frontend", github: "language:TypeScript", youtube: "typescript tutorial" },
     "Tailwind CSS": { name: "Tailwind CSS", category: "Frontend", github: "tailwindcss", youtube: "tailwind css tutorial" },
     "Redux": { name: "Redux", category: "Frontend", github: "redux language:TypeScript", youtube: "redux toolkit tutorial" },
-    "Three.js": { name: "Three.js", category: "Frontend", github: "threejs", youtube: "threejs tutorial" },*/
+    "Three.js": { name: "Three.js", category: "Frontend", github: "threejs", youtube: "threejs tutorial" },
 
     // Backend
     "Node.js": { name: "Node.js", category: "Backend", github: "nodejs language:JavaScript", youtube: "nodejs tutorial" },
     "Python": { name: "Python", category: "Backend", github: "language:Python", youtube: "python programming" },
-    /*"Go": { name: "Go", category: "Backend", github: "language:Go", youtube: "golang tutorial" },
+    "Go": { name: "Go", category: "Backend", github: "language:Go", youtube: "golang tutorial" },
     "Java": { name: "Java", category: "Backend", github: "language:Java", youtube: "java spring boot tutorial" },
     "C#": { name: "C#", category: "Backend", github: "language:C#", youtube: "c# generic host .net" },
     "Rust": { name: "Rust", category: "Backend", github: "language:Rust", youtube: "rust lang tutorial" },
     "PHP": { name: "PHP", category: "Backend", github: "language:PHP", youtube: "php laravel tutorial" },
-    "NestJS": { name: "NestJS", category: "Backend", github: "nestjs", youtube: "nestjs tutorial" },*/
+    "NestJS": { name: "NestJS", category: "Backend", github: "nestjs", youtube: "nestjs tutorial" },
 
     // DevOps
     "Docker": { name: "Docker", category: "DevOps", github: "docker", youtube: "docker tutorial" },
     "Kubernetes": { name: "Kubernetes", category: "DevOps", github: "kubernetes", youtube: "kubernetes tutorial" },
-    /*"AWS": { name: "AWS", category: "DevOps", github: "aws", youtube: "aws certified cloud practitioner" },
+    "AWS": { name: "AWS", category: "DevOps", github: "aws", youtube: "aws certified cloud practitioner" },
     "Azure": { name: "Azure", category: "DevOps", github: "azure", youtube: "microsoft azure tutorial" },
     "Terraform": { name: "Terraform", category: "DevOps", github: "terraform", youtube: "terraform tutorial" },
-    "Linux": { name: "Linux", category: "DevOps", github: "linux", youtube: "linux for developers" },*/
+    "Linux": { name: "Linux", category: "DevOps", github: "linux", youtube: "linux for developers" },
 
     // AI/ML
     "Machine Learning": { name: "Machine Learning", category: "AI/ML", github: "machine-learning", youtube: "machine learning course" },
     "Generative AI": { name: "Generative AI", category: "AI/ML", github: "generative-ai", youtube: "generative ai llm" },
-    /*"TensorFlow": { name: "TensorFlow", category: "AI/ML", github: "tensorflow", youtube: "tensorflow tutorial" },
+    "TensorFlow": { name: "TensorFlow", category: "AI/ML", github: "tensorflow", youtube: "tensorflow tutorial" },
     "PyTorch": { name: "PyTorch", category: "AI/ML", github: "pytorch", youtube: "pytorch tutorial" },
     "LangChain": { name: "LangChain", category: "AI/ML", github: "langchain", youtube: "langchain tutorial" },
     "OpenCV": { name: "OpenCV", category: "AI/ML", github: "opencv", youtube: "opencv python" },
-    "Data Science": { name: "Data Science", category: "AI/ML", github: "data-science", youtube: "data science roadmap" },*/
+    "Data Science": { name: "Data Science", category: "AI/ML", github: "data-science", youtube: "data science roadmap" },
 
     // Mobile
     "React Native": { name: "React Native", category: "Mobile", github: "react-native", youtube: "react native tutorial" },
     "Flutter": { name: "Flutter", category: "Mobile", github: "flutter", youtube: "flutter tutorial" },
-    /*"Swift": { name: "Swift", category: "Mobile", github: "language:Swift", youtube: "swift ios tutorial" },
+    "Swift": { name: "Swift", category: "Mobile", github: "language:Swift", youtube: "swift ios tutorial" },
     "Kotlin": { name: "Kotlin", category: "Mobile", github: "language:Kotlin", youtube: "kotlin android tutorial" },
 
     // Design
     "Figma": { name: "Figma", category: "Design", github: "figma", youtube: "figma tutorial" },
     "UI/UX": { name: "UI/UX", category: "Design", github: "ui-ux", youtube: "ui ux design course" },
-    "Blender": { name: "Blender", category: "Design", github: "topic:blender", youtube: "blender 3d tutorial" }*/
+    "Blender": { name: "Blender", category: "Design", github: "topic:blender", youtube: "blender 3d tutorial" }
 };
 
 const getThirtyDaysAgo = () => {
@@ -303,22 +303,12 @@ async function main() {
 
         let historyScores = existingHistory ? [...(existingHistory.scores || [])] : [];
 
-        // 2. If completely empty (First Run), backfill a small synthetic curve so it's not a single dot
-        if (historyScores.length === 0) {
-            console.log(`Creation: Backfilling initial curve for ${skill}...`);
-            for (let i = 5; i >= 1; i--) {
-                const variance = 1 - (i * 0.02) + ((Math.random() - 0.5) * 0.05);
-                let histScore = Math.max(0, Math.min(100, trendScore * variance));
-                historyScores.push(parseFloat(histScore.toFixed(1)));
-            }
-        }
-
-        // 3. Append Current Score (The "Real" Record)
+        // 2. Append Current Score (Real Data Only)
         historyScores.push(trendScore);
 
-        // 4. Keep max 30 entries (Rolling Window)
-        if (historyScores.length > 30) {
-            historyScores = historyScores.slice(historyScores.length - 30);
+        // 3. Keep max 6 entries (Rolling Window - latest 6 runs)
+        if (historyScores.length > 6) {
+            historyScores = historyScores.slice(historyScores.length - 6);
         }
 
         await prisma.trendHistory.upsert({

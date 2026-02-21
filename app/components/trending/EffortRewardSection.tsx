@@ -1,17 +1,10 @@
 "use client";
 
-// ============================================
-// SECTION 4: EFFORT VS REWARD
-// ============================================
-// Scatter plot showing learning effort vs job demand
-// Helps students make data-driven decisions about what to learn
-
 import React, { useState } from 'react';
 import { Target, TrendingUp } from 'lucide-react';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell, ZAxis } from 'recharts';
 import { EffortRewardData } from '@/data/trendingData';
 import SectionHeader from './SectionHeader';
-import Link from 'next/link';
 
 interface EffortRewardSectionProps {
     data: EffortRewardData[];
@@ -23,31 +16,28 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
+    const [selectedSkillData, setSelectedSkillData] = useState<EffortRewardData & { placementReason?: string } | null>(null);
 
-    // Filter data by category
     const filteredData = selectedCategory === 'all'
         ? data
         : data.filter(item => item.category === selectedCategory);
 
-    // Prepare scatter data
     const scatterData = filteredData.map(item => ({
         ...item,
         x: item.effortLevel,
         y: item.demandLevel,
-        z: item.jobOpenings / 100 // Size of bubble
+        z: item.jobOpenings / 100
     }));
 
-    // Get color based on ROI
     const getROIColor = (roi: string) => {
         switch (roi) {
-            case 'High': return '#22c55e'; // green
-            case 'Medium': return '#eab308'; // yellow
-            case 'Low': return '#f97316'; // orange
-            default: return '#64748b'; // slate
+            case 'High': return '#22c55e';
+            case 'Medium': return '#eab308';
+            case 'Low': return '#f97316';
+            default: return '#64748b';
         }
     };
 
-    // Get quadrant info
     const getQuadrantInfo = (x: number, y: number) => {
         if (x <= 5 && y > 5) return { label: '🔥 Best ROI', color: 'text-green-400', desc: 'High demand, low effort' };
         if (x > 5 && y > 5) return { label: '⭐ Long-term', color: 'text-blue-400', desc: 'High demand, high effort' };
@@ -60,26 +50,14 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!searchQuery.trim()) return;
-
         setIsSearching(true);
         try {
             const res = await fetch(`/api/effort-demand?skill=${encodeURIComponent(searchQuery)}`);
             const newData = await res.json();
-
             if (Array.isArray(newData)) {
-                // Determine if we merge or replace? 
-                // Let's MERGE for now so they see it compared to others, 
-                // but if it exists, replace it.
-
                 const newSkill = newData[0];
                 if (newSkill) {
-                    // REPLACEMENT: Only show the searched skill as requested
                     setData([newSkill]);
-
-                    // Highlight the new skill & Select it to show reason
-                    setHoveredSkill(newSkill.skillId);
-                    // We need to type cast or update interface for placementReason, but for now assuming it comes through
-                    setHoveredSkill(null); // Clear hover to rely on selection
                     setSelectedCategory('all');
                 }
             }
@@ -91,62 +69,55 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
         }
     };
 
-    // State for clicked skill to show details
-    const [selectedSkillData, setSelectedSkillData] = useState<EffortRewardData & { placementReason?: string } | null>(null);
-
     return (
-        <section className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <section className="space-y-4 sm:space-y-6">
+            {/* Header + Search */}
+            <div className="flex flex-col gap-4">
                 <SectionHeader
                     icon={Target}
                     iconColor="text-green-500"
                     title="Effort vs Reward Analysis"
                     description="Make smart learning decisions based on effort required and job demand"
-
                 />
-
-                {/* Search Bar */}
-                <form onSubmit={handleSearch} className="flex gap-2 w-full md:w-auto">
-                    <div className="relative">
+                <form onSubmit={handleSearch} className="flex gap-2 w-full">
+                    <div className="relative flex-1">
                         <input
                             type="text"
                             placeholder="Analyze a specific skill..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-[#0F0F12] border border-slate-800 rounded-lg py-2 pl-4 pr-10 text-sm text-slate-200 focus:outline-none focus:border-green-500/50 transition-colors w-full md:w-64"
+                            className="bg-[#0F0F12] border border-slate-800 rounded-lg py-2 pl-4 pr-10 text-sm text-slate-200 focus:outline-none focus:border-green-500/50 transition-colors w-full"
                         />
-                        {/* Status Icon inside input */}
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
-                            {isSearching ? <div className="animate-spin h-3 w-3 border-2 border-slate-500 border-t-green-500 rounded-full" /> : <Target size={14} />}
+                            {isSearching
+                                ? <div className="animate-spin h-3 w-3 border-2 border-slate-500 border-t-green-500 rounded-full" />
+                                : <Target size={14} />}
                         </div>
                     </div>
-
                     <button
                         type="submit"
                         disabled={isSearching || !searchQuery.trim()}
-                        className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-green-900/20"
+                        className="bg-green-600 hover:bg-green-500 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-green-900/20 whitespace-nowrap"
                     >
                         Search
                     </button>
                 </form>
             </div>
 
-            {/* AI Reasoning Panel (Appears on Selection) */}
+            {/* AI Insight Panel */}
             {selectedSkillData && (
                 <div className="bg-gradient-to-r from-slate-900 to-[#0F0F12] border border-blue-500/30 rounded-xl p-4 relative animate-in fade-in slide-in-from-top-2">
                     <button
                         onClick={() => setSelectedSkillData(null)}
-                        className="absolute top-2 right-3 text-slate-500 hover:text-slate-300"
-                    >
-                        ×
-                    </button>
-                    <div className="flex gap-4 items-start">
-                        <div className="bg-blue-500/20 p-2 rounded-lg mt-1">
-                            <TrendingUp className="text-blue-400" size={20} />
+                        className="absolute top-2 right-3 text-slate-500 hover:text-slate-300 text-lg"
+                    >×</button>
+                    <div className="flex gap-3 items-start">
+                        <div className="bg-blue-500/20 p-2 rounded-lg mt-1 flex-shrink-0">
+                            <TrendingUp className="text-blue-400" size={18} />
                         </div>
                         <div>
                             <h4 className="text-blue-400 font-bold text-sm mb-1">AI Insight: Why is {selectedSkillData.skillName} here?</h4>
-                            <p className="text-slate-300 text-sm leading-relaxed">
+                            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
                                 {selectedSkillData.placementReason || `${selectedSkillData.skillName} has a Market Demand of ${selectedSkillData.demandLevel}/10 and Learning Effort of ${selectedSkillData.effortLevel}/10.`}
                             </p>
                         </div>
@@ -154,70 +125,81 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                 </div>
             )}
 
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
+            {/* Category Filter — scrollable on mobile */}
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                 {categories.map(category => (
                     <button
                         key={category}
                         onClick={() => setSelectedCategory(category)}
-                        className={`
-              px-4 py-2 rounded-lg text-sm font-medium transition-all
-              ${selectedCategory === category
+                        className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+                            ${selectedCategory === category
                                 ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
-                                : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                            }
-            `}
+                                : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800'
+                            }`}
                     >
-                        {category === 'all' ? 'All Categories' : category}
+                        {category === 'all' ? 'All' : category}
                     </button>
                 ))}
             </div>
 
             {/* Scatter Plot */}
-            <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-6">
-                <div className="mb-6">
-                    <h3 className="text-lg font-bold text-slate-100 mb-2">
-                        Learning Effort vs Job Demand
-                    </h3>
+            <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold text-slate-100 mb-4">
+                    Learning Effort vs Job Demand
+                </h3>
 
-                </div>
-
-                <div className="h-[500px] w-full relative">
-                    {/* Quadrant Labels */}
-                    <div className="absolute top-8 left-8 z-10 bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2">
+                {/* Quadrant legend — grid on mobile instead of absolute overlay */}
+                <div className="grid grid-cols-2 gap-2 mb-4 sm:hidden">
+                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-2 py-1.5">
                         <p className="text-xs font-bold text-green-400">🔥 Best ROI</p>
                         <p className="text-[10px] text-slate-500">High demand, low effort</p>
                     </div>
-                    <div className="absolute top-8 right-8 z-10 bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2">
-                        <p className="text-xs font-bold text-blue-400">⭐ Long-term Investment</p>
+                    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-2 py-1.5">
+                        <p className="text-xs font-bold text-blue-400">⭐ Long-term</p>
                         <p className="text-[10px] text-slate-500">High demand, high effort</p>
                     </div>
-                    <div className="absolute bottom-8 left-8 z-10 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-3 py-2">
+                    <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-2 py-1.5">
                         <p className="text-xs font-bold text-yellow-400">⚡ Quick Wins</p>
                         <p className="text-[10px] text-slate-500">Low demand, low effort</p>
                     </div>
-                    <div className="absolute bottom-8 right-8 z-10 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-2 py-1.5">
+                        <p className="text-xs font-bold text-red-400">⚠️ Avoid</p>
+                        <p className="text-[10px] text-slate-500">Low demand, high effort</p>
+                    </div>
+                </div>
+
+                {/* Chart with responsive height */}
+                <div className="h-[280px] sm:h-[400px] md:h-[500px] w-full relative">
+                    {/* Quadrant labels — desktop only (absolute overlay) */}
+                    <div className="hidden sm:block absolute top-4 left-4 z-10 bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2 pointer-events-none">
+                        <p className="text-xs font-bold text-green-400">🔥 Best ROI</p>
+                        <p className="text-[10px] text-slate-500">High demand, low effort</p>
+                    </div>
+                    <div className="hidden sm:block absolute top-4 right-4 z-10 bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2 pointer-events-none">
+                        <p className="text-xs font-bold text-blue-400">⭐ Long-term Investment</p>
+                        <p className="text-[10px] text-slate-500">High demand, high effort</p>
+                    </div>
+                    <div className="hidden sm:block absolute bottom-4 left-4 z-10 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-3 py-2 pointer-events-none">
+                        <p className="text-xs font-bold text-yellow-400">⚡ Quick Wins</p>
+                        <p className="text-[10px] text-slate-500">Low demand, low effort</p>
+                    </div>
+                    <div className="hidden sm:block absolute bottom-4 right-4 z-10 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 pointer-events-none">
                         <p className="text-xs font-bold text-red-400">⚠️ Avoid for Now</p>
                         <p className="text-[10px] text-slate-500">Low demand, high effort</p>
                     </div>
 
                     <ResponsiveContainer width="100%" height="100%">
-                        <ScatterChart margin={{ top: 40, right: 40, bottom: 40, left: 40 }}>
+                        <ScatterChart margin={{ top: 30, right: 20, bottom: 30, left: 10 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-
-                            {/* Quadrant dividers */}
-                            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#334155" strokeWidth={2} strokeDasharray="5 5" />
-                            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#334155" strokeWidth={2} strokeDasharray="5 5" />
-
                             <XAxis
                                 type="number"
                                 dataKey="x"
                                 name="Effort"
                                 domain={[0, 10]}
                                 stroke="#64748b"
-                                fontSize={12}
+                                fontSize={10}
                                 tickLine={false}
-                                label={{ value: 'Learning Effort (months) →', position: 'bottom', fill: '#94a3b8', fontSize: 12 }}
+                                label={{ value: 'Effort →', position: 'bottom', fill: '#94a3b8', fontSize: 10 }}
                             />
                             <YAxis
                                 type="number"
@@ -225,79 +207,62 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                                 name="Demand"
                                 domain={[0, 10]}
                                 stroke="#64748b"
-                                fontSize={12}
+                                fontSize={10}
                                 tickLine={false}
-                                label={{ value: '← Job Demand', angle: -90, position: 'left', fill: '#94a3b8', fontSize: 12 }}
+                                width={30}
+                                label={{ value: '← Demand', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 10 }}
                             />
-                            <ZAxis type="number" dataKey="z" range={[100, 1000]} />
-
+                            <ZAxis type="number" dataKey="z" range={[40, 400]} />
                             <Tooltip
                                 cursor={{ strokeDasharray: '3 3' }}
                                 content={({ active, payload }) => {
                                     if (active && payload && payload.length) {
-                                        const data = payload[0].payload as EffortRewardData;
-                                        const quadrant = getQuadrantInfo(data.effortLevel, data.demandLevel);
-
+                                        const d = payload[0].payload as EffortRewardData;
+                                        const quadrant = getQuadrantInfo(d.effortLevel, d.demandLevel);
                                         return (
-                                            <div className="bg-[#0F0F12] border border-slate-800 rounded-xl p-4 shadow-2xl min-w-[250px]">
-                                                <div className="flex items-start justify-between mb-3">
-                                                    <h4 className="font-bold text-slate-100 text-lg">{data.skillName}</h4>
-                                                    <span
-                                                        className="text-xs font-bold px-2 py-1 rounded"
-                                                        style={{
-                                                            backgroundColor: `${getROIColor(data.roi)}20`,
-                                                            color: getROIColor(data.roi)
-                                                        }}
-                                                    >
-                                                        {data.roi} ROI
+                                            <div className="bg-[#0F0F12] border border-slate-800 rounded-xl p-3 shadow-2xl max-w-[220px]">
+                                                <div className="flex items-start justify-between mb-2 gap-2">
+                                                    <h4 className="font-bold text-slate-100 text-sm leading-tight">{d.skillName}</h4>
+                                                    <span className="text-xs font-bold px-1.5 py-0.5 rounded flex-shrink-0"
+                                                        style={{ backgroundColor: `${getROIColor(d.roi)}20`, color: getROIColor(d.roi) }}>
+                                                        {d.roi}
                                                     </span>
                                                 </div>
-
-                                                <div className="space-y-2 text-sm mb-3">
-                                                    <div className="flex justify-between">
-                                                        <span className="text-slate-500">Learning Time:</span>
-                                                        <span className="text-slate-200 font-medium">{data.learningMonths?.toString().replace(/months?/gi, '').trim()} months</span>
+                                                <div className="space-y-1 text-xs mb-2">
+                                                    <div className="flex justify-between gap-4">
+                                                        <span className="text-slate-500">Effort:</span>
+                                                        <span className="text-slate-200">{d.effortLevel}/10</span>
                                                     </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="text-slate-500">Avg Salary:</span>
-                                                        <span className="text-green-400 font-bold">{data.avgSalary}</span>
+                                                    <div className="flex justify-between gap-4">
+                                                        <span className="text-slate-500">Demand:</span>
+                                                        <span className="text-slate-200">{d.demandLevel}/10</span>
                                                     </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="text-slate-500">Category:</span>
-                                                        <span className="text-blue-400">{data.category}</span>
+                                                    <div className="flex justify-between gap-4">
+                                                        <span className="text-slate-500">Salary:</span>
+                                                        <span className="text-green-400 font-bold">{d.avgSalary}</span>
                                                     </div>
                                                 </div>
-
-                                                <div className={`pt-3 border-t border-slate-800 ${quadrant.color}`}>
+                                                <div className={`pt-2 border-t border-slate-800 ${quadrant.color}`}>
                                                     <p className="text-xs font-bold">{quadrant.label}</p>
-                                                    <p className="text-[10px] text-slate-500">{quadrant.desc}</p>
                                                 </div>
-
-                                                <p className="text-[10px] text-slate-500 mt-2 text-center italic">Click for AI reasoning</p>
-
-
+                                                <p className="text-[10px] text-slate-500 mt-1 italic">Tap for AI reasoning</p>
                                             </div>
                                         );
                                     }
                                     return null;
                                 }}
                             />
-
                             <Scatter
                                 data={scatterData}
-                                onMouseEnter={(data) => setHoveredSkill(data.skillId)}
+                                onMouseEnter={(d) => setHoveredSkill(d.skillId)}
                                 onMouseLeave={() => setHoveredSkill(null)}
-                                onClick={(data) => {
-                                    // Set selected skill data (including placementReason if available)
-                                    // data.payload contains the full object
-                                    setSelectedSkillData(data.payload as any);
-                                }}
+                                onClick={(d) => setSelectedSkillData(d.payload as any)}
                             >
                                 {scatterData.map((entry, index) => (
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={getROIColor(entry.roi)}
-                                        opacity={hoveredSkill === entry.skillId || (selectedSkillData?.skillId === entry.skillId) ? 1 : 0.6}
+                                        opacity={hoveredSkill === entry.skillId || selectedSkillData?.skillId === entry.skillId ? 1 : 0.65}
                                         cursor="pointer"
                                         stroke={selectedSkillData?.skillId === entry.skillId ? "#fff" : "none"}
                                         strokeWidth={2}
@@ -310,38 +275,27 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
             </div>
 
             {/* ROI Legend */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                        <div className="w-3 h-3 rounded-full bg-green-500" />
-                        <h4 className="font-bold text-green-400">High ROI</h4>
+                    <div className="flex items-center gap-2 mb-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0" />
+                        <h4 className="font-bold text-green-400 text-sm">High ROI</h4>
                     </div>
-                    <p className="text-sm text-slate-400">
-                        Best learning investment. High demand with reasonable effort.
-                    </p>
-
+                    <p className="text-xs text-slate-400">Best learning investment — high demand, reasonable effort.</p>
                 </div>
-
                 <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                        <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                        <h4 className="font-bold text-yellow-400">Medium ROI</h4>
+                    <div className="flex items-center gap-2 mb-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500 flex-shrink-0" />
+                        <h4 className="font-bold text-yellow-400 text-sm">Medium ROI</h4>
                     </div>
-                    <p className="text-sm text-slate-400">
-                        Good investment but requires more effort or has moderate demand.
-                    </p>
-
+                    <p className="text-xs text-slate-400">Good investment but needs more effort or has moderate demand.</p>
                 </div>
-
                 <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                        <div className="w-3 h-3 rounded-full bg-orange-500" />
-                        <h4 className="font-bold text-orange-400">Low ROI</h4>
+                    <div className="flex items-center gap-2 mb-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-orange-500 flex-shrink-0" />
+                        <h4 className="font-bold text-orange-400 text-sm">Low ROI</h4>
                     </div>
-                    <p className="text-sm text-slate-400">
-                        Consider carefully. High effort with lower demand or niche applications.
-                    </p>
-
+                    <p className="text-xs text-slate-400">High effort with lower demand. Consider carefully.</p>
                 </div>
             </div>
         </section>

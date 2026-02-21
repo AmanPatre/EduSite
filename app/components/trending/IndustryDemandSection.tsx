@@ -95,26 +95,27 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
                     )}
                 </div>
 
-                <div className="h-96 w-full">
+                <div className="h-52 sm:h-72 md:h-96 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                             data={selectedCategory ? subcategoryData : mainCategoryData}
-                            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                            margin={{ top: 10, right: 10, left: 0, bottom: 60 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                             <XAxis
                                 dataKey="name"
                                 stroke="#64748b"
-                                fontSize={12}
+                                fontSize={10}
                                 tickLine={false}
                                 angle={-45}
                                 textAnchor="end"
-                                height={80}
+                                height={70}
                             />
                             <YAxis
                                 stroke="#64748b"
-                                fontSize={12}
+                                fontSize={10}
                                 tickLine={false}
+                                width={35}
                                 tickFormatter={(val) => `${(val / 1000).toFixed(0)}k`}
                             />
                             <Tooltip
@@ -175,11 +176,11 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
 
                 {/* Stats Summary */}
                 <div className="mt-6 pt-6 border-t border-slate-800">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
                         {selectedCategory ? (
                             <>
                                 <div className="text-center">
-                                    <p className="text-2xl font-bold text-slate-100">
+                                    <p className="text-lg sm:text-2xl font-bold text-slate-100">
                                         {selectedCategory.totalJobs.toLocaleString('en-US')}
                                     </p>
                                     <p className="text-xs text-slate-500 mt-1">Total Jobs</p>
@@ -237,7 +238,7 @@ export default function IndustryDemandSection({ roles }: IndustryDemandSectionPr
 
             {/* Category Cards (when not drilled down) */}
             {!selectedCategory && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     {roles.map((role) => (
                         <button
                             key={role.id}

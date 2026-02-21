@@ -14,11 +14,9 @@
 import React from 'react';
 import Navbar from "../components/Navbar";
 import PageWrapper from "../components/PageWrapper";
-import TrendingSkillsSection from "../components/trending/TrendingSkillsSection";
 import MarketInsightsSection from "../components/trending/MarketInsightsSection";
-import IndustryDemandSection from "../components/trending/IndustryDemandSection";
 import SkillRoleMappingSection from "../components/trending/SkillRoleMappingSection";
-import EffortRewardSection from "../components/trending/EffortRewardSection";
+import TrendingClientSections from "../components/trending/TrendingClientSections";
 
 // Import mock data for other sections
 import {
@@ -97,21 +95,18 @@ export default async function TrendingPage() {
       <Navbar />
 
       <PageWrapper>
-        <main className="container mx-auto px-4 pt-32 pb-20 relative z-10 space-y-24">
+        <main className="container mx-auto px-4 pt-24 sm:pt-32 pb-16 relative z-10 space-y-12 sm:space-y-20">
 
 
 
-          {/* 1. Trending Skills (The Core Feature) */}
-          <TrendingSkillsSection skills={trendSkills} />
+          {/* 1 & 4. Chart Sections (Client-only via dynamic import) */}
+          <TrendingClientSections skills={trendSkills} effortData={effortData} />
 
           {/* 2. Breakdown & Insights */}
-
-
           <SkillRoleMappingSection
             skillMappings={skillRoleMappings}
             roleMappings={roleSkillMappings}
           />
-          <EffortRewardSection data={effortData} />
           <MarketInsightsSection insights={marketInsights} />
 
         </main>

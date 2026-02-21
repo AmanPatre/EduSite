@@ -183,7 +183,7 @@ export default function SkillRoleMappingSection({
                     <button
                         key={mode}
                         onClick={() => setViewMode(mode as any)}
-                        className={`flex-1 px-6 py-3 rounded-lg text-sm font-bold transition-all ${viewMode === mode
+                        className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-all ${viewMode === mode
                             ? "bg-purple-500 text-white"
                             : "text-slate-400 hover:text-slate-200"
                             }`}
@@ -273,7 +273,7 @@ export default function SkillRoleMappingSection({
                                                         <div className="flex items-center gap-3">
                                                             <Icon className={`w-6 h-6 ${style.color}`} />
                                                             <div>
-                                                                <h4 className="font-bold text-slate-100 text-lg">
+                                                                <h4 className="font-bold text-slate-100 text-sm sm:text-base">
                                                                     {itemName}
                                                                 </h4>
                                                                 <p className={`text-sm ${style.color}`}>
@@ -283,7 +283,7 @@ export default function SkillRoleMappingSection({
                                                         </div>
                                                         {isRoleCard && (
                                                             <div className="flex items-center gap-4">
-                                                                <span className="text-2xl font-bold text-slate-100">
+                                                                <span className="text-lg sm:text-2xl font-bold text-slate-100">
                                                                     {item.matchPercentage}%
                                                                 </span>
                                                                 <ChevronDown

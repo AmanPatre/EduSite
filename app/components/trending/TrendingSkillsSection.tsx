@@ -104,30 +104,26 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
 
             {/* Filter Tabs */}
             {searchTerm === '' && (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                     <button
                         onClick={() => setFilter('all')}
-                        className={`
-               px-4 py-2 rounded-lg text-sm font-medium transition-all
-               ${filter === 'all'
+                        className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+                            ${filter === 'all'
                                 ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
-                                : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                            }
-             `}
+                                : 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-700'
+                            }`}
                     >
-                        🔥 Top Trending
+                        🔥 Trending
                     </button>
                     {(['Frontend', 'Backend', 'AI/ML', 'DevOps', 'Mobile', 'Design'] as const).map(category => (
                         <button
                             key={category}
                             onClick={() => setFilter(category)}
-                            className={`
-      px-4 py-2 rounded-lg text-sm font-medium transition-all
-      ${filter === category
+                            className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+                                ${filter === category
                                     ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30'
-                                    : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                                }
-    `}
+                                    : 'bg-[#0F0F12] text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800'
+                                }`}
                         >
                             {category}
                         </button>
@@ -136,7 +132,7 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
             )}
 
             {/* Skills Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {displaySkills.map((skill, index) => {
                     const isSelected = selectedSkills.includes(skill.name);
                     const isTop3 = index < 3 && filter === 'all';
@@ -145,13 +141,11 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                         <div
                             key={skill.name}
                             onClick={() => toggleSkillSelection(skill.name)}
-                            className={`
-                relative group cursor-pointer rounded-xl border p-5 transition-all duration-300
-                ${isSelected
+                            className={`relative group cursor-pointer rounded-xl border p-3 sm:p-5 transition-all duration-300
+                            ${isSelected
                                     ? 'bg-purple-500/10 border-purple-500/50 shadow-lg shadow-purple-500/20'
                                     : 'bg-[#0F0F12] border-slate-800 hover:border-purple-500/30 hover:shadow-xl hover:shadow-purple-500/10'
-                                }
-              `}
+                                }`}
                         >
                             {/* Top Trending Badge */}
                             {isTop3 && (
@@ -161,19 +155,16 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                             )}
 
                             {/* Title Row */}
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="text-xl font-bold text-slate-100">{skill.name}</h3>
-                                    <span className="text-xs text-slate-500 uppercase">{skill.category}</span>
+                            <div className="flex justify-between items-start mb-3">
+                                <div className="min-w-0 pr-2">
+                                    <h3 className="text-sm sm:text-base lg:text-lg font-bold text-slate-100 truncate">{skill.name}</h3>
+                                    <span className="text-[10px] sm:text-xs text-slate-500 uppercase">{skill.category}</span>
                                 </div>
-
                                 {/* Score Circle */}
-                                <div className={`
-                    flex items-center justify-center w-10 h-10 rounded-full font-bold text-sm
-                    ${skill.trendScore >= 80 ? 'bg-green-500/20 text-green-400 border border-green-500/50' :
+                                <div className={`flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold text-xs sm:text-sm
+                                    ${skill.trendScore >= 80 ? 'bg-green-500/20 text-green-400 border border-green-500/50' :
                                         skill.trendScore >= 50 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50' :
-                                            'bg-slate-700/50 text-slate-400 border border-slate-600'}
-                `}>
+                                            'bg-slate-700/50 text-slate-400 border border-slate-600'}`}>
                                     {skill.trendScore}
                                 </div>
                             </div>
@@ -190,13 +181,19 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                                 </div>
                             </div>
 
-                            {/* Sparkline (Visual only for Phase 3) */}
+                            {/* Sparkline - only render with 2+ data points to avoid Recharts -1/-1 error */}
                             <div className="h-10 -mx-2">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={(skill.history || []).map((val: any) => ({ v: val }))}>
-                                        <Area type="monotone" dataKey="v" stroke={isSelected ? '#a855f7' : '#475569'} fill="none" strokeWidth={2} />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                                {(skill.history || []).length >= 2 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={(skill.history || []).map((val: any) => ({ v: val }))}>
+                                            <Area type="monotone" dataKey="v" stroke={isSelected ? '#a855f7' : '#475569'} fill="none" strokeWidth={2} />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="h-full flex items-center justify-center">
+                                        <span className="text-[10px] text-slate-600 italic">Chart available after 2+ seeds</span>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Selection Indicator */}

@@ -13,6 +13,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  password      String?   // For email+password auth (hashed with bcryptjs)
   accounts      Account[]
   sessions      Session[]
   searchHistory SearchHistory[]
@@ -22,6 +23,7 @@ model User {
   roadmaps      Roadmap[]
   activities    Activity[]
 }
+
 
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
