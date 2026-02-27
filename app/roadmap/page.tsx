@@ -133,34 +133,35 @@ function RoadmapContent() {
     };
 
     return (
-        <div className="min-h-screen bg-transparent text-slate-100 p-8 pb-24 relative overflow-hidden">
+        <div className="min-h-screen bg-transparent text-slate-100 px-4 sm:p-8 pb-24 relative overflow-x-hidden">
             {/* Content Container with Top Padding for Navbar */}
-            <div className="max-w-7xl mx-auto relative z-10 pt-24">
-                <div className="text-center mb-12 relative">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
-                    <h1 className="relative text-5xl font-extrabold mb-4 pb-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                        AI Learning Roadmap
+            <div className="max-w-7xl mx-auto relative z-10 pt-24 sm:pt-28">
+                <div className="text-center mb-8 sm:mb-12 relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[300px] bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+                    <h1 className="relative text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 pb-2 tracking-tight">
+                        AI Learning <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Roadmap</span>
                     </h1>
-
                 </div>
 
                 {/* Input Section */}
                 {!roadmap && (
-                    <div className="flex gap-4 mb-12 max-w-2xl mx-auto animate-in fade-in duration-500">
-                        <input
-                            type="text"
-                            value={topic}
-                            onChange={(e) => setTopic(e.target.value)}
-                            placeholder="Enter a role (e.g. 'MERN Stack Developer')"
-                            className="flex-1 bg-slate-800 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none placeholder:text-slate-500"
-                        />
-                        <button
-                            onClick={generateRoadmap}
-                            disabled={loading}
-                            className="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-xl font-bold disabled:opacity-50 transition-all shadow-lg shadow-purple-500/20"
-                        >
-                            {loading ? <Loader2 className="animate-spin" /> : "Generate Path"}
-                        </button>
+                    <div className="flex gap-4 mb-12 max-w-2xl mx-auto animate-in fade-in duration-500 relative group w-full">
+                        <div className="relative flex items-center w-full">
+                            <input
+                                type="text"
+                                value={topic}
+                                onChange={(e) => setTopic(e.target.value)}
+                                placeholder="Enter a role (e.g. 'MERN Stack Developer')"
+                                className="w-full rounded-2xl border border-slate-700 bg-slate-800/50 py-4 pl-6 pr-[140px] text-lg text-slate-100 shadow-sm transition-all placeholder:text-slate-500 focus:border-purple-500/50 focus:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-purple-500/10 group-hover:shadow-lg group-hover:shadow-purple-500/5"
+                            />
+                            <button
+                                onClick={generateRoadmap}
+                                disabled={loading}
+                                className="absolute right-2 rounded-xl bg-purple-600 px-6 py-2.5 text-white font-bold transition hover:bg-purple-500 disabled:bg-slate-700 disabled:text-slate-500 shadow-lg shadow-purple-500/20 flex items-center justify-center min-w-[120px]"
+                            >
+                                {loading ? <Loader2 className="animate-spin w-5 h-5" /> : "Generate Path"}
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -274,7 +275,7 @@ function RoadmapContent() {
                                                         ))}
                                                     </div>
 
-                                                    <div className="flex items-start justify-between gap-4 mt-4 pt-4 border-t border-slate-800/50">
+                                                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mt-4 pt-4 border-t border-slate-800/50">
                                                         {/* Project Badge */}
                                                         <div className="flex-1 min-w-0 flex items-start gap-2">
                                                             <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-0.5 shrink-0">Project:</span>
@@ -282,7 +283,7 @@ function RoadmapContent() {
                                                         </div>
 
                                                         {/* MARK COMPLETE BUTTON */}
-                                                        <div className="shrink-0 flex flex-col items-end gap-2">
+                                                        <div className="shrink-0 flex sm:flex-col items-start sm:items-end gap-2">
                                                             {isLearning && isSaved && !isCompleted && (
                                                                 <button
                                                                     onClick={(e) => {

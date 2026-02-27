@@ -5,7 +5,7 @@ import {
   HarmBlockThreshold,
 } from "@google/generative-ai";
 import redis from "@/lib/redis"; // <--- IMPORT ADDED
-import {fetchTrustedDocs} from "@/lib/docs";
+import { fetchTrustedDocs } from "@/lib/docs";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 function manualFallback(results: any[]) {
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       console.warn("Redis Check Error (proceeding to fetch):", e);
     }
 
-   const rawResults = await fetchTrustedDocs(query);
+    const rawResults = await fetchTrustedDocs(query);
 
     if (rawResults.length === 0) {
       return NextResponse.json({ success: false, message: "No results found" });
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     // Step B: Use Gemini 1.5 Flash (STABLE)
     try {
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.0-flash",
         safetySettings: [
           {
             category: HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
         ],
       });
 
-const prompt = `
+      const prompt = `
 Context: A student wants to learn "${query}".
 Raw Search Results: ${JSON.stringify(rawResults)}
 

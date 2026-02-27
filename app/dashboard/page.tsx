@@ -201,37 +201,39 @@ export default function DashboardPage() {
     if (!session) return <div className="p-10 text-center text-slate-400">Please log in to view dashboard.</div>;
 
     return (
-        <div className="min-h-screen bg-transparent text-slate-100 p-8 pb-24 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto space-y-8 relative z-10 pt-24">
+        <div className="min-h-screen bg-transparent text-slate-100 px-4 sm:p-8 pb-24 relative overflow-x-hidden">
+            <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 relative z-10 pt-24 sm:pt-28">
 
                 {/* Header */}
-                <div className="flex items-center justify-between relative">
-                    <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[300px] h-[150px] bg-purple-500/10 blur-[60px] rounded-full pointer-events-none"></div>
-                    <div className="relative">
-                        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 pb-2">
-                            Mastery Dashboard
-                        </h1>
-                        <p className="text-slate-400 mt-1">Consistency is the key to victory, {session.user?.name}.</p>
-                    </div>
-                    <div className="flex gap-4">
-                        <div className="bg-[#0F0F12] border border-slate-800 p-4 rounded-xl flex items-center gap-3">
-                            <div className="p-2 bg-orange-500/10 rounded-lg text-orange-500"><Flame className="w-5 h-5" /></div>
-                            <div>
-                                <div className="text-sm text-slate-500">Activities This Month</div>
-                                <div className="text-xl font-bold">
-                                    {stats?.activities?.filter((act: any) => {
-                                        const d = new Date(act.createdAt);
-                                        const now = new Date();
-                                        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-                                    }).length || 0}
+                <div className="relative">
+                    <div className="absolute top-0 left-0 w-[300px] h-[150px] bg-purple-500/10 blur-[60px] rounded-full pointer-events-none"></div>
+                    <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 pb-1">
+                                Mastery Dashboard
+                            </h1>
+                            <p className="text-slate-400 text-sm sm:text-base mt-1">Consistency is the key to victory, {session.user?.name}.</p>
+                        </div>
+                        <div className="grid grid-cols-2 sm:flex sm:flex-row gap-3">
+                            <div className="bg-[#0F0F12] border border-slate-800 p-3 sm:p-4 rounded-xl flex items-center gap-2 sm:gap-3">
+                                <div className="p-1.5 sm:p-2 bg-orange-500/10 rounded-lg text-orange-500"><Flame className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+                                <div>
+                                    <div className="text-xs text-slate-500">Activities<br className="sm:hidden" /> This Month</div>
+                                    <div className="text-lg sm:text-xl font-bold">
+                                        {stats?.activities?.filter((act: any) => {
+                                            const d = new Date(act.createdAt);
+                                            const now = new Date();
+                                            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                                        }).length || 0}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="bg-[#0F0F12] border border-slate-800 p-4 rounded-xl flex items-center gap-3">
-                            <div className="p-2 bg-purple-500/10 rounded-lg text-purple-500"><Target className="w-5 h-5" /></div>
-                            <div>
-                                <div className="text-sm text-slate-500">Active Goals</div>
-                                <div className="text-xl font-bold">{stats?.roadmaps?.length || 0}</div>
+                            <div className="bg-[#0F0F12] border border-slate-800 p-3 sm:p-4 rounded-xl flex items-center gap-2 sm:gap-3">
+                                <div className="p-1.5 sm:p-2 bg-purple-500/10 rounded-lg text-purple-500"><Target className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+                                <div>
+                                    <div className="text-xs text-slate-500">Active Goals</div>
+                                    <div className="text-lg sm:text-xl font-bold">{stats?.roadmaps?.length || 0}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -246,12 +248,12 @@ export default function DashboardPage() {
 
                             {/* ACTIVITY HEATMAP (Span 2) */}
                             <div
-                                className="lg:col-span-2 bg-[#0F0F12] border border-slate-800 rounded-2xl p-8"
+                                className="lg:col-span-2 bg-[#0F0F12] border border-slate-800 rounded-2xl p-4 sm:p-8"
                             >
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-bold flex items-center gap-2">
+                                <div className="flex flex-wrap items-center justify-between gap-2 mb-4 sm:mb-6">
+                                    <h3 className="text-base sm:text-lg font-bold flex items-center gap-2">
                                         <CalIcon className="w-4 h-4 text-purple-400" /> Activity Log
-                                        <span className="text-slate-500 text-sm font-normal ml-2">
+                                        <span className="text-slate-500 text-xs sm:text-sm font-normal">
                                             {selectedYear === "Current" ? "(Last 365 Days)" : `(${selectedYear})`}
                                         </span>
                                     </h3>

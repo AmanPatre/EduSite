@@ -20,7 +20,12 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
 
     const filteredData = selectedCategory === 'all'
         ? data
-        : data.filter(item => item.category === selectedCategory);
+        : data.filter(item => {
+            if (!item.category) return false;
+            const itemCat = item.category.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const selCat = selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return itemCat === selCat || itemCat.includes(selCat) || selCat.includes(itemCat);
+        });
 
     const scatterData = filteredData.map(item => ({
         ...item,

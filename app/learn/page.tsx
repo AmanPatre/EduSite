@@ -76,12 +76,12 @@ export default function LearnPage() {
     return (
         <div className="min-h-screen bg-transparent text-slate-100">
             <div className="max-w-7xl mx-auto px-4 pt-24 pb-12">
-                <div className="text-center mb-16 relative">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
-                    <h1 className="relative text-4xl md:text-5xl font-extrabold text-white mb-4 pb-2 tracking-tight">
+                <div className="text-center mb-8 sm:mb-16 relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[300px] bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+                    <h1 className="relative text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3 pb-2 tracking-tight">
                         Search Less. <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Learn More.</span>
                     </h1>
-                    <p className="relative text-slate-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+                    <p className="relative text-slate-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
                         Access a centralized engine for developer documentation, video courses, and interactive guides. Designed to get you to your "Aha!" moment faster.
                     </p>
                     <SearchBar onSearch={handleSearch} loading={loading} />
@@ -93,11 +93,11 @@ export default function LearnPage() {
 
                         {/* Recommended Videos */}
                         <div>
-                            <div className="flex items-center gap-3 mb-6">
+                            <div className="flex items-center gap-3 mb-4 sm:mb-6">
                                 <div className="p-2 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
                                     <Sparkles className="text-yellow-400 w-5 h-5" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-100">Recommended for you</h2>
+                                <h2 className="text-lg sm:text-2xl font-bold text-slate-100">Recommended for you</h2>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
