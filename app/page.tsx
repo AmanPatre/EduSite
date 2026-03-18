@@ -256,16 +256,18 @@ export default function Home() {
             <div className="relative z-10 mb-8 md:mb-12">
               <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">See Functionality in Action</h2>
               <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-lg">
-                Watch how EduSite transforms your learning workflow entirely. From generating a roadmap to tracking your first streak.
+                Watch how Synapse transforms your learning workflow entirely. From generating a roadmap to tracking your first streak.
               </p>
             </div>
             <div className="relative aspect-video w-full rounded-2xl bg-black overflow-hidden border border-slate-800 shadow-2xl">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black opacity-80"></div>
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <button className="group/play w-16 h-16 md:w-24 md:h-24 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center transition-all hover:scale-110 border border-white/10">
-                  <PlayCircle className="w-8 h-8 md:w-12 md:h-12 text-white fill-white/10 group-hover/play:fill-white transition-colors duration-300" />
-                </button>
-              </div>
+              <video
+                className="absolute inset-0 w-full h-full object-contain"
+                controls
+                playsInline
+              >
+                <source src="/demo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </section>
