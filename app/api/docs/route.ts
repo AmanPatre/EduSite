@@ -1,22 +1,17 @@
 import { NextResponse } from "next/server";
-import {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} from "@google/generative-ai";
-import redis from "@/lib/redis"; // <--- IMPORT ADDED
+import { HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import redis from "@/lib/redis";
 import { fetchTrustedDocs } from "@/lib/docs";
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+import { prisma } from "@/lib/prisma";
+import { getGeminiModel, EXPERIMENTAL_MODEL } from "@/lib/gemini";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 function manualFallback(results: any[]) {
   return results.slice(0, 10).map((item) => {
     let category = "Tutorial";
     const url = item.url.toLowerCase();
-    if (
-      url.includes("react.dev") ||
-      url.includes("mozilla.org") ||
-      url.includes("docs")
-    ) {
+    if (url.includes("react.dev") || url.includes("mozilla.org") || url.includes("docs")) {
       category = "Official Docs";
     } else if (url.includes("stackoverflow")) {
       category = "Forum";
@@ -25,108 +20,69 @@ function manualFallback(results: any[]) {
   });
 }
 
-// 4. MAIN ROUTE
 export async function POST(req: Request) {
   try {
     const { query } = await req.json();
-    if (!query?.trim())
-      return NextResponse.json({ error: "Query required" }, { status: 400 });
+    if (!query?.trim()) return NextResponse.json({ error: "Query required" }, { status: 400 });
+
+    const session = await getServerSession(authOptions);
+    const userEmail = session?.user?.email;
 
     const sanitQuery = query.trim().toLowerCase();
     const cachKey = `docs:${sanitQuery}`;
 
-    // --- Cache Check ---
     try {
       const cachedData = await redis?.get(cachKey);
-      if (cachedData) {
-        console.log(`🚀 HIT: Serving Docs for "${sanitQuery}" from Redis`);
-        return NextResponse.json(JSON.parse(cachedData));
-      }
+      if (cachedData) return NextResponse.json(JSON.parse(cachedData));
     } catch (e) {
-      console.warn("Redis Check Error (proceeding to fetch):", e);
+      console.warn("Redis Check Error:", e);
     }
 
     const rawResults = await fetchTrustedDocs(query);
+    if (rawResults.length === 0) return NextResponse.json({ success: false, message: "No results found" });
 
-    if (rawResults.length === 0) {
-      return NextResponse.json({ success: false, message: "No results found" });
-    }
-
-    // DECLARE VARIABLE OUTSIDE TRY/CATCH TO AVOID SHADOWING
     let finalData;
 
-    // Step B: Use Gemini 1.5 Flash (STABLE)
     try {
-      const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
-        safetySettings: [
-          {
-            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-        ],
-      });
+      const model = getGeminiModel(EXPERIMENTAL_MODEL);
+      // Add custom safety settings if needed, but getGeminiModel returns the base instance
+      // We can override settings here if getGeminiModel allowed it, but for now we'll stick to defaults or update lib/gemini.ts if needed.
 
-      const prompt = `
-Context: A student wants to learn "${query}".
-Raw Search Results: ${JSON.stringify(rawResults)}
+      const prompt = `Student learning "${query}". Search results: ${JSON.stringify(rawResults)}. Return STRICT JSON: { "bestDocs": [{ "title": "", "url": "", "snippet": "", "source": "", "category": "", "tags": [], "difficulty": "" }] }`;
 
-Task:
-1. Select the best 10 resources.
-2. Analyze the Title and Snippet.
-3. WRITE A NEW SNIPPET: Clear, 1-2 sentence summary.
-4. EXTRACT TAGS: Identify 2-3 key concepts.
-5. ESTIMATE DIFFICULTY: "Beginner", "Intermediate", or "Advanced".
-
-Return STRICT JSON: 
-{ 
-  "bestDocs": [
-    { 
-      "title": "...", 
-      "url": "...", 
-      "snippet": "...", 
-      "source": "...",  // <--- ADDED BACK
-      "category": "Official Docs", 
-      "tags": ["Tag1", "Tag2"], 
-      "difficulty": "Beginner" 
-    }
-  ] 
-}
-`;
-
+      const startTime = Date.now();
       const result = await model.generateContent(prompt);
-      const text = result.response
-        .text()
-        .replace(/```json/g, "")
-        .replace(/```/g, "");
+      const latency = Date.now() - startTime;
+      const text = result.response.text().replace(/```json/g, "").replace(/```/g, "").trim();
       const processed = JSON.parse(text);
 
-      // ASSIGNMENT WITHOUT 'const'
+      // Log AI Interaction
+      (async () => {
+        try {
+          const user = userEmail ? await prisma.user.findUnique({ where: { email: userEmail } }) : null;
+          await prisma.aIInteraction.create({
+            data: {
+              userId: user?.id,
+              modelUsed: EXPERIMENTAL_MODEL,
+              feature: "DOCS",
+              prompt: `Docs for ${query}`,
+              response: processed,
+              latency,
+            }
+          });
+        } catch (logError) {
+          console.warn("[ERROR] AI Log Failed:", logError);
+        }
+      })();
+
       finalData = { success: true, data: processed.bestDocs };
     } catch (aiError: any) {
-      console.log("🔥 GEMINI ERROR:", aiError.message);
-      // Fallback
-      const manualData = manualFallback(rawResults);
-      // ASSIGNMENT WITHOUT 'const'
-      finalData = { success: true, data: manualData };
+      console.warn("🔥 GEMINI ERROR:", aiError.message);
+      finalData = { success: true, data: manualFallback(rawResults) };
     }
 
-    // --- Save to Redis ---
     if (finalData && finalData.success) {
       try {
-        // CORRECTED SYNTAX: "EX" is a separate argument to redis.set
         await redis?.set(cachKey, JSON.stringify(finalData), "EX", 3600);
       } catch (writeError) {
         console.warn("Redis Write Failed:", writeError);

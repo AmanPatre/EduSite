@@ -22,6 +22,7 @@ model User {
   createdAt     DateTime  @default(now())
   roadmaps      Roadmap[]
   activities    Activity[]
+  aiInteractions AIInteraction[]
 }
 
 
@@ -153,4 +154,20 @@ model EffortDemandSnapshot {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   data      Json     // Array of { skillName, effort, demand, salary, roi, ... }
   updatedAt DateTime @updatedAt
+}
+
+model AIInteraction {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String?  @db.ObjectId
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  modelUsed     String   // e.g. "gemini-3.1-flash-lite"
+  feature       String   // e.g. "SEARCH", "ROADMAP", "INSIGHTS"
+  prompt        String
+  response      Json?
+  
+  tokensUsed    Int?     
+  latency       Int?     // milliseconds
+  
+  createdAt     DateTime @default(now())
 }
