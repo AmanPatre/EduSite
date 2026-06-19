@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 // Adjust the import path for SearchBar depending on where it moved or if it's in components
 // Assuming SearchBar is in ../components/SearchBar based on previous file structure
 import SearchBar from "../components/SearchBar";
@@ -53,9 +54,14 @@ export default function LearnPage() {
                 playlists: vidRes.data.playlists || [],
                 docs: docRes.data.data || []
             });
-        } catch (e) {
+            toast.success("Ready to learn!");
+        } catch (e: any) {
             console.error(e);
-            alert("Search failed. Please try again.");
+            if (e.response?.status === 400) {
+                toast.error(e.response.data.message || "Enter a valid search topic");
+            } else {
+                toast.error("Search failed. Please try again.");
+            }
         } finally {
             setLoading(false);
         }

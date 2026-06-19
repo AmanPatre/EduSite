@@ -134,6 +134,7 @@ model TrendHistory {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   skillName String   @unique
   scores    Json     // Array of scores [65, 68, 72...]
+  dates     Json?    // Optional: Array of ISO dates corresponding to scores
   updatedAt DateTime @updatedAt
 }
 model SkillRoleMap {
@@ -170,4 +171,10 @@ model AIInteraction {
   latency       Int?     // milliseconds
   
   createdAt     DateTime @default(now())
+}
+
+model MarketInsightsSnapshot {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  data      Json     // Array of MarketInsight objects
+  updatedAt DateTime @updatedAt
 }

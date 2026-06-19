@@ -3,6 +3,7 @@ import AuthProvider from "./providers/authProvider";
 import Navbar from "./components/Navbar";
 import PageWrapper from "./components/PageWrapper";
 import { ThemeProvider } from "./providers/theme-provider";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PageWrapper>
               {children}
             </PageWrapper>
+            <Toaster position="top-right" reverseOrder={false} toastOptions={{
+              style: {
+                background: '#0F0F12',
+                color: '#fff',
+                border: '1px solid #1e293b'
+              }
+            }} />
           </ThemeProvider>
         </AuthProvider>
       </body>

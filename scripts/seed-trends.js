@@ -198,18 +198,34 @@ async function main() {
     const rawDataMap = {}; // Store raw data first: { "React": { github: {...}, youtube: {...}, category: "Frontend" } }
 
     // Phase 1: Gather ALL Data
+    let apiFailureDetected = false;
+    let failureReason = "";
+
     for (const skill of skills) {
         console.log(`📡 Fetching Data: ${skill}...`);
         const gData = await fetchGitHubData(skillsToTrack[skill].github);
         const yData = await fetchYouTubeData(skillsToTrack[skill].youtube);
 
-        // Raw Score Calculation (Proprietary Formula from Plan)
-        // GitHub: (Count * 2) + (AvgStars * 0.5) + (Forks * 0.1)
-        // Scaled down repoCount mostly, trust the quality metrics more
+        // API SAFETY CHECK: If GitHub totally fails or YouTube hits Quota, stop the run!
+        if (gData.repoCount === 0 && skillsToTrack[skill].github) {
+            apiFailureDetected = true;
+            failureReason = `GitHub Limit/Error on ${skill}`;
+            break;
+        }
+
+        // Note: yData returns null on Quota Error. 
+        // If YouTube is a core requirement for your run, uncomment below:
+        /*
+        if (yData === null) {
+            apiFailureDetected = true;
+            failureReason = `YouTube Quota Exceeded on ${skill}`;
+            break;
+        }
+        */
+
+        // Raw Score Calculation
         const githubRawScore = (gData.repoCount * 0.5) + (gData.avgStars * 5) + (gData.totalForks * 0.2);
 
-        // YouTube: (Count * 10) + (Views / 1000) + (AvgEngagement * 500)
-        // Handle NULL (Api Failure)
         let youtubeRawScore = 0;
         if (yData) {
             youtubeRawScore = (yData.videoCount * 10) + (yData.totalViews / 1000) + (yData.avgEngagement * 50);
@@ -223,8 +239,13 @@ async function main() {
             youtubeRawScore
         };
 
-        // Slight delay to be safe
         await new Promise(r => setTimeout(r, 500));
+    }
+
+    if (apiFailureDetected) {
+        console.error(`\n❌ ABORTING: API FETCH FAILED (${failureReason}).`);
+        console.error("The database was NOT updated to prevent corrupting existing trend data.");
+        return;
     }
 
     // Phase 2: Category Normalization

@@ -4,6 +4,7 @@ import redis from "@/lib/redis";
 import { fetchTrustedDocs } from "@/lib/docs";
 import { prisma } from "@/lib/prisma";
 import { getGeminiModel, EXPERIMENTAL_MODEL } from "@/lib/gemini";
+import { validateTopic } from "@/lib/topicGuard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 
@@ -24,6 +25,16 @@ export async function POST(req: Request) {
   try {
     const { query } = await req.json();
     if (!query?.trim()) return NextResponse.json({ error: "Query required" }, { status: 400 });
+
+    // Topic Guard: Prevent non-educational content
+    const validation = await validateTopic(query, 'LEARNING');
+    if (!validation.isValid) {
+      return NextResponse.json({
+        success: false,
+        error: "Non-Educational Content",
+        message: `"${query}" is not categorized as an educational or professional learning topic. Synapse is dedicated to documentation and technical study only.`
+      }, { status: 400 });
+    }
 
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;

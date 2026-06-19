@@ -5,20 +5,32 @@ import { fetchYouTubePlaylists, fetchYouTubeVideos } from "@/lib/youtube";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { getGeminiModel, EXPERIMENTAL_MODEL } from "@/lib/gemini";
+import { validateTopic } from "@/lib/topicGuard";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
     let { query } = await req.json();
-    query += " full course";
-
     if (!query?.trim()) {
       return NextResponse.json(
         { error: "Query cannot be empty" },
         { status: 400 }
       );
     }
+
+    // Topic Guard: Prevent non-educational content
+    const validation = await validateTopic(query, 'LEARNING');
+    if (!validation.isValid) {
+      return NextResponse.json({
+        success: false,
+        error: "Non-Educational Content",
+        message: `"${query}" is not categorized as an educational or professional learning topic. Synapse is dedicated to career growth and technical skill-building only.`
+      }, { status: 400 });
+    }
+
+    query += " full course";
+
     const sanitizedQuery = query.trim().toLowerCase();
 
     const session = await getServerSession(authOptions);

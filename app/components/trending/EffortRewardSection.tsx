@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Target, TrendingUp } from 'lucide-react';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell, ZAxis } from 'recharts';
+import toast from 'react-hot-toast';
 import { EffortRewardData } from '@/data/trendingData';
 import SectionHeader from './SectionHeader';
 
@@ -45,9 +46,9 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
 
     const getQuadrantInfo = (x: number, y: number) => {
         if (x <= 5 && y > 5) return { label: '🔥 Best ROI', color: 'text-green-400', desc: 'High demand, low effort' };
-        if (x > 5 && y > 5) return { label: '⭐ Long-term', color: 'text-blue-400', desc: 'High demand, high effort' };
+        if (x > 5 && y > 5) return { label: '⭐ Long-term Investment', color: 'text-blue-400', desc: 'High demand, high effort' };
         if (x <= 5 && y <= 5) return { label: '⚡ Quick Wins', color: 'text-yellow-400', desc: 'Low demand, low effort' };
-        return { label: '⚠️ Avoid', color: 'text-red-400', desc: 'Low demand, high effort' };
+        return { label: '⚠️ Avoid for Now', color: 'text-red-400', desc: 'Low demand, high effort' };
     };
 
     const categories = ['all', 'Frontend', 'Backend', 'AI/ML', 'DevOps', 'Mobile', 'Design'];
@@ -59,15 +60,20 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
         try {
             const res = await fetch(`/api/effort-demand?skill=${encodeURIComponent(searchQuery)}`);
             const newData = await res.json();
-            if (Array.isArray(newData)) {
+
+            if (res.ok && Array.isArray(newData)) {
                 const newSkill = newData[0];
                 if (newSkill) {
                     setData([newSkill]);
                     setSelectedCategory('all');
+                    toast.success(`Analyzed ${newSkill.skillName}`);
                 }
+            } else {
+                toast.error(newData.message || "Enter a valid technical skill");
             }
         } catch (error) {
             console.error("Failed to search skill:", error);
+            toast.error("Failed to analyze skill.");
         } finally {
             setIsSearching(false);
             setSearchQuery('');
@@ -110,25 +116,60 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
             </div>
 
             {/* AI Insight Panel */}
-            {selectedSkillData && (
-                <div className="bg-gradient-to-r from-slate-900 to-[#0F0F12] border border-blue-500/30 rounded-xl p-4 relative animate-in fade-in slide-in-from-top-2">
-                    <button
-                        onClick={() => setSelectedSkillData(null)}
-                        className="absolute top-2 right-3 text-slate-500 hover:text-slate-300 text-lg"
-                    >×</button>
-                    <div className="flex gap-3 items-start">
-                        <div className="bg-blue-500/20 p-2 rounded-lg mt-1 flex-shrink-0">
-                            <TrendingUp className="text-blue-400" size={18} />
-                        </div>
-                        <div>
-                            <h4 className="text-blue-400 font-bold text-sm mb-1">AI Insight: Why is {selectedSkillData.skillName} here?</h4>
-                            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                                {selectedSkillData.placementReason || `${selectedSkillData.skillName} has a Market Demand of ${selectedSkillData.demandLevel}/10 and Learning Effort of ${selectedSkillData.effortLevel}/10.`}
-                            </p>
+            {selectedSkillData && (() => {
+                const quadrant = getQuadrantInfo(selectedSkillData.effortLevel, selectedSkillData.demandLevel);
+                return (
+                    <div className="bg-gradient-to-br from-slate-900 via-[#0F0F12] to-[#16161a] border border-blue-500/30 rounded-xl p-4 sm:p-5 relative animate-in fade-in slide-in-from-top-2 overflow-hidden shadow-2xl">
+                        {/* Decorative glow */}
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full" />
+
+                        <button
+                            onClick={() => setSelectedSkillData(null)}
+                            className="absolute top-3 right-4 text-slate-500 hover:text-slate-300 transition-colors z-10"
+                        >
+                            <span className="text-xl">×</span>
+                        </button>
+
+                        <div className="flex gap-4 items-start relative z-10">
+                            <div className="bg-blue-500/10 p-2.5 rounded-xl border border-blue-500/20 flex-shrink-0">
+                                <TrendingUp className="text-blue-400" size={20} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-3 mb-2">
+                                    <h4 className="text-blue-400 font-bold text-sm sm:text-base tracking-tight">
+                                        Market Insight: Why is <span className="text-white">{selectedSkillData.skillName}</span> here?
+                                    </h4>
+                                    <div className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${quadrant.color.replace('text-', 'border-').replace('400', '400/30')} bg-slate-900/50 flex items-center gap-1`}>
+                                        <span className={quadrant.color}>{quadrant.label}</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <p className="text-slate-300 text-xs sm:text-sm leading-relaxed font-medium">
+                                        {selectedSkillData.placementReason || `${selectedSkillData.skillName} shows a unique market profile with ${selectedSkillData.demandLevel}/10 demand.`}
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-4 pt-1">
+                                        <div className="flex flex-col gap-0.5">
+                                            <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Category Analysis</span>
+                                            <span className={`text-xs font-semibold ${quadrant.color}`}>
+                                                {quadrant.desc}
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-col gap-0.5">
+                                            <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">ROI Profile</span>
+                                            <span className="text-xs font-semibold text-slate-200">
+                                                {selectedSkillData.roi}-Density Return
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                );
+            })()}
 
             {/* Category Filter — scrollable on mobile */}
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
@@ -242,10 +283,7 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                                                         <span className="text-slate-500">Demand:</span>
                                                         <span className="text-slate-200">{d.demandLevel}/10</span>
                                                     </div>
-                                                    <div className="flex justify-between gap-4">
-                                                        <span className="text-slate-500">Salary:</span>
-                                                        <span className="text-green-400 font-bold">{d.avgSalary}</span>
-                                                    </div>
+
                                                 </div>
                                                 <div className={`pt-2 border-t border-slate-800 ${quadrant.color}`}>
                                                     <p className="text-xs font-bold">{quadrant.label}</p>

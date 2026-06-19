@@ -62,11 +62,12 @@ export function calculateTrendScore(
 }
 
 function calculateGitHubScore(data: GitHubActivityData): number {
-    // Weighted composite from sampled data
+    // totalRepoCount = real GitHub-wide count (primary volume signal)
+    // avgStars / avgForks = quality modifiers from 50-repo sample
     const score = (
-        (data.repoCount * 2.0) +        // Recent activity weight
-        (data.avgStars * 0.5) +         // Quality signal
-        (data.totalForks * 0.1)         // Community engagement
+        (data.totalRepoCount * 1.0) +   // Volume: how much is being built
+        (data.avgStars * 0.5) +          // Quality: are those repos serious?
+        (data.avgForks * 0.3)            // Engagement: are people building on it?
     );
     return isNaN(score) ? 0 : score;
 }
@@ -110,7 +111,8 @@ function calculateAdaptiveWeights(
     githubData: GitHubActivityData,
     youtubeData: YouTubeActivityData
 ): { github: number; youtube: number } {
-    const hasGithub = githubData.repoCount > 5;
+    // Use totalRepoCount for adaptive weight check (more reliable than sample size)
+    const hasGithub = githubData.totalRepoCount > 100;
     const hasYouTube = youtubeData.videoCount > 3;
 
     // Both signals present: use default weights

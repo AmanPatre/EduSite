@@ -181,12 +181,41 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
                                 </div>
                             </div>
 
-                            {/* Sparkline - only render with 2+ data points to avoid Recharts -1/-1 error */}
-                            <div className="h-10 -mx-2">
+                            {/* Sparkline - rich overlay showing dates */}
+                            <div className="h-12 -mx-2 mt-2">
                                 {(skill.history || []).length >= 2 ? (
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart data={(skill.history || []).map((val: any) => ({ v: val }))}>
-                                            <Area type="monotone" dataKey="v" stroke={isSelected ? '#a855f7' : '#475569'} fill="none" strokeWidth={2} />
+                                        <AreaChart data={(skill.history || []).map((val: any, i: number) => ({
+                                            v: val,
+                                            date: skill.historyDates?.[i] ? new Date(skill.historyDates[i]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Seed ${i + 1}`
+                                        }))}>
+                                            <Tooltip
+                                                content={({ active, payload }) => {
+                                                    if (active && payload && payload.length) {
+                                                        return (
+                                                            <div className="bg-[#1A1A22] border border-slate-700 p-2 rounded shadow-xl text-[10px]">
+                                                                <p className="text-slate-400 mb-0.5">{payload[0].payload.date}</p>
+                                                                <p className="font-bold text-purple-400">Score: {payload[0].value}</p>
+                                                                <p className="text-slate-500 mt-1 italic leading-tight">Data fetched via Synapse Engine</p>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return null;
+                                                }}
+                                            />
+                                            <Area
+                                                type="monotone"
+                                                dataKey="v"
+                                                stroke={isSelected ? '#a855f7' : '#475569'}
+                                                fill={isSelected ? 'url(#colorPurple)' : 'none'}
+                                                strokeWidth={2}
+                                            />
+                                            <defs>
+                                                <linearGradient id="colorPurple" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#a855f7" stopOpacity={0.3} />
+                                                    <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
+                                                </linearGradient>
+                                            </defs>
                                         </AreaChart>
                                     </ResponsiveContainer>
                                 ) : (

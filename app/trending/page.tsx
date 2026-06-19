@@ -46,13 +46,19 @@ async function getTrendScores() {
 
     // 3. FETCH EFFORT-DEMAND (Parallel)
     const effortResPromise = fetch(`${baseUrl}/api/effort-demand`, {
-      next: { revalidate: 86400 } // Cache for 24 hours
+      next: { revalidate: 0 } // Bypass cache to fix broken data
     });
 
-    const [res, jobsRes, effortRes] = await Promise.all([
+    // 4. FETCH MARKET INSIGHTS
+    const insightsResPromise = fetch(`${baseUrl}/api/market-insights`, {
+      next: { revalidate: 86400 } // Cache for 24 hours to change daily
+    });
+
+    const [res, jobsRes, effortRes, insightsRes] = await Promise.all([
       fetch(`${baseUrl}/api/trend-scores`, { next: { revalidate: 0 } }),
       jobsResPromise,
-      effortResPromise
+      effortResPromise,
+      insightsResPromise
     ]);
 
     let realSkills = [];
@@ -73,15 +79,23 @@ async function getTrendScores() {
       }
     }
 
-    return { skills: realSkills, jobs: realJobs, effortData: realEffortData };
+    let realInsights = marketInsights;
+    if (insightsRes.ok) {
+      const data = await insightsRes.json();
+      if (Array.isArray(data) && data.length > 0) {
+        realInsights = data;
+      }
+    }
+
+    return { skills: realSkills, jobs: realJobs, effortData: realEffortData, liveInsights: realInsights };
   } catch (error) {
     console.error('Failed to fetch trend scores or jobs:', error);
-    return { skills: [], jobs: [], effortData: effortRewardData };
+    return { skills: [], jobs: [], effortData: effortRewardData, liveInsights: marketInsights };
   }
 }
 
 export default async function TrendingPage() {
-  const { skills: trendSkills, jobs: trendJobs, effortData } = await getTrendScores();
+  const { skills: trendSkills, jobs: trendJobs, effortData, liveInsights } = await getTrendScores();
 
   return (
     <div className="relative min-h-screen bg-[#030014] overflow-hidden selection:bg-purple-500/30">
@@ -107,7 +121,7 @@ export default async function TrendingPage() {
             skillMappings={skillRoleMappings}
             roleMappings={roleSkillMappings}
           />
-          <MarketInsightsSection insights={marketInsights} />
+          <MarketInsightsSection insights={liveInsights} />
 
         </main>
       </PageWrapper>

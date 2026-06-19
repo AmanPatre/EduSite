@@ -5,6 +5,7 @@ import { Loader2, Play, CheckCircle, ChevronDown, ChevronUp, RefreshCw, Save, Ch
 import ResourceViewer from "../components/roadmap/ResourceViewer";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 function RoadmapContent() {
     const { data: session } = useSession();
@@ -57,8 +58,13 @@ function RoadmapContent() {
         try {
             const res = await axios.post("/api/generate-roadmap", { topic });
             setRoadmap(res.data.roadmap);
-        } catch (err) {
-            alert("Failed to generate roadmap");
+        } catch (err: any) {
+            console.error(err);
+            if (err.response?.status === 400) {
+                toast.error(err.response.data.message || "Enter a valid learning topic");
+            } else {
+                toast.error("Failed to generate roadmap. Please try again.");
+            }
         } finally {
             setLoading(false);
         }

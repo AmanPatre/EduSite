@@ -1,9 +1,9 @@
 {
-  "name": "my-app",
+  "name": "synapse",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
+    "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint"
@@ -32,6 +32,7 @@
     "prisma": "^5.12.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-hot-toast": "^2.6.0",
     "recharts": "^3.6.0",
     "tailwind-merge": "^3.4.0"
   },

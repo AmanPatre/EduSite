@@ -33,7 +33,7 @@ export async function GET() {
         });
 
         const histories = await prisma.trendHistory.findMany({});
-        const historyMap = new Map(histories.map(h => [h.skillName, h.scores]));
+        const historyMap = new Map(histories.map(h => [h.skillName, { scores: h.scores, dates: h.dates }]));
 
         if (results.length === 0) {
             console.warn('⚠️ No data in DB. Please run "npm run seed-trends" locally.');
@@ -44,24 +44,28 @@ export async function GET() {
         }
 
         // 3. Format Response
-        const formattedResults = results.map(c => ({
-            name: c.skillName,
-            category: c.category,
-            trendScore: c.trendScore,
-            history: historyMap.get(c.skillName) || [], // <--- Added History
-            breakdown: {
-                github: c.githubScore,
-                youtube: c.youtubeScore,
-                weights: {
-                    github: c.githubWeight || 0.5,
-                    youtube: c.youtubeWeight || 0.5
+        const formattedResults = results.map(c => {
+            const h = historyMap.get(c.skillName);
+            return {
+                name: c.skillName,
+                category: c.category,
+                trendScore: c.trendScore,
+                history: h?.scores || [],
+                historyDates: h?.dates || [],
+                breakdown: {
+                    github: c.githubScore,
+                    youtube: c.youtubeScore,
+                    weights: {
+                        github: c.githubWeight || 0.5,
+                        youtube: c.youtubeWeight || 0.5
+                    }
+                },
+                metadata: {
+                    githubSampleSize: c.githubSampleSize,
+                    youtubeSampleSize: c.youtubeSampleSize
                 }
-            },
-            metadata: {
-                githubSampleSize: c.githubSampleSize,
-                youtubeSampleSize: c.youtubeSampleSize
-            }
-        }));
+            };
+        });
 
         // 4. Save to Redis
         try {

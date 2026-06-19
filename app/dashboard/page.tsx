@@ -141,8 +141,6 @@ export default function DashboardPage() {
 
                 setMonthBlocks(monthBlocksData);
 
-                setMonthBlocks(monthBlocksData);
-
                 // Process Skill Data for Radar
                 const skillMap = new Map();
 

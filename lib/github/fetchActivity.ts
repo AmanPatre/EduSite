@@ -1,10 +1,12 @@
 import { skillDetectionRules } from '../skillDetectionRules';
 
 export interface GitHubActivityData {
-    repoCount: number;
+    totalRepoCount: number; // Real total from GitHub (e.g. 142,000) — primary signal
+    repoCount: number;      // Sample size (max 50) — kept for avgStars/avgForks calculation
     totalStars: number;
     totalForks: number;
     avgStars: number;
+    avgForks: number;
     sampleSize: number;
 }
 
@@ -32,10 +34,9 @@ export async function fetchGitHubActivities(
             const rules = skillDetectionRules[skill];
             if (!rules) return '';
 
-            // Alias must be alphanumeric (skill_0, skill_1, etc.)
+
             const alias = `skill_${index}`;
-            // GraphQL search query
-            // Note: first: 50 is safer for complexity limits when batching
+
             return `
         ${alias}: search(query: "${rules.github.query.replace(/"/g, '\\"')} created:${dateRange}", type: REPOSITORY, first: 50) {
           repositoryCount
@@ -86,22 +87,25 @@ export async function fetchGitHubActivities(
 
                 if (searchData) {
                     const repos = searchData.nodes || [];
-
-                    const repoCount = repos.length; // Sample count
+                    const totalRepoCount = searchData.repositoryCount || 0; // Real total — primary signal
+                    const repoCount = repos.length; // Sample size (max 50)
 
                     const totalStars = repos.reduce((sum: number, r: any) => sum + r.stargazerCount, 0);
                     const totalForks = repos.reduce((sum: number, r: any) => sum + r.forkCount, 0);
                     const avgStars = repoCount > 0 ? totalStars / repoCount : 0;
+                    const avgForks = repoCount > 0 ? totalForks / repoCount : 0;
 
                     results[skill] = {
+                        totalRepoCount,
                         repoCount,
                         totalStars,
                         totalForks,
                         avgStars,
+                        avgForks,
                         sampleSize: repoCount
                     };
                 } else {
-                    results[skill] = { repoCount: 0, totalStars: 0, totalForks: 0, avgStars: 0, sampleSize: 0 };
+                    results[skill] = { totalRepoCount: 0, repoCount: 0, totalStars: 0, totalForks: 0, avgStars: 0, avgForks: 0, sampleSize: 0 };
                 }
             });
 
@@ -109,7 +113,7 @@ export async function fetchGitHubActivities(
             console.error('Batch fetch error:', error);
             // Fill with zeros on error
             batch.forEach(skill => {
-                results[skill] = { repoCount: 0, totalStars: 0, totalForks: 0, avgStars: 0, sampleSize: 0 };
+                results[skill] = { totalRepoCount: 0, repoCount: 0, totalStars: 0, totalForks: 0, avgStars: 0, avgForks: 0, sampleSize: 0 };
             });
         }
     }

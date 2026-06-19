@@ -5,12 +5,19 @@ import { getGeminiModel, EXPERIMENTAL_MODEL } from "@/lib/gemini";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 
+import { validateTopic } from "@/lib/topicGuard";
+
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
     const { topic } = await req.json();
     if (!topic) return NextResponse.json({ error: "Topic is required" }, { status: 400 });
+
+    const validation = await validateTopic(topic, 'LEARNING');
+    if (!validation.isValid) {
+      return NextResponse.json({ error: "Invalid Topic", message: validation.reason }, { status: 400 });
+    }
 
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
