@@ -1,14 +1,6 @@
 
 
-// ============================================
-// TRENDING DASHBOARD - MAIN PAGE
-// ============================================
-// Interactive dashboard with 5 comprehensive sections:
-// 1. Trending Skills - What students are learning
-// 2. Industry Demand - Job market analysis with drill-down
-// 3. Skill ↔ Role Mapping - Career path guidance
-// 4. Effort vs Reward - Decision-making tool
-// 5. Market Insights - AI-powered analysis
+
 
 
 import React from 'react';
@@ -44,6 +36,11 @@ async function getTrendScores() {
       next: { revalidate: 3600 }
     });
 
+    // 2.5 FETCH GRAPHQL (Parallel)
+    const graphQLResPromise = fetch(`${baseUrl}/api/trending-proxy`, {
+      next: { revalidate: 86400 } // Cache for 24 hours. Prevents constantly hitting GitHub's API.
+    });
+
     // 3. FETCH EFFORT-DEMAND (Parallel)
     const effortResPromise = fetch(`${baseUrl}/api/effort-demand`, {
       next: { revalidate: 0 } // Bypass cache to fix broken data
@@ -54,17 +51,29 @@ async function getTrendScores() {
       next: { revalidate: 86400 } // Cache for 24 hours to change daily
     });
 
-    const [res, jobsRes, effortRes, insightsRes] = await Promise.all([
+    const [res, jobsRes, effortRes, insightsRes, graphQLRes] = await Promise.all([
       fetch(`${baseUrl}/api/trend-scores`, { next: { revalidate: 0 } }),
       jobsResPromise,
       effortResPromise,
-      insightsResPromise
+      insightsResPromise,
+      graphQLResPromise
     ]);
 
     let realSkills = [];
     if (res.ok) {
       realSkills = await res.json();
     }
+
+    let graphQLSkills = [];
+    if (graphQLRes.ok) {
+      graphQLSkills = await graphQLRes.json();
+    }
+
+    // Merge GraphQL data into the main scores
+    const mergedSkills = realSkills.map((skill: any) => {
+      const match = graphQLSkills.find((g: any) => g.name === skill.name);
+      return match ? { ...skill, learningTrend: match.learningTrend, growthRate: match.growthRate } : skill;
+    });
 
     let realJobs = [];
     if (jobsRes.ok) {
@@ -87,7 +96,7 @@ async function getTrendScores() {
       }
     }
 
-    return { skills: realSkills, jobs: realJobs, effortData: realEffortData, liveInsights: realInsights };
+    return { skills: mergedSkills, jobs: realJobs, effortData: realEffortData, liveInsights: realInsights };
   } catch (error) {
     console.error('Failed to fetch trend scores or jobs:', error);
     return { skills: [], jobs: [], effortData: effortRewardData, liveInsights: marketInsights };

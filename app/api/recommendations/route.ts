@@ -211,8 +211,8 @@ export async function GET() {
         ]);
 
         const topicData = {
-          videos: v.slice(0, 4), // Top 4 videos
-          docs: d.slice(0, 2), // Top 2 docs
+          videos: v.slice(0, 6), // Top 6 videos
+          docs: d.slice(0, 5), // Top 5 docs
         };
 
         // C. Save to Cache (1 hour)

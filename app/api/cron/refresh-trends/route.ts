@@ -26,7 +26,7 @@ async function fetchGitHubData(query: string) {
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         const dateStr = thirtyDaysAgo.toISOString().split('T')[0];
 
-        const res = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}+created:>=${dateStr}&sort=stars&order=desc&per_page=50`, {
+        const res = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}+created:>=${dateStr}&sort=stars&order=desc&per_page=100`, {
             headers: { 'Authorization': `token ${process.env.GITHUB_TOKEN}` }
         });
 
@@ -36,14 +36,13 @@ async function fetchGitHubData(query: string) {
         const sampleSize = items.length;
 
         const totalStars = items.reduce((sum: number, i: any) => sum + i.stargazers_count, 0);
-        const totalForks = items.reduce((sum: number, i: any) => sum + i.forks_count, 0);
+        const totalForks = items.reduce((sum: number, i: any) => sum + i.forks_count, 0); // total, not avg — matches seed script
         const avgStars = sampleSize > 0 ? totalStars / sampleSize : 0;
-        const avgForks = sampleSize > 0 ? totalForks / sampleSize : 0;
 
-        return { totalRepoCount, avgStars, avgForks, sampleSize };
+        return { totalRepoCount, avgStars, totalForks, sampleSize };
     } catch (e) {
         console.error(`[GitHub Error]`, e);
-        return { totalRepoCount: 0, avgStars: 0, avgForks: 0, sampleSize: 0 };
+        return { totalRepoCount: 0, avgStars: 0, totalForks: 0, sampleSize: 0 };
     }
 }
 
@@ -115,6 +114,9 @@ export async function GET(req: NextRequest) {
     const skills = Object.keys(skillsToTrack);
     const rawDataMap: Record<string, any> = {};
 
+    let apiFailureDetected = false;
+    let failureReason = "";
+
     // Phase 1: Fetch all data (Batched parallel processing)
     const BATCH_SIZE = 5;
     for (let i = 0; i < skills.length; i += BATCH_SIZE) {
@@ -124,14 +126,28 @@ export async function GET(req: NextRequest) {
             const gData = await fetchGitHubData(def.github);
             const yData = await fetchYouTubeData(def.youtube);
 
-            const githubRawScore = (gData.totalRepoCount * 0.5) + (gData.avgStars * 5) + (gData.avgForks * 0.2);
+            const githubRawScore = (gData.totalRepoCount * 0.5) + (gData.avgStars * 5) + (gData.totalForks * 0.2); // matches seed script formula
             const youtubeRawScore = yData
                 ? (yData.videoCount * 10) + (yData.totalViews / 1000) + (yData.avgEngagement * 50)
                 : 0;
 
             rawDataMap[skill] = { category: def.category, gData, yData, githubRawScore, youtubeRawScore };
+
+            // API SAFETY CHECK (Matches seed script)
+            if (gData.totalRepoCount === 0 && def.github) {
+                apiFailureDetected = true;
+                failureReason = `GitHub Limit/Error on ${skill}`;
+            }
         }));
+
+        if (apiFailureDetected) break; // Stop processing further batches
+
         await new Promise(r => setTimeout(r, 500)); // rate limit buffer between batches
+    }
+
+    if (apiFailureDetected) {
+        console.error(`[CRON] ❌ ABORTING: API FETCH FAILED (${failureReason}). DB not updated to prevent corruption.`);
+        return NextResponse.json({ error: `Aborted: ${failureReason}` }, { status: 500 });
     }
 
     // Phase 2: Category normalization + save
@@ -152,9 +168,13 @@ export async function GET(req: NextRequest) {
         const normG = normalize(data.githubRawScore, cat.gScores);
         const normY = data.yData && cat.yScores.length > 0 ? normalize(data.youtubeRawScore, cat.yScores) : 0;
 
-        const hasGithub = data.gData.totalRepoCount > 100;
-        const hasYouTube = data.yData !== null;
-        const wG = hasGithub && hasYouTube ? 0.5 : hasGithub ? 0.8 : 0.2;
+        // Adaptive weights — dynamically assigns trust based on global ecosystem volume
+        const hasGithub = data.gData.totalRepoCount > 50;
+        const hasYouTube = data.yData !== null && (data.yData.videoCount ?? 0) > 15;
+        const wG = hasGithub && hasYouTube ? 0.50
+            : hasGithub && !hasYouTube ? 0.80
+                : !hasGithub && hasYouTube ? 0.20
+                    : 0.50;
         const wY = 1 - wG;
 
         const trendScore = Math.round(Math.max(0, Math.min(100, (normG * wG) + (normY * wY))));
@@ -188,7 +208,7 @@ export async function GET(req: NextRequest) {
         // Update history (rolling 6 entries)
         const existing = await prisma.trendHistory.findUnique({ where: { skillName: skill } });
         let scores: number[] = existing ? [...(existing.scores as number[])] : [];
-        let dates: string[] = existing?.dates ? [...(existing.dates as string[])] : [];
+        let dates: string[] = (existing as any)?.dates ? [...((existing as any).dates as string[])] : [];
 
         scores.push(trendScore);
         dates.push(new Date().toISOString());
@@ -198,7 +218,7 @@ export async function GET(req: NextRequest) {
             dates = dates.slice(-6);
         }
 
-        await prisma.trendHistory.upsert({
+        await (prisma.trendHistory.upsert as any)({
             where: { skillName: skill },
             update: { scores, dates, updatedAt: new Date() },
             create: { skillName: skill, scores, dates }

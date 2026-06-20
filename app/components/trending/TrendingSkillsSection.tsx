@@ -183,20 +183,29 @@ export default function TrendingSkillsSection({ skills }: TrendingSkillsSectionP
 
                             {/* Sparkline - rich overlay showing dates */}
                             <div className="h-12 -mx-2 mt-2">
-                                {(skill.history || []).length >= 2 ? (
+                                {(skill.learningTrend || skill.history || []).length >= 2 ? (
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart data={(skill.history || []).map((val: any, i: number) => ({
+                                        <AreaChart data={(skill.learningTrend || skill.history || []).map((val: any, i: number) => ({
                                             v: val,
-                                            date: skill.historyDates?.[i] ? new Date(skill.historyDates[i]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Seed ${i + 1}`
+                                            // Handle dates separately based on which graph is rendering
+                                            date: skill.learningTrend
+                                                ? `Month ${i + 1}` // GraphQL has 6 specific months
+                                                : (skill.historyDates?.[i] ? new Date(skill.historyDates[i]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : `Seed ${i + 1}`),
+                                            isGraphQL: !!skill.learningTrend
                                         }))}>
                                             <Tooltip
                                                 content={({ active, payload }) => {
                                                     if (active && payload && payload.length) {
+                                                        const isGraphQL = payload[0].payload.isGraphQL;
                                                         return (
                                                             <div className="bg-[#1A1A22] border border-slate-700 p-2 rounded shadow-xl text-[10px]">
                                                                 <p className="text-slate-400 mb-0.5">{payload[0].payload.date}</p>
-                                                                <p className="font-bold text-purple-400">Score: {payload[0].value}</p>
-                                                                <p className="text-slate-500 mt-1 italic leading-tight">Data fetched via Synapse Engine</p>
+                                                                <p className="font-bold text-purple-400">
+                                                                    {isGraphQL ? `Repos Created: ${payload[0].value}` : `Score: ${payload[0].value}`}
+                                                                </p>
+                                                                <p className="text-slate-500 mt-1 italic leading-tight">
+                                                                    {isGraphQL ? "Data fetched via GitHub GraphQL" : "Data fetched via Synapse Engine"}
+                                                                </p>
                                                             </div>
                                                         );
                                                     }
