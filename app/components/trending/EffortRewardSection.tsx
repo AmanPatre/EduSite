@@ -82,7 +82,6 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
 
     return (
         <section className="space-y-4 sm:space-y-6">
-            {/* Header + Search */}
             <div className="flex flex-col gap-4">
                 <SectionHeader
                     icon={Target}
@@ -115,7 +114,6 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                 </form>
             </div>
 
-            {/* AI Insight Panel */}
             {selectedSkillData && (() => {
                 const quadrant = getQuadrantInfo(selectedSkillData.effortLevel, selectedSkillData.demandLevel);
                 return (
@@ -171,7 +169,6 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                 );
             })()}
 
-            {/* Category Filter — scrollable on mobile */}
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                 {categories.map(category => (
                     <button
@@ -188,13 +185,11 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                 ))}
             </div>
 
-            {/* Scatter Plot */}
             <div className="bg-[#0F0F12] border border-slate-800 rounded-2xl p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg font-bold text-slate-100 mb-4">
                     Learning Effort vs Job Demand
                 </h3>
 
-                {/* Quadrant legend — grid on mobile instead of absolute overlay */}
                 <div className="grid grid-cols-2 gap-2 mb-4 sm:hidden">
                     <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-2 py-1.5">
                         <p className="text-xs font-bold text-green-400">🔥 Best ROI</p>
@@ -214,9 +209,7 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                     </div>
                 </div>
 
-                {/* Chart with responsive height */}
                 <div className="h-[280px] sm:h-[400px] md:h-[500px] w-full relative">
-                    {/* Quadrant labels — desktop only (absolute overlay) */}
                     <div className="hidden sm:block absolute top-4 left-4 z-10 bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2 pointer-events-none">
                         <p className="text-xs font-bold text-green-400">🔥 Best ROI</p>
                         <p className="text-[10px] text-slate-500">High demand, low effort</p>
@@ -317,7 +310,6 @@ export default function EffortRewardSection({ data: initialData }: EffortRewardS
                 </div>
             </div>
 
-            {/* ROI Legend */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-1.5">

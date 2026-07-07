@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const normalizedTopic = topic.trim().toLowerCase();
     const CACHE_KEY = `roadmap:${normalizedTopic}`;
 
-    // 1. REDIS CACHE CHECK
+
     try {
       const cachedRedis = await redis?.get(CACHE_KEY);
       if (cachedRedis) {
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       console.warn("[ERROR] Redis Read:", e);
     }
 
-    // 2. MONGODB CACHE CHECK
+
     const dbQueryKey = `roadmap:${normalizedTopic}`;
     const cachedDb = await prisma.searchCache.findUnique({
       where: { query: dbQueryKey }
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // 3. GENERATE NEW CONTENT (AI)
+
     const model = getGeminiModel(EXPERIMENTAL_MODEL);
     const prompt = `Create a step-by-step learning roadmap for: "${topic}". Return ONLY a pure JSON array of objects: [{ step: 1, title: "", description: "", tools: [], project: "" }]`;
 
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     let text = result.response.text().replace(/```json/g, '').replace(/```/g, '').trim();
     const roadmap = JSON.parse(text);
 
-    // Log AI Interaction
+
     (async () => {
       try {
         const user = userEmail ? await prisma.user.findUnique({ where: { email: userEmail } }) : null;
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
       }
     })();
 
-    // 4. SAVE TO MONGODB
+
     await prisma.searchCache.upsert({
       where: { query: dbQueryKey },
       update: { data: roadmap },
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
       }
     });
 
-    // 5. SAVE TO REDIS
+
     try {
       await redis?.set(CACHE_KEY, JSON.stringify(roadmap), 'EX', 86400);
     } catch (e) {

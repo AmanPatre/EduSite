@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Topic Guard: Prevent non-educational content
+
     const validation = await validateTopic(query, 'LEARNING');
     if (!validation.isValid) {
       return NextResponse.json({
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
 
-    // Log internally but don't block
+
     (async () => {
       try {
         if (userEmail) {
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
 
     const cacheKey = `search:youtube:${sanitizedQuery}`;
 
-    // --- Cache Check (Redis) ---
+
     try {
       const cacheData = await redis?.get(cacheKey);
       if (cacheData) {
@@ -78,12 +78,11 @@ export async function POST(req: Request) {
       console.warn("Redis read error (proceeding):", error);
     }
 
-    console.log("[CACHE MISS] Search - Calling YouTube API...");
+
 
     const videoResults = await fetchYouTubeVideos(query);
     const playlistResults = await fetchYouTubePlaylists(query);
 
-    // Guard: if YouTube returned nothing (quota exhausted), fail gracefully
     if (videoResults.length === 0 && playlistResults.length === 0) {
       console.warn("[WARN] YouTube returned no results.");
       return NextResponse.json(
@@ -92,12 +91,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // --------------------------------
-    // Initialize Gemini Model
-    // --------------------------------
+
     const model = getGeminiModel(EXPERIMENTAL_MODEL);
 
-    // AI Ranking Prompt
+
     const prompt = `
 You are an AI that ranks YouTube learning content.
 Topic: ${query}
@@ -125,7 +122,7 @@ Return JSON ONLY:
 
       const ranked = JSON.parse(text);
 
-      // Log AI Interaction asynchronously
+
       (async () => {
         try {
           const user = userEmail ? await prisma.user.findUnique({ where: { email: userEmail } }) : null;
@@ -175,7 +172,7 @@ Return JSON ONLY:
       };
     }
 
-    // --- Save to Redis ---
+
     try {
       if (redis && finalResponse.success) {
         const ttl = finalResponse.aiRanked === false ? 300 : 86400;

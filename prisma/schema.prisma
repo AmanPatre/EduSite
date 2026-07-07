@@ -13,7 +13,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  password      String?   // For email+password auth (hashed with bcryptjs)
+  password      String?  
   accounts      Account[]
   sessions      Session[]
   searchHistory SearchHistory[]
@@ -94,7 +94,8 @@ model Roadmap {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   topic     String
-  status    String   @default("active") // "active", "completed", "archived"
+  status    String   @default("active") 
+
   currentStep Int    @default(0)
   
   content   Json
@@ -108,8 +109,8 @@ model Activity {
   userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  action    String   // "VIEW_RESOURCE", "COMPLETE_STEP"
-  topic     String   // "React", "Python"
+  action    String   
+  topic     String   
   metadata  Json?    
   
   createdAt DateTime @default(now())
@@ -119,7 +120,7 @@ model TrendScore {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
   skillName         String   @unique
   category          String
-  trendScore        Int      // 0-100
+  trendScore        Int      
   githubScore       Float
   githubWeight      Float
   youtubeScore      Float
@@ -133,27 +134,28 @@ model TrendScore {
 model TrendHistory {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   skillName String   @unique
-  scores    Json     // Array of scores [65, 68, 72...]
-  dates     Json?    // Optional: Array of ISO dates corresponding to scores
+  scores    Json     
+  dates     Json?    
   updatedAt DateTime @updatedAt
 }
 model SkillRoleMap {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   skillName String   @unique
-  roles     Json     // Stores the list of roles & match scores
-  updatedAt DateTime @updatedAt // Used to check 24h expiration
+  roles     Json     
+  updatedAt DateTime @updatedAt 
+
 
 }
 model RoleSkillMap {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   roleName  String   @unique
-  skills    Json     // Stores the list of skills & importance
+  skills    Json     
   updatedAt DateTime @updatedAt
 }
 
 model EffortDemandSnapshot {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  data      Json     // Array of { skillName, effort, demand, salary, roi, ... }
+  data      Json     
   updatedAt DateTime @updatedAt
 }
 
@@ -162,19 +164,19 @@ model AIInteraction {
   userId        String?  @db.ObjectId
   user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   
-  modelUsed     String   // e.g. "gemini-3.1-flash-lite"
-  feature       String   // e.g. "SEARCH", "ROADMAP", "INSIGHTS"
+  modelUsed     String   
+  feature       String   
   prompt        String
   response      Json?
   
   tokensUsed    Int?     
-  latency       Int?     // milliseconds
+  latency       Int?     
   
   createdAt     DateTime @default(now())
 }
 
 model MarketInsightsSnapshot {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  data      Json     // Array of MarketInsight objects
+  data      Json     
   updatedAt DateTime @updatedAt
 }

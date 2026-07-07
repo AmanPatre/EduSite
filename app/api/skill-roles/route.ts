@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         const text = result.response.text().replace(/```json/g, "").replace(/```/g, "").trim();
         const rolesData = JSON.parse(text);
 
-        // Log AI Interaction
+
         (async () => {
             try {
                 await prisma.aIInteraction.create({
