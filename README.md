@@ -60,103 +60,81 @@ The result is a platform that helps learners discover *what* to learn, understan
 
 ### System Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           CLIENT (Browser)                           │
-│              Next.js 16 · React 19 · Tailwind CSS v4                │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │  HTTPS / Server Actions
-┌──────────────────────────────▼──────────────────────────────────────┐
-│                        NEXT.JS APP ROUTER                            │
-│                                                                      │
-│   ┌──────────────────────────────────────────────────────────────┐  │
-│   │                    API ROUTE HANDLERS                        │  │
-│   │                                                              │  │
-│   │  /api/generate-roadmap  /api/trending    /api/search         │  │
-│   │  /api/market-insights   /api/role-skills /api/skill-roles    │  │
-│   │  /api/effort-demand     /api/activity    /api/recommendations│  │
-│   └──────────────────┬───────────────────────────────────────────┘  │
-│                      │                                               │
-│   ┌──────────────────▼────────────┐  ┌────────────────────────────┐ │
-│   │        CACHING LAYER          │  │       AI LAYER             │ │
-│   │                               │  │                            │ │
-│   │  L1: Redis (ioredis)          │  │  Google Gemini AI          │ │
-│   │  └─ TTL: 24h (roadmaps)       │  │  ├─ gemini-2.0-flash       │ │
-│   │  └─ TTL: 1h  (search)         │  │  └─ gemini-3.1-flash-lite  │ │
-│   │                               │  │                            │ │
-│   │  L2: MongoDB (SearchCache)    │  │  Topic Guard (Validation)  │ │
-│   │  └─ TTL: 30 days (roadmaps)   │  │  └─ Blocks non-educational │ │
-│   │  └─ TTL: 24h  (insights)      │  │     queries before AI call │ │
-│   └──────────────────┬────────────┘  └────────────────────────────┘ │
-│                      │                                               │
-└──────────────────────┼──────────────────────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────────────────────┐
-│                       DATA LAYER (MongoDB Atlas)                      │
-│                       Prisma ORM · Connection Pooling                 │
-│                                                                       │
-│   Users · Roadmaps · TrendScores · TrendHistory · SearchCache        │
-│   AIInteractions · Activity · MarketInsightsSnapshot · SkillRoleMap  │
-└──────────────────────┬──────────────────────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────────────────────┐
-│                      EXTERNAL APIs                                    │
-│   YouTube Data API v3   GitHub REST API   Google Search API          │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph CLIENT["CLIENT — Browser"]
+        UI["Next.js 16 · React 19 · Tailwind CSS v4"]
+    end
+
+    subgraph SERVER["NEXT.JS APP ROUTER"]
+        direction TB
+        API["API Route Handlers\n/api/generate-roadmap · /api/trending · /api/search\n/api/market-insights · /api/role-skills · /api/skill-roles\n/api/effort-demand · /api/activity · /api/recommendations"]
+
+        subgraph CACHE["Caching Layer"]
+            L1["L1 — Redis (ioredis)\nTTL: 24h roadmaps · 1h search"]
+            L2["L2 — MongoDB SearchCache\nTTL: 30d roadmaps · 24h insights"]
+        end
+
+        subgraph AI["AI Layer"]
+            GEMINI["Google Gemini AI\ngemini-2.0-flash · gemini-3.1-flash-lite"]
+            GUARD["Topic Guard\nBlocks non-educational queries"]
+        end
+
+        API --> CACHE
+        API --> AI
+    end
+
+    subgraph DB["DATA LAYER — MongoDB Atlas via Prisma"]
+        MODELS["Users · Roadmaps · TrendScores · TrendHistory\nAIInteractions · Activity · MarketInsightsSnapshot · SkillRoleMap"]
+    end
+
+    subgraph EXT["EXTERNAL APIs"]
+        YT["YouTube Data API v3"]
+        GH["GitHub REST API"]
+        GS["Google Search API"]
+    end
+
+    CLIENT -- "HTTPS / Server Actions" --> SERVER
+    CACHE --> DB
+    AI --> EXT
+    DB --> EXT
 ```
 
 ### Request Lifecycle: AI Roadmap Generation
 
-```
-User Input
-    │
-    ▼
-Topic Guard (Gemini AI validates query)
-    │
-    ├─ INVALID ──► 400 Error response returned
-    │
-    ▼ VALID
-L1 Cache Check (Redis)
-    │
-    ├─ HIT ──► Return cached roadmap (< 1ms)
-    │
-    ▼ MISS
-L2 Cache Check (MongoDB SearchCache)
-    │
-    ├─ HIT (< 30 days) ──► Populate Redis → Return roadmap
-    │
-    ▼ MISS
-Gemini AI Generation
-    │
-    ▼
-Save to MongoDB SearchCache (30-day TTL)
-    │
-    ▼
-Save to Redis (24-hour TTL) [async]
-    │
-    ▼
-Log AI Interaction (async, non-blocking)
-    │
-    ▼
-Return Roadmap to Client
+```mermaid
+flowchart TD
+    A(["User Input: topic string"]) --> B["Topic Guard\nGemini AI validates query"]
+    B -- "INVALID" --> ERR(["400 Bad Request"])
+    B -- "VALID" --> C{"L1 Check\nRedis Cache"}
+    C -- "HIT" --> OK1(["Return roadmap ~1ms"])
+    C -- "MISS" --> D{"L2 Check\nMongoDB SearchCache"}
+    D -- "HIT < 30 days" --> E["Backfill Redis\nTTL: 24h"]
+    E --> OK2(["Return roadmap"])
+    D -- "MISS" --> F["Gemini AI Generation\ngemini-3.1-flash-lite"]
+    F --> G["Upsert MongoDB SearchCache\nTTL: 30 days"]
+    G --> H["Write Redis Cache\nTTL: 24h — async"]
+    H --> I["Log AIInteraction\nnon-blocking async"]
+    I --> OK3(["Return roadmap to client"])
 ```
 
 ### Nightly Trend Score Computation
 
-```
-Cron Job (Daily via Vercel Cron)
-    │
-    ├── GitHub API: fetch repos, stars, forks, recent pushes
-    │   └── githubScore = weighted(stars, forks, pushes)
-    │
-    ├── YouTube API: fetch video views, like ratio, playlist counts
-    │   └── youtubeScore = weighted(views, likes, videoCount)
-    │
-    ├── Composite trendScore = (githubScore × githubWeight) + (youtubeScore × youtubeWeight)
-    │
-    ├── Upsert → TrendScore collection (current snapshot)
-    │
-    └── Append → TrendHistory collection (for sparkline charts)
+```mermaid
+flowchart LR
+    CRON(["Vercel Cron\n2:00 AM UTC daily"])
+
+    CRON --> GH["GitHub REST API\nfetch repos · stars · forks · pushes"]
+    CRON --> YT["YouTube Data API v3\nfetch views · likes · playlist counts"]
+
+    GH --> GHS["githubScore\nweighted sum"]
+    YT --> YTS["youtubeScore\nweighted sum"]
+
+    GHS --> COMP["trendScore\ngithubScore × githubWeight\n+ youtubeScore × youtubeWeight"]
+    YTS --> COMP
+
+    COMP --> TS["Upsert TrendScore\ncurrent snapshot"]
+    COMP --> TH["Append TrendHistory\nfor sparkline charts"]
 ```
 
 ---
@@ -268,65 +246,116 @@ my-app/
 
 ## Database Schema
 
-Synapse uses **MongoDB Atlas** as its primary datastore, accessed through **Prisma ORM**. Below is the full entity model:
+Synapse uses **MongoDB Atlas** as its primary datastore, accessed through **Prisma ORM**. Below is the full entity relationship model:
 
-```
-┌─────────────────┐         ┌───────────────────┐
-│      User       │──1:N───►│      Account      │  (NextAuth OAuth)
-│─────────────────│         └───────────────────┘
-│ id              │
-│ name            │         ┌───────────────────┐
-│ email (unique)  │──1:N───►│      Session      │  (NextAuth Sessions)
-│ image           │         └───────────────────┘
-│ password (hash) │
-│ createdAt       │         ┌───────────────────┐
-└────────┬────────┘──1:N───►│   SearchHistory   │
-         │                  └───────────────────┘
-         │                  ┌───────────────────┐
-         ├──────────1:N────►│   SavedResource   │
-         │                  └───────────────────┘
-         │                  ┌───────────────────┐
-         ├──────────1:N────►│      Roadmap      │
-         │                  │ topic, status     │
-         │                  │ currentStep, content(JSON)│
-         │                  └───────────────────┘
-         │                  ┌───────────────────┐
-         ├──────────1:N────►│     Activity      │
-         │                  │ action, topic     │
-         │                  │ metadata(JSON)    │
-         │                  └───────────────────┘
-         │                  ┌───────────────────┐
-         └──────────1:N────►│   AIInteraction   │
-                            │ modelUsed, feature│
-                            │ prompt, response  │
-                            │ tokensUsed, latency│
-                            └───────────────────┘
+```mermaid
+erDiagram
+    User {
+        ObjectId id PK
+        String name
+        String email
+        String image
+        String password
+        DateTime createdAt
+    }
+    Account {
+        ObjectId id PK
+        String provider
+        String providerAccountId
+        String access_token
+        ObjectId userId FK
+    }
+    Session {
+        ObjectId id PK
+        String sessionToken
+        DateTime expires
+        ObjectId userId FK
+    }
+    SearchHistory {
+        ObjectId id PK
+        String query
+        DateTime createdAt
+        ObjectId userId FK
+    }
+    SavedResource {
+        ObjectId id PK
+        String title
+        String url
+        String source
+        ObjectId userId FK
+    }
+    Roadmap {
+        ObjectId id PK
+        String topic
+        String status
+        Int currentStep
+        Json content
+        ObjectId userId FK
+    }
+    Activity {
+        ObjectId id PK
+        String action
+        String topic
+        Json metadata
+        ObjectId userId FK
+    }
+    AIInteraction {
+        ObjectId id PK
+        String modelUsed
+        String feature
+        String prompt
+        Json response
+        Int tokensUsed
+        Int latency
+        ObjectId userId FK
+    }
+    TrendScore {
+        ObjectId id PK
+        String skillName
+        String category
+        Int trendScore
+        Float githubScore
+        Float youtubeScore
+    }
+    TrendHistory {
+        ObjectId id PK
+        String skillName
+        Json scores
+        Json dates
+    }
+    SearchCache {
+        ObjectId id PK
+        String query
+        Json data
+        DateTime updatedAt
+    }
+    SkillRoleMap {
+        ObjectId id PK
+        String skillName
+        Json roles
+    }
+    RoleSkillMap {
+        ObjectId id PK
+        String roleName
+        Json skills
+    }
+    EffortDemandSnapshot {
+        ObjectId id PK
+        Json data
+    }
+    MarketInsightsSnapshot {
+        ObjectId id PK
+        Json data
+        DateTime updatedAt
+    }
 
-Standalone Collections (No User FK):
-┌─────────────────────┐  ┌──────────────────────────┐
-│     TrendScore      │  │       TrendHistory        │
-│─────────────────────│  │──────────────────────────│
-│ skillName (unique)  │  │ skillName (unique)        │
-│ category            │  │ scores (JSON array)       │
-│ trendScore          │  │ dates  (JSON array)       │
-│ githubScore / Weight│  └──────────────────────────┘
-│ youtubeScore / Weight│
-│ sampleSizes         │  ┌──────────────────────────┐
-└─────────────────────┘  │     SearchCache          │
-                         │ query (unique)            │
-┌─────────────────────┐  │ data (JSON)              │
-│    SkillRoleMap     │  │ createdAt, updatedAt     │
-│ skillName → roles[] │  └──────────────────────────┘
-└─────────────────────┘
-┌─────────────────────┐  ┌──────────────────────────┐
-│    RoleSkillMap     │  │  EffortDemandSnapshot    │
-│ roleName → skills[] │  │  data (JSON)             │
-└─────────────────────┘  └──────────────────────────┘
-
-                         ┌──────────────────────────┐
-                         │ MarketInsightsSnapshot   │
-                         │ data (JSON)              │
-                         └──────────────────────────┘
+    User ||--o{ Account : "has"
+    User ||--o{ Session : "has"
+    User ||--o{ SearchHistory : "logs"
+    User ||--o{ SavedResource : "saves"
+    User ||--o{ Roadmap : "owns"
+    User ||--o{ Activity : "generates"
+    User ||--o{ AIInteraction : "triggers"
 ```
 
 ---
